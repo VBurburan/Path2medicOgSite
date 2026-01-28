@@ -8,11 +8,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../co
 import { CheckCircle, Award, Brain, TrendingUp, BookOpen, Users, Star } from 'lucide-react';
 
 // Import book covers
-import proofCover from 'figma:asset/5c9cc05b9263baa3a352ea86e5d9e616da333add.png';
-import spotItCover from 'figma:asset/c96381ee722dcf250fe4e2642e201c8802dc3930.png';
-import catCover from 'figma:asset/82e98b0c076d1ccc611ae137148c3b03243ef9d8.png';
-import workbookCover from 'figma:asset/fdfb19885d9e08b5312f32a21629fca03db0d3ad.png';
-import vincentHeadshot from 'figma:asset/42669bdc65e993029f5d4739d20ffe09c5cc9f74.png';
+import proofCover from '../../assets/5c9cc05b9263baa3a352ea86e5d9e616da333add.png';
+import spotItCover from '../../assets/c96381ee722dcf250fe4e2642e201c8802dc3930.png';
+import catCover from '../../assets/82e98b0c076d1ccc611ae137148c3b03243ef9d8.png';
+import workbookCover from '../../assets/fdfb19885d9e08b5312f32a21629fca03db0d3ad.png';
+import vincentHeadshot from '../../assets/42669bdc65e993029f5d4739d20ffe09c5cc9f74.png';
 
 export default function HomePage() {
   const trustBadges = [

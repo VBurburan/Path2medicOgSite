@@ -3,7 +3,7 @@ import Layout from '../components/Layout';
 import { Badge } from '../components/ui/badge';
 import { Card, CardContent } from '../components/ui/card';
 import { Award, BookOpen, Users, Target } from 'lucide-react';
-import vincentHeadshot from 'figma:asset/42669bdc65e993029f5d4739d20ffe09c5cc9f74.png';
+import vincentHeadshot from '../../assets/42669bdc65e993029f5d4739d20ffe09c5cc9f74.png';
 
 export default function AboutPage() {
   const credentials = [

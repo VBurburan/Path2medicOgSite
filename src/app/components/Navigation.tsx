@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { Button } from './ui/button';
-import logo from 'figma:asset/7e2353c04204bd5b39085f4855f3eadf3139a233.png';
+import logo from '../../assets/7e2353c04204bd5b39085f4855f3eadf3139a233.png';
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

@@ -6,7 +6,7 @@ import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
 import { Input } from '../components/ui/input';
 import { Users, Calendar, DollarSign, FileText, CheckCircle, TrendingUp, Eye, Send, Edit } from 'lucide-react';
-import logo from 'figma:asset/7e2353c04204bd5b39085f4855f3eadf3139a233.png';
+import logo from '../../assets/7e2353c04204bd5b39085f4855f3eadf3139a233.png';
 
 export default function AdminDashboardPage() {
   const navigate = useNavigate();

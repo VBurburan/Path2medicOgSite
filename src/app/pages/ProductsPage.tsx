@@ -4,10 +4,10 @@ import ProductCard from '../components/ProductCard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 
 // Import book covers
-import proofCover from 'figma:asset/5c9cc05b9263baa3a352ea86e5d9e616da333add.png';
-import spotItCover from 'figma:asset/c96381ee722dcf250fe4e2642e201c8802dc3930.png';
-import catCover from 'figma:asset/82e98b0c076d1ccc611ae137148c3b03243ef9d8.png';
-import workbookCover from 'figma:asset/fdfb19885d9e08b5312f32a21629fca03db0d3ad.png';
+import proofCover from '../../assets/5c9cc05b9263baa3a352ea86e5d9e616da333add.png';
+import spotItCover from '../../assets/c96381ee722dcf250fe4e2642e201c8802dc3930.png';
+import catCover from '../../assets/82e98b0c076d1ccc611ae137148c3b03243ef9d8.png';
+import workbookCover from '../../assets/fdfb19885d9e08b5312f32a21629fca03db0d3ad.png';
 
 export default function ProductsPage() {
   const [activeTab, setActiveTab] = useState('all');
