@@ -101,7 +101,7 @@ export default function AdminSetupPage() {
             </CardContent>
             <CardFooter className="flex flex-col items-stretch">
               <Button
-                className="w-full bg-[#E67E22] hover:bg-[#D35400]"
+                className="w-full bg-[#E03038] hover:bg-[#c52830]"
                 onClick={handleMakeAdmin}
                 disabled={loading}
               >
@@ -116,7 +116,7 @@ export default function AdminSetupPage() {
             <Button
               variant="ghost"
               onClick={() => navigate('/login')}
-              className="text-[#5DADE2] hover:text-[#3498DB]"
+              className="text-[#1a5f7a] hover:text-[#1a5f7a]"
             >
               Back to Login
             </Button>

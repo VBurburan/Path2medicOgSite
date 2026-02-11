@@ -63,7 +63,7 @@ export default function ContactPage() {
   return (
     <Layout>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-[#1B4F72] to-[#5DADE2] py-16 text-white">
+      <section className="bg-gradient-to-br from-[#0D2137] to-[#1a5f7a] py-16 text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Get in Touch</h1>
           <p className="text-xl text-white/90">
@@ -80,11 +80,11 @@ export default function ContactPage() {
             <div className="space-y-6">
               <Card>
                 <CardHeader>
-                  <Mail className="h-10 w-10 text-[#E67E22] mb-2" />
+                  <Mail className="h-10 w-10 text-[#E03038] mb-2" />
                   <CardTitle>Email Us</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <a href="mailto:vincent@path2medic.com" className="text-[#5DADE2] hover:text-[#3498DB]">
+                  <a href="mailto:vincent@path2medic.com" className="text-[#1a5f7a] hover:text-[#1a5f7a]">
                     vincent@path2medic.com
                   </a>
                   <p className="text-sm text-gray-600 mt-2">We'll respond within 24 hours</p>
@@ -93,7 +93,7 @@ export default function ContactPage() {
 
               <Card>
                 <CardHeader>
-                  <MapPin className="h-10 w-10 text-[#E67E22] mb-2" />
+                  <MapPin className="h-10 w-10 text-[#E03038] mb-2" />
                   <CardTitle>Based In</CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -174,7 +174,7 @@ export default function ContactPage() {
 
                     <Button 
                       type="submit" 
-                      className="w-full bg-[#E67E22] hover:bg-[#D35400]"
+                      className="w-full bg-[#E03038] hover:bg-[#c52830]"
                       disabled={status === 'submitting'}
                     >
                       {status === 'submitting' ? 'Sending...' : 'Send Message'}
@@ -190,7 +190,7 @@ export default function ContactPage() {
       {/* FAQ Quick Links */}
       <section className="py-16 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-[#1B4F72] mb-4">
+          <h2 className="text-3xl font-bold text-[#0D2137] mb-4">
             Quick Answers
           </h2>
           <p className="text-gray-600 mb-8">

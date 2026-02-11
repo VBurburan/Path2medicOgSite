@@ -58,7 +58,7 @@ export default function ProductsPage() {
       title: 'CAT Got Your Tongue?',
       subtitle: 'Guide to Computer Adaptive Testing (CAT)',
       description: 'Struggling with the NREMT CAT test format? This detailed guide offers proven strategies to conquer CAT confusion and approach your exam with confidence. Learn how the algorithm works and how to leverage it to your advantage.',
-      price: 11.99,
+      price: 15.99,
       level: 'All' as const,
       category: ['emt', 'aemt', 'paramedic', 'educators', 'all'],
       coverImage: catCover,
@@ -103,7 +103,7 @@ export default function ProductsPage() {
   return (
     <Layout>
       {/* Page Header */}
-      <section className="bg-gradient-to-br from-[#1B4F72] to-[#5DADE2] py-16 text-white">
+      <section className="bg-gradient-to-br from-[#0D2137] to-[#1a5f7a] py-16 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Study Resources</h1>
           <p className="text-xl text-white/90">
@@ -144,12 +144,12 @@ export default function ProductsPage() {
       {/* Key Features Section */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center text-[#1B4F72] mb-12">
+          <h2 className="text-3xl font-bold text-center text-[#0D2137] mb-12">
             Why Path2Medic Resources Are Different
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center">
-              <div className="bg-[#7FA99B] w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="bg-[#1a5f7a] w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-white text-2xl font-bold">1</span>
               </div>
               <h3 className="text-xl font-semibold mb-2">Evidence-Based</h3>
@@ -158,7 +158,7 @@ export default function ProductsPage() {
               </p>
             </div>
             <div className="text-center">
-              <div className="bg-[#5DADE2] w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="bg-[#1a5f7a] w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-white text-2xl font-bold">2</span>
               </div>
               <h3 className="text-xl font-semibold mb-2">Exam-Aligned</h3>
@@ -167,7 +167,7 @@ export default function ProductsPage() {
               </p>
             </div>
             <div className="text-center">
-              <div className="bg-[#E67E22] w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="bg-[#E03038] w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-white text-2xl font-bold">3</span>
               </div>
               <h3 className="text-xl font-semibold mb-2">Systematic Approach</h3>

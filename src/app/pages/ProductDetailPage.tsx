@@ -34,7 +34,7 @@ export default function ProductDetailPage() {
             {/* Image Column */}
             <div className="w-full md:w-1/3 flex justify-center">
               <div className="relative group">
-                <div className="absolute inset-0 bg-[#1B4F72] rounded-lg opacity-10 transform translate-x-4 translate-y-4 transition-transform group-hover:translate-x-2 group-hover:translate-y-2"></div>
+                <div className="absolute inset-0 bg-[#0D2137] rounded-lg opacity-10 transform translate-x-4 translate-y-4 transition-transform group-hover:translate-x-2 group-hover:translate-y-2"></div>
                 <img 
                   src={product.coverImage} 
                   alt={product.title} 
@@ -45,28 +45,28 @@ export default function ProductDetailPage() {
 
             {/* Content Column */}
             <div className="w-full md:w-2/3">
-              <Badge className="mb-4 bg-[#E67E22] hover:bg-[#D35400] text-white px-3 py-1">
+              <Badge className="mb-4 bg-[#E03038] hover:bg-[#c52830] text-white px-3 py-1">
                 {product.level}
               </Badge>
-              <h1 className="text-3xl md:text-5xl font-bold text-[#1B4F72] mb-2 leading-tight">
+              <h1 className="text-3xl md:text-5xl font-bold text-[#0D2137] mb-2 leading-tight">
                 {product.title}
               </h1>
-              <h2 className="text-xl md:text-2xl text-[#5DADE2] font-semibold mb-6">
+              <h2 className="text-xl md:text-2xl text-[#1a5f7a] font-semibold mb-6">
                 {product.subtitle}
               </h2>
-              <p className="text-lg text-gray-700 italic border-l-4 border-[#E67E22] pl-4 mb-8">
+              <p className="text-lg text-gray-700 italic border-l-4 border-[#E03038] pl-4 mb-8">
                 "{product.tagline}"
               </p>
               
               <div className="flex flex-col sm:flex-row items-baseline gap-4 mb-8">
-                <span className="text-4xl font-bold text-[#1B4F72]">${product.price}</span>
+                <span className="text-4xl font-bold text-[#0D2137]">${product.price}</span>
                 <span className="text-gray-500">{product.pages} Pages • PDF Download</span>
               </div>
 
               <div className="flex flex-col gap-3 max-w-md">
                 <Button 
                   size="lg" 
-                  className="bg-[#1B4F72] hover:bg-[#154160] text-white text-lg h-14 w-full shadow-lg"
+                  className="bg-[#0D2137] hover:bg-[#0d3b4c] text-white text-lg h-14 w-full shadow-lg"
                   onClick={() => window.open(product.buyLink, '_blank')}
                 >
                   Buy Now
@@ -92,14 +92,14 @@ export default function ProductDetailPage() {
       {/* What's Inside Section */}
       <section className="py-16 bg-[#F8F9FA]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-[#1B4F72] mb-12 text-center">What's Inside</h2>
+          <h2 className="text-3xl font-bold text-[#0D2137] mb-12 text-center">What's Inside</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {product.features.map((feature, index) => (
               <div key={index} className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                <div className="bg-[#E67E22]/10 w-10 h-10 rounded-full flex items-center justify-center mb-4">
-                  <CheckCircle2 className="w-5 h-5 text-[#E67E22]" />
+                <div className="bg-[#E03038]/10 w-10 h-10 rounded-full flex items-center justify-center mb-4">
+                  <CheckCircle2 className="w-5 h-5 text-[#E03038]" />
                 </div>
-                <h3 className="font-bold text-[#1B4F72] mb-2">{feature.title}</h3>
+                <h3 className="font-bold text-[#0D2137] mb-2">{feature.title}</h3>
                 <p className="text-sm text-gray-600">{feature.description}</p>
               </div>
             ))}
@@ -110,12 +110,12 @@ export default function ProductDetailPage() {
       {/* Who This Is For Section */}
       <section className="py-16 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-[#1B4F72] mb-8 text-center">Who This Is For</h2>
+          <h2 className="text-3xl font-bold text-[#0D2137] mb-8 text-center">Who This Is For</h2>
           <div className="bg-[#E6F3F5] rounded-2xl p-8 md:p-10">
             <ul className="space-y-4">
               {product.audience.map((item, index) => (
                 <li key={index} className="flex items-start gap-3">
-                  <div className="bg-[#5DADE2] p-1 rounded-full mt-1 flex-shrink-0">
+                  <div className="bg-[#1a5f7a] p-1 rounded-full mt-1 flex-shrink-0">
                     <ArrowRight className="w-3 h-3 text-white" />
                   </div>
                   <span className="text-gray-700 font-medium text-lg">{item}</span>
@@ -133,10 +133,10 @@ export default function ProductDetailPage() {
             <img 
               src={vincentHeadshot} 
               alt="Vincent Burburan" 
-              className="w-20 h-20 rounded-full object-cover border-2 border-[#1B4F72]"
+              className="w-20 h-20 rounded-full object-cover border-2 border-[#0D2137]"
             />
             <div className="text-center sm:text-left">
-              <h3 className="font-bold text-[#1B4F72] text-lg">Written by Vincent Burburan, NRP</h3>
+              <h3 className="font-bold text-[#0D2137] text-lg">Written by Vincent Burburan, NRP</h3>
               <p className="text-sm text-gray-600 mt-1">
                 National Registry Paramedic, NAEMSE Level 1 Instructor, University of Florida Critical Care Paramedic Program graduate. 10+ years EMS experience.
               </p>
@@ -146,7 +146,7 @@ export default function ProductDetailPage() {
       </section>
 
       {/* Bottom CTA */}
-      <section className="py-16 bg-[#1B4F72] text-white text-center">
+      <section className="py-16 bg-[#0D2137] text-white text-center">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold mb-6">Ready to Get Started?</h2>
           <p className="text-xl text-white/80 mb-8">
@@ -154,7 +154,7 @@ export default function ProductDetailPage() {
           </p>
           <Button 
             size="lg" 
-            className="bg-[#E67E22] hover:bg-[#D35400] text-white text-lg h-14 px-12 shadow-lg"
+            className="bg-[#E03038] hover:bg-[#c52830] text-white text-lg h-14 px-12 shadow-lg"
             onClick={() => window.open(product.buyLink, '_blank')}
           >
             Buy Now - ${product.price}

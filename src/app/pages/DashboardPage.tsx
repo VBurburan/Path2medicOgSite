@@ -127,42 +127,55 @@ export default function DashboardPage() {
 
     const fetchData = async () => {
       try {
-        const [studentRes, intakeRes, posttestRes, sessionRes, streakRes] =
-          await Promise.all([
-            supabase
-              .from('students')
-              .select('*')
-              .eq('user_id', user.id)
-              .single(),
-            supabase
-              .from('intake_submissions')
-              .select('*')
-              .eq('student_email', user.email)
-              .order('submitted_at', { ascending: false }),
-            supabase
-              .from('posttest_submissions')
-              .select('*')
-              .eq('student_email', user.email)
-              .order('submitted_at', { ascending: false }),
+        // First, get the student profile
+        const { data: studentData } = await supabase
+          .from('students')
+          .select('*')
+          .eq('user_id', user.id)
+          .maybeSingle();
+
+        if (studentData) setStudent(studentData);
+
+        const studentRowId = studentData?.id;
+
+        // Fetch submissions (keyed by email) and session data (keyed by student row ID)
+        const promises: Promise<any>[] = [
+          supabase
+            .from('intake_submissions')
+            .select('*')
+            .eq('student_email', user.email)
+            .order('submitted_at', { ascending: false }),
+          supabase
+            .from('posttest_submissions')
+            .select('*')
+            .eq('student_email', user.email)
+            .order('submitted_at', { ascending: false }),
+        ];
+
+        // exam_sessions and study_streaks use the student table row ID
+        if (studentRowId) {
+          promises.push(
             supabase
               .from('exam_sessions')
               .select('*')
-              .eq('student_id', user.id)
+              .eq('student_id', studentRowId)
               .order('completed_at', { ascending: false }),
             supabase
               .from('study_streaks')
               .select('*')
-              .eq('student_id', user.id)
-              .order('date', { ascending: false })
+              .eq('student_id', studentRowId)
+              .order('study_date', { ascending: false })
               .limit(1),
-          ]);
+          );
+        }
 
-        if (studentRes.data) setStudent(studentRes.data);
-        if (intakeRes.data) setIntakes(intakeRes.data);
-        if (posttestRes.data) setPosttests(posttestRes.data);
-        if (sessionRes.data) setSessions(sessionRes.data);
-        if (streakRes.data && streakRes.data.length > 0)
-          setStreak(streakRes.data[0]);
+        const results = await Promise.all(promises);
+
+        if (results[0]?.data) setIntakes(results[0].data);
+        if (results[1]?.data) setPosttests(results[1].data);
+        if (results[2]?.data) setSessions(results[2].data);
+        if (results[3]?.data && results[3].data.length > 0)
+          setStreak(results[3].data[0]);
       } catch (err) {
         console.error('Dashboard fetch error', err);
       } finally {

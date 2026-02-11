@@ -147,9 +147,9 @@ export default function PracticePage() {
           .from('students')
           .select('id, certification_level, preferred_question_count, total_questions_answered')
           .eq('user_id', user!.id)
-          .single();
+          .maybeSingle();
 
-        if (stuErr && stuErr.code !== 'PGRST116') throw stuErr;
+        if (stuErr) console.warn('Student profile fetch:', stuErr);
 
         if (student) {
           setStudentProfile(student);
