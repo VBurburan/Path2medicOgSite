@@ -18,14 +18,16 @@ interface ProductCardProps {
   subtitle: string;
   description: string;
   price: number;
-  level: 'EMT' | 'AEMT' | 'Paramedic' | 'All';
+  level: string;
   coverImage?: string;
-  coverImages?: string[]; // For bundles with multiple books
-  purchaseLink?: string; // Thinkific purchase link
-  category?: string | string[]; // Category for filtering (not displayed)
+  coverImages?: string[];
+  purchaseLink?: string;
+  buyLink?: string;
+  category?: string | string[];
 }
 
-export default function ProductCard({ title, subtitle, description, price, level, coverImage, coverImages, purchaseLink, category }: ProductCardProps) {
+export default function ProductCard({ title, subtitle, description, price, level, coverImage, coverImages, purchaseLink, buyLink, category }: ProductCardProps) {
+  const effectiveLink = purchaseLink || buyLink;
   const levelColors = {
     EMT: 'bg-[#7FA99B] hover:bg-[#6B8F85]',
     AEMT: 'bg-[#5DADE2] hover:bg-[#3498DB]',
@@ -38,8 +40,8 @@ export default function ProductCard({ title, subtitle, description, price, level
   const hasMultipleImages = displayImages.length > 1;
 
   const handlePurchase = () => {
-    if (purchaseLink) {
-      window.open(purchaseLink, '_blank');
+    if (effectiveLink) {
+      window.open(effectiveLink, '_blank');
     }
   };
 
@@ -90,9 +92,9 @@ export default function ProductCard({ title, subtitle, description, price, level
         <Button 
           className="flex-1 bg-[#E67E22] hover:bg-[#D35400]" 
           onClick={handlePurchase}
-          disabled={!purchaseLink}
+          disabled={!effectiveLink}
         >
-          {purchaseLink ? 'Buy Now' : 'Coming Soon'}
+          {effectiveLink ? 'Buy Now' : 'Coming Soon'}
         </Button>
         
         <Dialog>
@@ -155,7 +157,7 @@ export default function ProductCard({ title, subtitle, description, price, level
                       <CheckCircle2 className="h-4 w-4 text-green-500" />
                       <span>High-Quality PDF Format</span>
                     </li>
-                    {purchaseLink && (
+                    {effectiveLink && (
                       <li className="flex items-center gap-2 text-sm text-gray-600">
                         <Download className="h-4 w-4 text-[#5DADE2]" />
                         <span>Secure Download via Thinkific</span>
@@ -173,9 +175,9 @@ export default function ProductCard({ title, subtitle, description, price, level
               <Button 
                 className="w-full sm:w-auto bg-[#E67E22] hover:bg-[#D35400] text-lg px-8" 
                 onClick={handlePurchase}
-                disabled={!purchaseLink}
+                disabled={!effectiveLink}
               >
-                {purchaseLink ? 'Buy Now' : 'Coming Soon'}
+                {effectiveLink ? 'Buy Now' : 'Coming Soon'}
               </Button>
             </DialogFooter>
           </DialogContent>
