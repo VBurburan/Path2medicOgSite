@@ -3,9 +3,8 @@ import { Link } from 'react-router-dom';
 import Layout from '../components/Layout';
 import ProductCard from '../components/ProductCard';
 import { Button } from '../components/ui/button';
-import { Badge } from '../components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
-import { CheckCircle, Brain, TrendingUp, BookOpen, Users, ArrowRight, Zap, Shield } from 'lucide-react';
+import { CheckCircle, Brain, TrendingUp, ArrowRight, Zap, Shield } from 'lucide-react';
 
 // Import book covers
 import proofCover from '@/assets/proof-cover.png';
@@ -96,32 +95,24 @@ export default function HomePage() {
   return (
     <Layout>
       {/* Hero Section */}
-      <section
-        className="relative bg-cover bg-center py-28 md:py-36"
-        style={{
-          backgroundImage: `linear-gradient(rgba(13, 33, 55, 0.9), rgba(13, 33, 55, 0.75)), url(https://images.unsplash.com/photo-1649768862026-f21a814945f7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhbWJ1bGFuY2UlMjBtb3Rpb258ZW58MXx8fHwxNzY3NzE0MDYwfDA&ixlib=rb-4.1.0&q=80&w=1080)`,
-        }}
-      >
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2 mb-8 border border-white/20">
-            <span className="text-white/90 text-sm font-medium">Updated for 2025 NREMT Exam Changes</span>
-          </div>
-          <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-6 leading-tight tracking-tight">
-            Pass Your NREMT<br className="hidden md:block" /> the First Time
+      <section className="bg-[#0D2137] py-24 md:py-32">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-5 leading-tight">
+            Pass Your NREMT the First Time
           </h1>
-          <p className="text-xl md:text-2xl text-white/80 mb-10 max-w-3xl mx-auto font-light">
+          <p className="text-lg md:text-xl text-white/70 mb-10 max-w-2xl mx-auto">
             1-on-1 Private NREMT Coaching + Evidence-Based Study Materials
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/tutoring">
-              <Button size="lg" className="bg-[#E03038] hover:bg-[#c52830] text-lg px-8 py-6 shadow-lg shadow-red-500/20 font-semibold">
+              <Button size="lg" className="bg-[#E03038] hover:bg-[#c52830] text-lg px-8 py-6 font-semibold">
                 Book 1-on-1 Coaching
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
             <Link to="/products">
               <Button size="lg" className="bg-white text-[#0D2137] hover:bg-gray-100 text-lg px-8 py-6 font-semibold">
-                Purchase Study Materials
+                Browse Study Materials
               </Button>
             </Link>
           </div>
@@ -143,16 +134,13 @@ export default function HomePage() {
             {problems.map((problem, index) => {
               const Icon = problem.icon;
               return (
-                <Card key={index} className="relative overflow-hidden border-0 shadow-md hover:shadow-xl transition-all duration-300 group">
-                  <div className="absolute top-0 left-0 w-full h-1" style={{ backgroundColor: problem.color }} />
+                <Card key={index} className="border border-gray-200/60 shadow-sm">
                   <CardHeader className="pb-3">
-                    <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-3" style={{ backgroundColor: `${problem.color}15` }}>
-                      <Icon className="h-6 w-6" style={{ color: problem.color }} />
-                    </div>
-                    <CardTitle className="text-xl text-[#0D2137]">{problem.title}</CardTitle>
+                    <Icon className="h-5 w-5 mb-3" style={{ color: problem.color }} />
+                    <CardTitle className="text-lg text-[#0D2137]">{problem.title}</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-gray-600 leading-relaxed">{problem.description}</p>
+                    <p className="text-gray-600 leading-relaxed text-sm">{problem.description}</p>
                   </CardContent>
                 </Card>
               );
@@ -165,10 +153,7 @@ export default function HomePage() {
       <section className="py-20 bg-[#f8f9fa]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
-            <Badge className="bg-[#E03038] text-white px-4 py-1.5 text-xs font-semibold mb-4 border-0">
-              STUDY RESOURCES
-            </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold text-[#0D2137] mb-4">
+            <h2 className="text-3xl font-bold text-[#0D2137] mb-4">
               Built for the New NREMT
             </h2>
             <p className="text-gray-500 max-w-2xl mx-auto text-lg">
@@ -201,10 +186,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-16 items-center">
             <div>
-              <Badge className="bg-[#0D2137] text-white px-4 py-1.5 text-xs font-semibold mb-6 border-0">
-                PRACTICE PLATFORM
-              </Badge>
-              <h2 className="text-3xl md:text-4xl font-bold text-[#0D2137] mb-6">
+              <h2 className="text-3xl font-bold text-[#0D2137] mb-6">
                 Practice Like It's Test Day
               </h2>
               <p className="text-gray-500 mb-8 text-lg">
@@ -225,7 +207,7 @@ export default function HomePage() {
               </div>
               <div className="mt-10 flex gap-4">
                 <Link to="/signup">
-                  <Button size="lg" className="bg-[#E03038] hover:bg-[#c52830] shadow-lg shadow-red-500/20">
+                  <Button size="lg" className="bg-[#E03038] hover:bg-[#c52830]">
                     Start Practicing
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
@@ -237,10 +219,10 @@ export default function HomePage() {
                 </Link>
               </div>
             </div>
-            <div className="relative">
-              <div className="bg-gradient-to-br from-[#0D2137] to-[#162d47] rounded-2xl p-8 shadow-2xl">
-                <div className="bg-white/5 backdrop-blur rounded-xl p-6 border border-white/10">
-                  <div className="flex items-center gap-3 mb-6">
+            <div>
+              <div className="bg-[#0D2137] rounded-2xl p-6 md:p-8">
+                <div className="rounded-xl p-5 border border-white/10">
+                  <div className="flex items-center gap-3 mb-5">
                     <div className="w-3 h-3 rounded-full bg-[#E03038]" />
                     <div className="w-3 h-3 rounded-full bg-[#d4a843]" />
                     <div className="w-3 h-3 rounded-full bg-[#28a745]" />
@@ -252,7 +234,7 @@ export default function HomePage() {
                       <p className="text-white text-sm leading-relaxed">A 45-year-old male presents with crushing substernal chest pain radiating to the left arm. He is diaphoretic and anxious. Vitals: BP 88/60, HR 110, RR 24...</p>
                     </div>
                     <div className="space-y-2">
-                      <div className="bg-white/10 rounded-lg p-3 border border-white/5 hover:border-[#E03038]/50 cursor-pointer transition-colors">
+                      <div className="bg-white/10 rounded-lg p-3 border border-white/5">
                         <p className="text-white/80 text-sm">A. Administer aspirin and establish IV access</p>
                       </div>
                       <div className="bg-[#E03038]/20 rounded-lg p-3 border border-[#E03038]/50">
@@ -268,40 +250,22 @@ export default function HomePage() {
                   </div>
                 </div>
               </div>
-              <div className="absolute -bottom-4 -right-4 bg-white rounded-xl shadow-lg p-4 border border-gray-100">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-[#28a745]/10 flex items-center justify-center">
-                    <TrendingUp className="h-5 w-5 text-[#28a745]" />
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-500">Domain Score</p>
-                    <p className="text-lg font-bold text-[#28a745]">+12% improvement</p>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Tutoring CTA */}
-      <section className="py-20 bg-[#0D2137] relative overflow-hidden">
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-10 left-10 w-72 h-72 rounded-full bg-white blur-3xl" />
-          <div className="absolute bottom-10 right-10 w-96 h-96 rounded-full bg-[#E03038] blur-3xl" />
-        </div>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          <div className="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center mx-auto mb-8">
-            <Users className="h-8 w-8 text-white" />
-          </div>
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+      <section className="py-20 bg-[#0D2137]">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl font-bold text-white mb-4">
             Need Personalized Guidance?
           </h2>
-          <p className="text-xl mb-10 text-white/70 max-w-2xl mx-auto">
-            1-on-1 coaching sessions via Zoom. Targeted strategy for YOUR weak domains. Most students pass after 1-2 sessions.
+          <p className="text-lg mb-8 text-white/60 max-w-2xl mx-auto">
+            1-on-1 coaching sessions via Zoom. Targeted strategy for your weak domains. Most students pass after 1-2 sessions.
           </p>
           <Link to="/tutoring">
-            <Button size="lg" className="bg-[#E03038] hover:bg-[#c52830] text-lg px-8 py-6 shadow-lg shadow-red-500/30">
+            <Button size="lg" className="bg-[#E03038] hover:bg-[#c52830] text-lg px-8 py-6">
               Book a Coaching Session — $189
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
@@ -312,47 +276,21 @@ export default function HomePage() {
       {/* About/Credibility */}
       <section className="py-20 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-16 items-center">
-            <div className="relative">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div>
               <img
                 src={vincentHeadshot}
                 alt="Vincent Burburan, NRP"
-                className="w-full rounded-2xl shadow-2xl"
+                className="w-full rounded-2xl"
               />
-              <div className="absolute -bottom-4 -left-4 bg-white rounded-xl shadow-lg p-4 border border-gray-100">
-                <div className="flex items-center gap-2">
-                  <div className="flex -space-x-1">
-                    {[1, 2, 3, 4, 5].map((i) => (
-                      <div key={i} className="w-5 h-5 rounded-full bg-[#d4a843] flex items-center justify-center">
-                        <span className="text-white text-[8px]">★</span>
-                      </div>
-                    ))}
-                  </div>
-                  <span className="text-sm font-semibold text-[#0D2137] ml-1">Proven Track Record</span>
-                </div>
-              </div>
             </div>
             <div>
-              <Badge className="bg-[#0D2137] text-white px-4 py-1.5 text-xs font-semibold mb-6 border-0">
-                YOUR INSTRUCTOR
-              </Badge>
-              <h2 className="text-3xl font-bold text-[#0D2137] mb-4">
+              <h2 className="text-3xl font-bold text-[#0D2137] mb-2">
                 Vincent Burburan, NRP
               </h2>
-              <div className="flex flex-wrap gap-2 mb-6">
-                <Badge variant="secondary" className="bg-[#0D2137]/10 text-[#0D2137] border-0 px-3 py-1">
-                  Critical Care Paramedic
-                </Badge>
-                <Badge variant="secondary" className="bg-[#0D2137]/10 text-[#0D2137] border-0 px-3 py-1">
-                  NAEMSE Level 1 Instructor
-                </Badge>
-                <Badge variant="secondary" className="bg-[#0D2137]/10 text-[#0D2137] border-0 px-3 py-1">
-                  UF CCP Program Graduate
-                </Badge>
-                <Badge variant="secondary" className="bg-[#0D2137]/10 text-[#0D2137] border-0 px-3 py-1">
-                  10+ Years EMS Experience
-                </Badge>
-              </div>
+              <p className="text-sm text-gray-500 mb-6">
+                Critical Care Paramedic &middot; NAEMSE Level 1 Instructor &middot; UF CCP Graduate
+              </p>
               <p className="text-gray-600 mb-4 leading-relaxed">
                 "After years of tutoring EMS students, I discovered a pattern: candidates weren't failing
                 because they lacked knowledge. They failed because they couldn't systematically reason through
