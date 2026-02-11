@@ -110,11 +110,8 @@ export default function HomePage() {
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
             Pass Your NREMT the First Time
           </h1>
-          <p className="text-xl md:text-2xl text-white/90 mb-4 max-w-3xl mx-auto">
+          <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-3xl mx-auto">
             1-on-1 Private NREMT Coaching + Evidence-Based Study Materials
-          </p>
-          <p className="text-lg md:text-xl text-white/80 mb-8 max-w-2xl mx-auto">
-            Get personalized tutoring from a National Registry Paramedic, plus proven strategies for EMT, AEMT & Paramedic certification exams.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
             <Link to="/tutoring">
@@ -123,7 +120,7 @@ export default function HomePage() {
               </Button>
             </Link>
             <Link to="/products">
-              <Button size="lg" className="bg-[#E03038] hover:bg-[#c52830] text-lg px-8 py-6">
+              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 text-lg px-8 py-6">
                 Purchase Study Materials
               </Button>
             </Link>

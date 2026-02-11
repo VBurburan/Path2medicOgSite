@@ -80,7 +80,7 @@ export function PortalHeader({ user, toggleSidebar, title, onLogout }: PortalHea
               <span>Profile</span>
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <Settings className="mr-2 h-4 w-4" /> // Check if Settings is imported
+              <Settings className="mr-2 h-4 w-4" />
               <span>Settings</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
