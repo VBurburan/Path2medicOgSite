@@ -73,7 +73,7 @@ export default function HomePage() {
       title: 'Clinical Judgment & TEI Workbook',
       subtitle: 'Paramedic Edition',
       description: 'Stop guessing and start thinking like an expert! This 70-page workbook enhances your clinical judgment skills with high-quality practice scenarios.',
-      price: 11.99,
+      price: 15.99,
       level: 'Paramedic' as const,
       coverImage: workbookCover,
       purchaseLink: 'https://path2medic.thinkific.com/enroll/3605333?price_id=4541954'

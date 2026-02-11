@@ -48,7 +48,7 @@ export default function ProductsPage() {
       title: 'Clinical Judgment & TEI Workbook- Paramedic',
       subtitle: 'Paramedic Edition',
       description: 'Stop guessing and start thinking like an expert! This 70-page workbook enhances your clinical judgment skills with high-quality practice scenarios. Designed specifically for paramedic-level NREMT preparation.',
-      price: 11.99,
+      price: 15.99,
       level: 'Paramedic' as const,
       category: ['paramedic', 'educators'],
       coverImage: workbookCover,

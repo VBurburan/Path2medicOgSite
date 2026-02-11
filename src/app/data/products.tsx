@@ -134,7 +134,7 @@ export const products: Product[] = [
     title: 'Clinical Judgment & TEI Workbook',
     subtitle: 'Paramedic Edition: Scenarios • Answer Key • Rationales',
     tagline: '10 clinical scenarios with 30 questions across every TEI format',
-    price: 11.99,
+    price: 15.99,
     pages: 71,
     level: 'Paramedic',
     buyLink: 'https://path2medic.thinkific.com/enroll/3605333?price_id=4541954',
