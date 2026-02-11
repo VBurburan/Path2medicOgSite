@@ -105,9 +105,7 @@ export default function ContactPage() {
               <AnimatedSection>
                 <Card className="rounded-2xl shadow-md border-0 overflow-hidden group hover:shadow-xl hover:translate-y-[-4px] transition-all duration-300">
                   <CardHeader className="pb-2">
-                    <div className="bg-[#E03038]/10 w-12 h-12 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
-                      <Mail className="h-6 w-6 text-[#E03038]" />
-                    </div>
+                    <Mail className="h-5 w-5 text-gray-400 mb-3" />
                     <CardTitle className="text-[#0D2137]">Email Us</CardTitle>
                   </CardHeader>
                   <CardContent>
@@ -122,9 +120,7 @@ export default function ContactPage() {
               <AnimatedSection delay={0.1}>
                 <Card className="rounded-2xl shadow-md border-0 overflow-hidden group hover:shadow-xl hover:translate-y-[-4px] transition-all duration-300">
                   <CardHeader className="pb-2">
-                    <div className="bg-[#0D2137]/10 w-12 h-12 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
-                      <MapPin className="h-6 w-6 text-[#0D2137]" />
-                    </div>
+                    <MapPin className="h-5 w-5 text-gray-400 mb-3" />
                     <CardTitle className="text-[#0D2137]">Based In</CardTitle>
                   </CardHeader>
                   <CardContent>

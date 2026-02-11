@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
-import { CheckCircle2, ArrowRight, BookOpen, Layers, AlertTriangle, FileText, Database, BarChart3, Star } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { useInView } from '@/hooks/useInView';
 import bookCover from '@/assets/underhood-cover.png';
 
@@ -61,8 +61,8 @@ export function UnderTheHoodHero() {
               "TEI deep dives: Multiple Response, Build List, Drag-and-Drop, Options Box",
               "Error Signatures + tagging for actionable remediation reports"
             ].map((item, i) => (
-              <div key={i} className="flex items-start gap-2.5">
-                <CheckCircle2 className="w-4 h-4 text-[#28a745] mt-0.5 flex-shrink-0" />
+              <div key={i} className="flex items-start gap-3">
+                <span className="text-[#E03038] font-mono text-xs font-bold mt-0.5 flex-shrink-0">{String(i + 1).padStart(2, '0')}</span>
                 <span className="text-sm text-gray-600">{item}</span>
               </div>
             ))}
@@ -93,13 +93,13 @@ export function UnderTheHoodHero() {
 
 export function UnderTheHoodDetailed() {
   const features = [
-    { label: "Clinical Judgment item mapping", icon: FileText },
-    { label: "Scenario design (three-phase structure)", icon: Layers },
-    { label: "Distractor engineering + scope traps", icon: AlertTriangle },
-    { label: "TEI construction rules + examples", icon: Database },
-    { label: "Metadata schema for item banks", icon: BookOpen },
-    { label: "Item rating and difficulty analysis", icon: Star },
-    { label: "Diagnostic reporting framework", icon: BarChart3 },
+    "Clinical Judgment item mapping",
+    "Scenario design (three-phase structure)",
+    "Distractor engineering + scope traps",
+    "TEI construction rules + examples",
+    "Metadata schema for item banks",
+    "Item rating and difficulty analysis",
+    "Diagnostic reporting framework",
   ];
 
   return (
@@ -135,10 +135,8 @@ export function UnderTheHoodDetailed() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 my-8">
                 {features.map((feature, idx) => (
                   <div key={idx} className="flex items-center p-3.5 bg-white rounded-xl border border-gray-200/60 shadow-sm hover:shadow-md hover:translate-y-[-2px] transition-all duration-300 group">
-                    <div className="bg-[#E03038]/8 p-2 rounded-lg mr-3 transition-all duration-300 group-hover:bg-[#E03038]/15">
-                      <feature.icon className="w-4 h-4 text-[#E03038]" />
-                    </div>
-                    <span className="font-medium text-gray-700 text-sm">{feature.label}</span>
+                    <span className="text-[#E03038] font-mono text-xs font-bold mr-3 flex-shrink-0 w-5">{String(idx + 1).padStart(2, '0')}</span>
+                    <span className="font-medium text-gray-700 text-sm">{feature}</span>
                   </div>
                 ))}
               </div>

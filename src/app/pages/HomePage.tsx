@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import Layout from '../components/Layout';
 import ProductCard from '../components/ProductCard';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
-import { CheckCircle, Brain, TrendingUp, ArrowRight, Zap, Shield, ChevronRight } from 'lucide-react';
+import { ArrowRight, ChevronRight, ChevronUp, ChevronDown, GripVertical } from 'lucide-react';
 import { useInView } from '@/hooks/useInView';
 import { useAnimatedCounter } from '@/hooks/useAnimatedCounter';
 
@@ -68,28 +68,191 @@ function StatCounter({ end, suffix = '', label }: { end: number; suffix?: string
   );
 }
 
+const INITIAL_ITEMS = [
+  { id: 'a', text: 'Begin high-quality chest compressions' },
+  { id: 'b', text: 'Establish IV/IO access' },
+  { id: 'c', text: 'Attach cardiac monitor / defibrillator' },
+  { id: 'd', text: 'Administer epinephrine 1 mg IV/IO' },
+  { id: 'e', text: 'Establish advanced airway' },
+];
+
+function PracticePlatformSection({ practiceFeatures }: { practiceFeatures: string[] }) {
+  const [items, setItems] = useState(INITIAL_ITEMS);
+  const dragItem = useRef<number | null>(null);
+  const dragOverItem = useRef<number | null>(null);
+
+  const moveItem = useCallback((fromIndex: number, toIndex: number) => {
+    if (toIndex < 0 || toIndex >= items.length) return;
+    setItems(prev => {
+      const updated = [...prev];
+      const [moved] = updated.splice(fromIndex, 1);
+      updated.splice(toIndex, 0, moved);
+      return updated;
+    });
+  }, [items.length]);
+
+  const handleDragStart = (index: number) => {
+    dragItem.current = index;
+  };
+
+  const handleDragEnter = (index: number) => {
+    dragOverItem.current = index;
+  };
+
+  const handleDragEnd = () => {
+    if (dragItem.current !== null && dragOverItem.current !== null && dragItem.current !== dragOverItem.current) {
+      moveItem(dragItem.current, dragOverItem.current);
+    }
+    dragItem.current = null;
+    dragOverItem.current = null;
+  };
+
+  return (
+    <section className="py-24 bg-white overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid md:grid-cols-2 gap-16 items-center">
+          <AnimatedSection animation="slideInLeft">
+            <div className="inline-flex items-center gap-2 text-[#E03038] text-sm font-semibold mb-4 tracking-wide uppercase">
+              <div className="w-8 h-px bg-[#E03038]" />
+              Practice Platform
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-[#0D2137] mb-6">
+              These Aren't A, B, C, D Questions
+            </h2>
+            <p className="text-gray-500 mb-8 text-lg leading-relaxed">
+              The NREMT uses 6 Technology Enhanced Item formats. Our platform mirrors every one — including drag-and-drop ordered response, option grids, and multi-select. Try reordering the demo.
+            </p>
+            <div className="space-y-4 mb-10">
+              {practiceFeatures.map((feature, index) => (
+                <div key={index} className="flex items-start gap-3">
+                  <span className="text-[#0D2137] font-mono text-xs font-bold mt-1 w-5 flex-shrink-0">{String(index + 1).padStart(2, '0')}</span>
+                  <p className="text-gray-700 text-[15px] leading-relaxed">{feature}</p>
+                </div>
+              ))}
+            </div>
+            <div className="flex gap-4">
+              <Link to="/signup">
+                <Button
+                  size="lg"
+                  className="bg-[#E03038] hover:bg-[#c52830] group transition-all duration-300 hover:translate-y-[-2px] hover:shadow-lg hover:shadow-red-500/20"
+                >
+                  Start Practicing
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Button>
+              </Link>
+              <Link to="/products">
+                <Button size="lg" variant="outline" className="border-gray-300 text-gray-700 hover:bg-gray-50 transition-all duration-300">
+                  View Plans
+                </Button>
+              </Link>
+            </div>
+          </AnimatedSection>
+
+          <AnimatedSection animation="slideInRight" delay={0.15}>
+            <div className="bg-[#0D2137] rounded-2xl p-6 md:p-8 shadow-2xl shadow-[#0D2137]/30">
+              <div className="rounded-xl p-5 border border-white/10 bg-white/[0.03]">
+                {/* Window chrome */}
+                <div className="flex items-center gap-2 mb-5">
+                  <div className="w-3 h-3 rounded-full bg-white/20" />
+                  <div className="w-3 h-3 rounded-full bg-white/20" />
+                  <div className="w-3 h-3 rounded-full bg-white/20" />
+                  <span className="text-white/30 text-xs ml-2 font-mono">Practice Session</span>
+                  <div className="ml-auto">
+                    <span className="text-white/20 text-[10px] font-mono px-2 py-0.5 rounded bg-white/5">14:32</span>
+                  </div>
+                </div>
+
+                {/* Progress bar */}
+                <div className="h-1 bg-white/10 rounded-full mb-5">
+                  <div className="h-1 bg-[#E03038] rounded-full transition-all duration-500" style={{ width: '56%' }} />
+                </div>
+
+                {/* Question */}
+                <div className="space-y-4">
+                  <div className="bg-white/[0.06] rounded-lg p-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <p className="text-white/40 text-xs font-mono">QUESTION 14 / 25</p>
+                      <span className="text-[10px] font-mono text-[#E03038] border border-[#E03038]/30 px-2 py-0.5 rounded">ORDERED RESPONSE</span>
+                    </div>
+                    <p className="text-white text-sm leading-relaxed">
+                      A 62-year-old female is found unresponsive and apneic. No pulse is detected. Place the following interventions in the correct order of priority.
+                    </p>
+                  </div>
+
+                  {/* Drag-and-drop ordered response items */}
+                  <div className="space-y-1.5">
+                    {items.map((item, index) => (
+                      <div
+                        key={item.id}
+                        draggable
+                        onDragStart={() => handleDragStart(index)}
+                        onDragEnter={() => handleDragEnter(index)}
+                        onDragEnd={handleDragEnd}
+                        onDragOver={(e) => e.preventDefault()}
+                        className="bg-white/[0.06] rounded-lg p-3 border border-white/5 hover:border-white/15 transition-all duration-200 cursor-grab active:cursor-grabbing group/item select-none"
+                      >
+                        <div className="flex items-center gap-3">
+                          <GripVertical className="h-4 w-4 text-white/15 group-hover/item:text-white/30 flex-shrink-0 transition-colors" />
+                          <span className="text-[#E03038] font-mono text-xs font-bold w-5 flex-shrink-0">{index + 1}</span>
+                          <p className="text-white/80 text-sm flex-1">{item.text}</p>
+                          <div className="flex flex-col gap-0.5 flex-shrink-0">
+                            <button
+                              onClick={(e) => { e.stopPropagation(); moveItem(index, index - 1); }}
+                              disabled={index === 0}
+                              className="p-0.5 rounded hover:bg-white/10 disabled:opacity-20 transition-all"
+                            >
+                              <ChevronUp className="h-3.5 w-3.5 text-white/40" />
+                            </button>
+                            <button
+                              onClick={(e) => { e.stopPropagation(); moveItem(index, index + 1); }}
+                              disabled={index === items.length - 1}
+                              className="p-0.5 rounded hover:bg-white/10 disabled:opacity-20 transition-all"
+                            >
+                              <ChevronDown className="h-3.5 w-3.5 text-white/40" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Bottom controls */}
+                <div className="flex items-center justify-between mt-5 pt-4 border-t border-white/5">
+                  <span className="text-white/20 text-xs font-mono">Build List — Drag or use arrows</span>
+                  <div className="flex gap-2">
+                    <div className="px-3 py-1.5 rounded-md bg-white/5 text-white/40 text-xs font-medium">Previous</div>
+                    <div className="px-3 py-1.5 rounded-md bg-[#E03038] text-white text-xs font-medium">Next</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </AnimatedSection>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function HomePage() {
   const problems = [
     {
+      step: '01',
       title: 'The Problem',
       description:
         'Generic memorization-focused materials leave students unprepared for Clinical Judgment questions — 31-38% of the exam.',
-      icon: Brain,
-      color: '#dc3545',
     },
     {
+      step: '02',
       title: 'The Reality',
       description:
         'July 2024 brought major exam changes. TEI questions require systematic reasoning, not rote memory.',
-      icon: TrendingUp,
-      color: '#d4a843',
     },
     {
+      step: '03',
       title: 'The Solution',
       description:
         "Path2Medic's evidence-based framework teaches you HOW to think through complex scenarios — not just what to memorize.",
-      icon: CheckCircle,
-      color: '#28a745',
     },
   ];
 
@@ -148,10 +311,10 @@ export default function HomePage() {
   ];
 
   const practiceFeatures = [
-    { icon: Zap, text: 'All 6 TEI Question Types (Drag & Drop, Build List, Options Box, etc.)' },
-    { icon: Brain, text: 'Clinical Judgment Scenarios with 3-Phase Structure' },
-    { icon: TrendingUp, text: 'Custom Weakness Analysis & Domain Tracking' },
-    { icon: Shield, text: 'EMT, AEMT & Paramedic Question Banks' },
+    'All 6 TEI Question Types — Drag & Drop, Build List, Options Box, and more',
+    'Clinical Judgment Scenarios with 3-Phase Structure',
+    'Custom Weakness Analysis & Domain Tracking',
+    'EMT, AEMT & Paramedic Question Banks',
   ];
 
   const process = [
@@ -180,7 +343,7 @@ export default function HomePage() {
   return (
     <Layout>
       {/* ===== HERO ===== */}
-      <section className="relative min-h-[600px] md:min-h-[700px] flex items-center overflow-hidden">
+      <section className="relative min-h-[640px] md:min-h-[750px] flex items-center overflow-hidden">
         {/* Background image with Ken Burns */}
         <div
           className="absolute inset-0 bg-cover bg-center"
@@ -195,7 +358,7 @@ export default function HomePage() {
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32 w-full">
           <div className="max-w-2xl">
             <div
-              className="inline-flex items-center gap-2 text-[#E03038] text-sm font-semibold mb-6 tracking-wide uppercase"
+              className="inline-flex items-center gap-2 text-[#E03038] text-base font-semibold mb-6 tracking-wide uppercase"
               style={{ animation: 'fadeInUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.1s both' }}
             >
               <div className="w-8 h-px bg-[#E03038]" />
@@ -203,7 +366,7 @@ export default function HomePage() {
             </div>
 
             <h1
-              className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-[1.1] tracking-tight"
+              className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-8 leading-[1.05] tracking-tight"
               style={{ animation: 'fadeInUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.25s both' }}
             >
               Pass Your NREMT
@@ -212,7 +375,7 @@ export default function HomePage() {
             </h1>
 
             <p
-              className="text-lg md:text-xl text-white/60 mb-10 max-w-lg leading-relaxed"
+              className="text-xl md:text-2xl text-white/60 mb-10 max-w-xl leading-relaxed"
               style={{ animation: 'fadeInUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.4s both' }}
             >
               1-on-1 coaching from a Critical Care Paramedic, plus evidence-based study materials built for the new exam format.
@@ -272,27 +435,21 @@ export default function HomePage() {
           </AnimatedSection>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {problems.map((problem, index) => {
-              const Icon = problem.icon;
-              return (
-                <AnimatedSection key={index} delay={index * 0.12}>
-                  <Card className="border border-gray-200/60 shadow-sm hover:shadow-md transition-all duration-300 hover:translate-y-[-4px] group h-full">
-                    <CardHeader className="pb-3">
-                      <div
-                        className="w-11 h-11 rounded-xl flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-110"
-                        style={{ backgroundColor: `${problem.color}12` }}
-                      >
-                        <Icon className="h-5 w-5" style={{ color: problem.color }} />
-                      </div>
-                      <CardTitle className="text-lg text-[#0D2137]">{problem.title}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-gray-600 leading-relaxed text-sm">{problem.description}</p>
-                    </CardContent>
-                  </Card>
-                </AnimatedSection>
-              );
-            })}
+            {problems.map((problem, index) => (
+              <AnimatedSection key={index} delay={index * 0.12}>
+                <Card className="border border-gray-200/60 shadow-sm hover:shadow-md transition-all duration-300 hover:translate-y-[-4px] group h-full">
+                  <CardHeader className="pb-3">
+                    <div className="text-[#E03038] font-mono text-sm font-bold mb-3 tracking-wider">
+                      {problem.step}
+                    </div>
+                    <CardTitle className="text-lg text-[#0D2137]">{problem.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-gray-600 leading-relaxed text-sm">{problem.description}</p>
+                  </CardContent>
+                </Card>
+              </AnimatedSection>
+            ))}
           </div>
         </div>
       </section>
@@ -344,115 +501,8 @@ export default function HomePage() {
       </section>
 
       {/* ===== PRACTICE PLATFORM ===== */}
-      <section className="py-24 bg-white overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-16 items-center">
-            <AnimatedSection animation="slideInLeft">
-              <div className="inline-flex items-center gap-2 text-[#E03038] text-sm font-semibold mb-4 tracking-wide uppercase">
-                <div className="w-8 h-px bg-[#E03038]" />
-                Practice Platform
-              </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-[#0D2137] mb-6">
-                Practice Like It's Test Day
-              </h2>
-              <p className="text-gray-500 mb-8 text-lg leading-relaxed">
-                Our question bank mirrors the real NREMT experience — all 6 TEI formats, timed sessions, and domain-level performance tracking.
-              </p>
-              <div className="space-y-5">
-                {practiceFeatures.map((feature, index) => {
-                  const Icon = feature.icon;
-                  return (
-                    <div key={index} className="flex items-start gap-4 group">
-                      <div className="w-10 h-10 rounded-xl bg-[#E03038]/8 flex items-center justify-center flex-shrink-0 transition-all duration-300 group-hover:bg-[#E03038]/15 group-hover:scale-105">
-                        <Icon className="h-5 w-5 text-[#E03038]" />
-                      </div>
-                      <p className="text-gray-700 pt-2 text-[15px]">{feature.text}</p>
-                    </div>
-                  );
-                })}
-              </div>
-              <div className="mt-10 flex gap-4">
-                <Link to="/signup">
-                  <Button
-                    size="lg"
-                    className="bg-[#E03038] hover:bg-[#c52830] group transition-all duration-300 hover:translate-y-[-2px] hover:shadow-lg hover:shadow-red-500/20"
-                  >
-                    Start Practicing
-                    <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                  </Button>
-                </Link>
-                <Link to="/products">
-                  <Button size="lg" variant="outline" className="border-gray-300 text-gray-700 hover:bg-gray-50 transition-all duration-300">
-                    View Plans
-                  </Button>
-                </Link>
-              </div>
-            </AnimatedSection>
+      <PracticePlatformSection practiceFeatures={practiceFeatures} />
 
-            <AnimatedSection animation="slideInRight" delay={0.15}>
-              <div className="bg-[#0D2137] rounded-2xl p-6 md:p-8 shadow-2xl shadow-[#0D2137]/30">
-                <div className="rounded-xl p-5 border border-white/10 bg-white/[0.03]">
-                  {/* Window chrome */}
-                  <div className="flex items-center gap-2 mb-5">
-                    <div className="w-3 h-3 rounded-full bg-[#E03038]" />
-                    <div className="w-3 h-3 rounded-full bg-[#d4a843]" />
-                    <div className="w-3 h-3 rounded-full bg-[#28a745]" />
-                    <span className="text-white/30 text-xs ml-2 font-mono">Practice Session</span>
-                    <div className="ml-auto flex items-center gap-2">
-                      <span className="text-white/20 text-[10px] font-mono px-2 py-0.5 rounded bg-white/5">14:32</span>
-                    </div>
-                  </div>
-
-                  {/* Progress bar */}
-                  <div className="h-1 bg-white/10 rounded-full mb-5">
-                    <div className="h-1 bg-[#E03038] rounded-full" style={{ width: '56%' }} />
-                  </div>
-
-                  {/* Question */}
-                  <div className="space-y-4">
-                    <div className="bg-white/[0.06] rounded-lg p-4">
-                      <p className="text-white/40 text-xs font-mono mb-2">QUESTION 14 / 25</p>
-                      <p className="text-white text-sm leading-relaxed">
-                        A 45-year-old male presents with crushing substernal chest pain radiating to the left arm. He is diaphoretic and anxious. Vitals: BP 88/60, HR 110, RR 24...
-                      </p>
-                    </div>
-
-                    {/* Answer choices */}
-                    <div className="space-y-2">
-                      <div className="bg-white/[0.06] rounded-lg p-3.5 border border-white/5 transition-colors cursor-default hover:border-white/10">
-                        <p className="text-white/70 text-sm">A. Administer aspirin and establish IV access</p>
-                      </div>
-                      <div className="bg-[#E03038]/15 rounded-lg p-3.5 border border-[#E03038]/40">
-                        <div className="flex items-center justify-between">
-                          <p className="text-white text-sm font-medium">B. Obtain a 12-lead ECG and administer nitroglycerin</p>
-                          <div className="w-4 h-4 rounded-full border-2 border-[#E03038] flex items-center justify-center flex-shrink-0 ml-3">
-                            <div className="w-2 h-2 rounded-full bg-[#E03038]" />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="bg-white/[0.06] rounded-lg p-3.5 border border-white/5">
-                        <p className="text-white/70 text-sm">C. Administer oxygen via nasal cannula</p>
-                      </div>
-                      <div className="bg-white/[0.06] rounded-lg p-3.5 border border-white/5">
-                        <p className="text-white/70 text-sm">D. Prepare for immediate transport</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Bottom controls */}
-                  <div className="flex items-center justify-between mt-5 pt-4 border-t border-white/5">
-                    <span className="text-white/20 text-xs font-mono">Multiple Choice</span>
-                    <div className="flex gap-2">
-                      <div className="px-3 py-1.5 rounded-md bg-white/5 text-white/40 text-xs font-medium">Previous</div>
-                      <div className="px-3 py-1.5 rounded-md bg-[#E03038] text-white text-xs font-medium">Next</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </AnimatedSection>
-          </div>
-        </div>
-      </section>
 
       {/* ===== PRODUCTS SHOWCASE ===== */}
       <section className="py-24 bg-[#f8f9fa]">

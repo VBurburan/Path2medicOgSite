@@ -65,7 +65,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
   const handleLogout = async () => {
     await signOut();
-    navigate('/login');
+    navigate('/');
   };
 
   const tierLabel = membershipTier === 'free' ? 'Free' : membershipTier === 'pro' ? 'Pro' : 'Max';

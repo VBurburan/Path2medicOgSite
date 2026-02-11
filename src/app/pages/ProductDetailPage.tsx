@@ -4,7 +4,7 @@ import { products } from '../data/products';
 import Layout from '../components/Layout';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
-import { CheckCircle2, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { useInView } from '@/hooks/useInView';
 
 // Author image import
@@ -128,9 +128,7 @@ export default function ProductDetailPage() {
             {product.features.map((feature, index) => (
               <AnimatedSection key={index} delay={index * 0.08}>
                 <div className="bg-white p-7 rounded-2xl shadow-md border-0 hover:shadow-xl hover:translate-y-[-4px] transition-all duration-300 group h-full">
-                  <div className="bg-[#E03038]/10 w-11 h-11 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                    <CheckCircle2 className="w-5 h-5 text-[#E03038]" />
-                  </div>
+                  <span className="text-gray-400 text-sm mb-3 block">&mdash;</span>
                   <h3 className="font-bold text-[#0D2137] mb-2 text-lg">{feature.title}</h3>
                   <p className="text-sm text-gray-400 leading-relaxed">{feature.description}</p>
                 </div>
@@ -151,10 +149,7 @@ export default function ProductDetailPage() {
             <div className="bg-gradient-to-br from-[#0D2137]/[0.03] to-[#E03038]/[0.03] rounded-2xl p-8 md:p-10 border border-[#0D2137]/5">
               <ul className="space-y-4">
                 {product.audience.map((item, index) => (
-                  <li key={index} className="flex items-start gap-4 group/item">
-                    <div className="bg-[#0D2137] p-1.5 rounded-lg mt-0.5 flex-shrink-0 group-hover/item:bg-[#E03038] transition-colors duration-300">
-                      <ArrowRight className="w-3 h-3 text-white" />
-                    </div>
+                  <li key={index} className="flex items-start gap-4 border-l-2 border-[#E03038]/30 pl-4 hover:border-[#E03038] transition-colors duration-300">
                     <span className="text-gray-600 font-medium text-lg leading-relaxed">{item}</span>
                   </li>
                 ))}

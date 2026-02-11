@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Menu, X, ChevronDown, BookOpen, GraduationCap, User, LayoutDashboard, LogOut } from 'lucide-react';
 import { Button } from './ui/button';
 import { useAuth } from '../context/AuthContext';
@@ -10,7 +10,13 @@ export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProductsOpen, setIsProductsOpen] = useState(false);
   const { user, signOut } = useAuth();
+  const navigate = useNavigate();
   const scrolled = useScrollPosition(20);
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate('/');
+  };
 
   return (
     <nav
@@ -30,7 +36,7 @@ export default function Navigation() {
             <img
               src={logoHorizontal}
               alt="Path2Medic"
-              className="h-14 w-auto transition-transform duration-200 group-hover:scale-[1.02]"
+              className="h-16 lg:h-[72px] w-auto transition-transform duration-200 group-hover:scale-[1.02]"
             />
           </Link>
 
@@ -122,7 +128,7 @@ export default function Navigation() {
                     Dashboard
                   </Button>
                 </Link>
-                <Button variant="ghost" size="sm" onClick={signOut} className="text-gray-400 hover:text-gray-600">
+                <Button variant="ghost" size="sm" onClick={handleSignOut} className="text-gray-400 hover:text-gray-600">
                   <LogOut className="h-4 w-4" />
                 </Button>
               </>
@@ -193,7 +199,7 @@ export default function Navigation() {
                   <Link to="/dashboard" onClick={() => setIsMenuOpen(false)}>
                     <Button className="w-full bg-[#0D2137] hover:bg-[#162d47] gap-2"><LayoutDashboard className="h-4 w-4" />Dashboard</Button>
                   </Link>
-                  <Button variant="ghost" className="w-full text-gray-500" onClick={() => { signOut(); setIsMenuOpen(false); }}>Sign Out</Button>
+                  <Button variant="ghost" className="w-full text-gray-500" onClick={() => { handleSignOut(); setIsMenuOpen(false); }}>Sign Out</Button>
                 </>
               ) : (
                 <>

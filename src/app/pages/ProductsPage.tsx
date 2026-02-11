@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Layout from '../components/Layout';
 import ProductCard from '../components/ProductCard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
-import { BookOpen, Microscope, Brain } from 'lucide-react';
+// Icons removed — using numbered indicators instead
 import { useInView } from '@/hooks/useInView';
 
 // Import book covers
@@ -117,25 +117,19 @@ export default function ProductsPage() {
 
   const features = [
     {
-      icon: BookOpen,
-      num: '1',
+      num: '01',
       title: 'Evidence-Based',
       description: 'Every strategy is backed by peer-reviewed research on clinical judgment and exam performance',
-      color: '#0D2137'
     },
     {
-      icon: Microscope,
-      num: '2',
+      num: '02',
       title: 'Exam-Aligned',
       description: 'Updated for July 2024 changes including all TEI question types and clinical judgment focus',
-      color: '#E03038'
     },
     {
-      icon: Brain,
-      num: '3',
+      num: '03',
       title: 'Systematic Approach',
       description: 'Learn the thinking process, not just memorize content - the key to first-time success',
-      color: '#d4a843'
     }
   ];
 
@@ -204,25 +198,19 @@ export default function ProductsPage() {
             </h2>
           </AnimatedSection>
           <div className="grid md:grid-cols-3 gap-8">
-            {features.map((feature, index) => {
-              const Icon = feature.icon;
-              return (
+            {features.map((feature, index) => (
                 <AnimatedSection key={index} delay={index * 0.12}>
                   <div className="text-center group">
-                    <div
-                      className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-5 group-hover:scale-110 transition-transform duration-300 shadow-md"
-                      style={{ backgroundColor: feature.color }}
-                    >
-                      <Icon className="h-8 w-8 text-white" />
-                    </div>
+                    <span className="font-mono text-2xl font-bold text-[#E03038] mb-4 block tracking-wide">
+                      {feature.num}
+                    </span>
                     <h3 className="text-xl font-semibold mb-3 text-[#0D2137]">{feature.title}</h3>
                     <p className="text-gray-500 leading-relaxed max-w-sm mx-auto">
                       {feature.description}
                     </p>
                   </div>
                 </AnimatedSection>
-              );
-            })}
+              ))}
           </div>
         </div>
       </section>

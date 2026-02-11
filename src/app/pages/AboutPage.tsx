@@ -31,26 +31,22 @@ export default function AboutPage() {
     {
       icon: Award,
       title: 'Evidence-Based',
-      description: 'Every strategy is backed by peer-reviewed research in clinical judgment and exam performance',
-      color: '#E03038'
+      description: 'Every strategy is backed by peer-reviewed research in clinical judgment and exam performance'
     },
     {
       icon: BookOpen,
       title: 'Student-Centered',
-      description: 'Designed for real students struggling with real challenges, not just content review',
-      color: '#0D2137'
+      description: 'Designed for real students struggling with real challenges, not just content review'
     },
     {
       icon: Users,
       title: 'Accessible',
-      description: 'Quality NREMT prep shouldn\'t break the bank. Fair pricing for all students',
-      color: '#d4a843'
+      description: 'Quality NREMT prep shouldn\'t break the bank. Fair pricing for all students'
     },
     {
       icon: Target,
       title: 'Results-Focused',
-      description: 'Success measured by first-time pass rates, not just material sold',
-      color: '#E03038'
+      description: 'Success measured by first-time pass rates, not just material sold'
     }
   ];
 
@@ -68,7 +64,7 @@ export default function AboutPage() {
       <section className="bg-[#0D2137] py-24 text-white relative overflow-hidden">
         <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '40px 40px' }} />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(224,48,56,0.1)_0%,_transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(212,168,67,0.06)_0%,_transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(224,48,56,0.05)_0%,_transparent_50%)]" />
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
           <AnimatedSection>
             <p className="text-sm font-semibold tracking-widest uppercase text-white/50 mb-4">About Path2Medic</p>
@@ -90,7 +86,7 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-2 gap-12 lg:gap-16 items-center">
             <AnimatedSection>
               <div className="relative group">
-                <div className="absolute -inset-3 bg-gradient-to-br from-[#E03038]/20 to-[#d4a843]/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute -inset-3 bg-[#E03038]/15 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 <div className="relative rounded-2xl overflow-hidden shadow-xl ring-1 ring-black/5">
                   <img
                     src={vincentHeadshot}
@@ -155,7 +151,7 @@ export default function AboutPage() {
           </AnimatedSection>
           <AnimatedSection delay={0.15}>
             <Card className="border-0 shadow-lg rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300">
-              <div className="h-1 bg-gradient-to-r from-[#E03038] via-[#d4a843] to-[#E03038]/60" />
+              <div className="h-1 bg-[#E03038]" />
               <CardContent className="p-8 md:p-12 space-y-5 text-gray-500">
                 <p className="text-lg leading-relaxed">
                   I created Path2Medic to bridge the gap between EMS education and exam success. Too many capable
@@ -193,11 +189,9 @@ export default function AboutPage() {
                 <AnimatedSection key={index} delay={index * 0.1}>
                   <Card className="text-center border-0 shadow-md rounded-2xl hover:shadow-xl hover:translate-y-[-4px] transition-all duration-300 group h-full">
                     <CardContent className="pt-8 pb-6 px-6">
-                      <div
-                        className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-5 group-hover:scale-110 transition-transform duration-300"
-                        style={{ backgroundColor: `${value.color}15` }}
-                      >
-                        <Icon className="h-7 w-7" style={{ color: value.color }} />
+                      <div className="flex flex-col items-center mb-5">
+                        <span className="font-mono text-2xl font-bold text-[#E03038] mb-2">{String(index + 1).padStart(2, '0')}</span>
+                        <Icon className="h-6 w-6 text-[#0D2137]/40" />
                       </div>
                       <h3 className="text-lg font-semibold mb-2 text-[#0D2137]">{value.title}</h3>
                       <p className="text-sm text-gray-400 leading-relaxed">{value.description}</p>
@@ -221,7 +215,7 @@ export default function AboutPage() {
           </AnimatedSection>
           <div className="relative">
             {/* Vertical line */}
-            <div className="hidden md:block absolute left-[62px] top-4 bottom-4 w-px bg-gradient-to-b from-[#E03038]/20 via-[#0D2137]/20 to-[#d4a843]/20" />
+            <div className="hidden md:block absolute left-[62px] top-4 bottom-4 w-px bg-[#E03038]/20" />
             <div className="space-y-6">
               {timeline.map((item, index) => (
                 <AnimatedSection key={index} delay={index * 0.1}>

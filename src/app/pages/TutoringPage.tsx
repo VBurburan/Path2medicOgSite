@@ -4,7 +4,7 @@ import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../components/ui/accordion';
-import { Video, Lightbulb, Calendar, CheckCircle, Users, Target, TrendingUp, Award, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { useInView } from '@/hooks/useInView';
 
 function AnimatedSection({ children, className = '', delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
@@ -64,40 +64,28 @@ export default function TutoringPage() {
 
   const differentiators = [
     {
-      icon: Target,
       title: 'Domain-Focused',
-      description: 'Most of the session dedicated to YOUR specific weak areas',
-      color: '#E03038'
+      description: 'Most of the session dedicated to YOUR specific weak areas'
     },
     {
-      icon: TrendingUp,
       title: 'Data-Driven',
-      description: 'Custom content based on actual NREMT domain weaknesses',
-      color: '#0D2137'
+      description: 'Custom content based on actual NREMT domain weaknesses'
     },
     {
-      icon: Award,
       title: 'Level-Appropriate',
-      description: 'Tailored to EMT, AEMT, or Paramedic requirements',
-      color: '#d4a843'
+      description: 'Tailored to EMT, AEMT, or Paramedic requirements'
     },
     {
-      icon: Video,
       title: 'Live Coaching',
-      description: 'Real-time feedback via Zoom—flexible session length',
-      color: '#E03038'
+      description: 'Real-time feedback via Zoom—flexible session length'
     },
     {
-      icon: Lightbulb,
       title: 'Strategic Focus',
-      description: 'Most students fail due to test format, not knowledge',
-      color: '#0D2137'
+      description: 'Most students fail due to test format, not knowledge'
     },
     {
-      icon: CheckCircle,
       title: 'Proven Results',
-      description: 'Students typically pass after 1-2 sessions',
-      color: '#d4a843'
+      description: 'Students typically pass after 1-2 sessions'
     }
   ];
 
@@ -138,8 +126,8 @@ export default function TutoringPage() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(212,168,67,0.06)_0%,_transparent_50%)]" />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <AnimatedSection>
-            <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-white/10 backdrop-blur-sm mb-8 ring-1 ring-white/20">
-              <Users className="h-10 w-10 text-white" />
+            <div className="inline-block mb-8">
+              <span className="text-sm font-semibold tracking-widest uppercase text-white/50">1-on-1</span>
             </div>
           </AnimatedSection>
           <AnimatedSection delay={0.1}>
@@ -192,9 +180,9 @@ export default function TutoringPage() {
                   <CardHeader className="pb-4">
                     <div className="flex items-start gap-5">
                       <div className="relative">
-                        <div className="bg-[#E03038] w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg group-hover:scale-105 transition-transform duration-300">
-                          <span className="text-white text-xl font-bold">{phase.number}</span>
-                        </div>
+                        <span className="font-mono text-3xl font-bold text-[#0D2137]/20 flex-shrink-0 leading-none mt-1 block">
+                          {String(phase.number).padStart(2, '0')}
+                        </span>
                       </div>
                       <div>
                         <CardTitle className="text-2xl mb-2 text-[#0D2137]">Phase {phase.number}: {phase.title}</CardTitle>
@@ -210,7 +198,7 @@ export default function TutoringPage() {
                     <ul className="space-y-3 ml-[4.75rem]">
                       {phase.items.map((item, index) => (
                         <li key={index} className="flex items-start gap-3">
-                          <CheckCircle className="h-5 w-5 text-[#0D2137]/70 flex-shrink-0 mt-0.5" />
+                          <span className="text-[#0D2137]/30 flex-shrink-0 mt-0.5 leading-5">&mdash;</span>
                           <span className="text-gray-600 leading-relaxed">{item}</span>
                         </li>
                       ))}
@@ -236,27 +224,21 @@ export default function TutoringPage() {
             </p>
           </AnimatedSection>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {differentiators.map((item, index) => {
-              const Icon = item.icon;
-              return (
-                <AnimatedSection key={index} delay={index * 0.1}>
-                  <Card className="border-0 rounded-2xl shadow-md hover:shadow-xl hover:translate-y-[-4px] transition-all duration-300 group h-full">
-                    <CardHeader>
-                      <div
-                        className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300 shadow-sm"
-                        style={{ backgroundColor: `${item.color}15` }}
-                      >
-                        <Icon className="h-7 w-7" style={{ color: item.color }} />
-                      </div>
-                      <CardTitle className="text-xl text-[#0D2137]">{item.title}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-gray-500 leading-relaxed">{item.description}</p>
-                    </CardContent>
-                  </Card>
-                </AnimatedSection>
-              );
-            })}
+            {differentiators.map((item, index) => (
+              <AnimatedSection key={index} delay={index * 0.1}>
+                <Card className="border-0 rounded-2xl shadow-md hover:shadow-xl hover:translate-y-[-4px] transition-all duration-300 group h-full">
+                  <CardHeader>
+                    <span className="font-mono text-2xl font-bold text-[#E03038]/30 mb-3 block">
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                    <CardTitle className="text-xl text-[#0D2137]">{item.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-gray-500 leading-relaxed">{item.description}</p>
+                  </CardContent>
+                </Card>
+              </AnimatedSection>
+            ))}
           </div>
         </div>
       </section>
@@ -284,10 +266,8 @@ export default function TutoringPage() {
                     '10+ years EMS field experience (EMT → Critical Care Paramedic)',
                     'Proven track record helping students pass after previous failures'
                   ].map((credential, i) => (
-                    <li key={i} className="flex items-start gap-3 group/item">
-                      <div className="bg-[#0D2137]/10 rounded-lg p-1 mt-0.5 group-hover/item:bg-[#E03038]/10 transition-colors duration-300">
-                        <CheckCircle className="h-4 w-4 text-[#0D2137] group-hover/item:text-[#E03038] transition-colors duration-300" />
-                      </div>
+                    <li key={i} className="flex items-start gap-3">
+                      <span className="text-[#0D2137]/30 flex-shrink-0 mt-0.5 leading-5">&mdash;</span>
                       <span className="text-gray-600 leading-relaxed">{credential}</span>
                     </li>
                   ))}
@@ -372,8 +352,8 @@ export default function TutoringPage() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(212,168,67,0.08)_0%,_transparent_50%)]" />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <AnimatedSection>
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-sm mb-8 ring-1 ring-white/20">
-              <Calendar className="h-8 w-8 text-white" />
+            <div className="inline-block mb-8">
+              <div className="w-12 border-t border-white/20" />
             </div>
           </AnimatedSection>
           <AnimatedSection delay={0.1}>
