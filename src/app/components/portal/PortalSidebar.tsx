@@ -55,7 +55,7 @@ export function PortalSidebar({
       )}>
         {/* Header */}
         <div className="p-6 flex items-center justify-between border-b border-white/10">
-          <img src={logoDark} alt="Path2Medic" className="h-8 w-auto rounded" />
+          <img src={logoDark} alt="Path2Medic" className="h-14 w-auto rounded" />
           <Button 
             variant="ghost" 
             size="icon" 

@@ -5,12 +5,12 @@ import logoDark from '@/assets/logo-dark.jpg';
 
 export default function Footer() {
   return (
-    <footer className="bg-[#0d3b4c] text-white">
+    <footer className="bg-[#0D2137] text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <div className="mb-4">
-              <img src={logoDark} alt="Path2Medic" className="h-12 w-auto rounded" />
+              <img src={logoDark} alt="Path2Medic" className="h-16 w-auto" />
             </div>
             <p className="text-gray-300 mb-4 text-sm">
               Think Like a Clinician. Pass Like a Pro.

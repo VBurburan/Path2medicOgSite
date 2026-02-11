@@ -80,7 +80,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       >
         {/* Logo */}
         <div className="p-6 flex items-center justify-between border-b border-white/10">
-          <img src={logoDark} alt="Path2Medic" className="h-8 w-auto rounded" />
+          <img src={logoDark} alt="Path2Medic" className="h-14 w-auto rounded" />
           <button
             className="md:hidden text-white/70 hover:text-white"
             onClick={() => setSidebarOpen(false)}
@@ -139,7 +139,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               <Menu className="h-6 w-6" />
             </button>
             {/* Show logo in header on mobile */}
-            <img src={logoHorizontal} alt="Path2Medic" className="h-7 w-auto md:hidden" />
+            <img src={logoHorizontal} alt="Path2Medic" className="h-9 w-auto md:hidden" />
           </div>
 
           <div className="flex items-center gap-3">

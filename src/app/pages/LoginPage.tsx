@@ -48,7 +48,7 @@ export default function LoginPage() {
         <div className="max-w-md mx-auto w-full px-4">
           {/* Logo */}
           <div className="flex justify-center mb-8">
-            <img src={logoLight} alt="Path2Medic" className="h-16 w-auto" />
+            <img src={logoLight} alt="Path2Medic" className="h-20 w-auto" />
           </div>
 
           {/* Card */}
