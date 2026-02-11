@@ -51,7 +51,7 @@ export default function ProductDetailPage() {
               <h1 className="text-3xl md:text-5xl font-bold text-[#0D2137] mb-2 leading-tight">
                 {product.title}
               </h1>
-              <h2 className="text-xl md:text-2xl text-[#1a5f7a] font-semibold mb-6">
+              <h2 className="text-xl md:text-2xl text-[#0D2137] font-semibold mb-6">
                 {product.subtitle}
               </h2>
               <p className="text-lg text-gray-700 italic border-l-4 border-[#E03038] pl-4 mb-8">
@@ -66,7 +66,7 @@ export default function ProductDetailPage() {
               <div className="flex flex-col gap-3 max-w-md">
                 <Button 
                   size="lg" 
-                  className="bg-[#0D2137] hover:bg-[#0d3b4c] text-white text-lg h-14 w-full shadow-lg"
+                  className="bg-[#0D2137] hover:bg-[#0D2137] text-white text-lg h-14 w-full shadow-lg"
                   onClick={() => window.open(product.buyLink, '_blank')}
                 >
                   Buy Now
@@ -115,7 +115,7 @@ export default function ProductDetailPage() {
             <ul className="space-y-4">
               {product.audience.map((item, index) => (
                 <li key={index} className="flex items-start gap-3">
-                  <div className="bg-[#1a5f7a] p-1 rounded-full mt-1 flex-shrink-0">
+                  <div className="bg-[#0D2137] p-1 rounded-full mt-1 flex-shrink-0">
                     <ArrowRight className="w-3 h-3 text-white" />
                   </div>
                   <span className="text-gray-700 font-medium text-lg">{item}</span>

@@ -87,7 +87,7 @@ export function PracticeView({ user, onStartModule }: PracticeViewProps) {
       {/* Quick Actions Row */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Quick Quiz */}
-        <Card className="bg-gradient-to-br from-[#1a5f7a] to-[#0d3b4c] text-white border-none shadow-md">
+        <Card className="bg-gradient-to-br from-[#1a5f7a] to-[#0D2137] text-white border-none shadow-md">
           <CardContent className="pt-6">
             <div className="flex justify-between items-start mb-4">
               <div className="bg-white/10 p-2 rounded-lg">
@@ -98,7 +98,7 @@ export function PracticeView({ user, onStartModule }: PracticeViewProps) {
             <h3 className="text-lg font-bold mb-1">Quick Quiz</h3>
             <p className="text-white/80 text-sm mb-4">10 random questions mixed from all domains.</p>
             <Button 
-              className="w-full bg-[#d4a843] hover:bg-[#b8913a] text-[#0d3b4c] font-semibold border-none"
+              className="w-full bg-[#d4a843] hover:bg-[#b8913a] text-[#0D2137] font-semibold border-none"
               onClick={() => onStartModule({ mode: 'random', count: 10, level: selectedLevel })}
             >
               Start Quiz

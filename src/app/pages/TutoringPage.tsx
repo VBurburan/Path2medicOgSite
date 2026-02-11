@@ -1,9 +1,10 @@
 import React from 'react';
 import Layout from '../components/Layout';
 import { Button } from '../components/ui/button';
+import { Badge } from '../components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../components/ui/accordion';
-import { Video, Clipboard, Lightbulb, Calendar, CheckCircle, Users, Target, TrendingUp, Award, Mail } from 'lucide-react';
+import { Video, Clipboard, Lightbulb, Calendar, CheckCircle, Users, Target, TrendingUp, Award, Mail, ArrowRight } from 'lucide-react';
 
 export default function TutoringPage() {
   const phases = [
@@ -110,47 +111,54 @@ export default function TutoringPage() {
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-[#0D2137] to-[#1a5f7a] py-20 text-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <Users className="h-20 w-20 mx-auto mb-6" />
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+      <section className="relative bg-gradient-to-br from-[#0D2137] via-[#0D2137] to-[#142d45] py-24 text-white overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(224,48,56,0.08)_0%,_transparent_60%)]" />
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-white/10 backdrop-blur-sm mb-8">
+            <Users className="h-10 w-10 text-white" />
+          </div>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight">
             Path2Medic NREMT Coaching Service
           </h1>
-          <p className="text-xl text-white/90 mb-4">
+          <p className="text-xl md:text-2xl text-white/90 mb-4 max-w-3xl mx-auto leading-relaxed">
             Specialized one-on-one NREMT coaching for students who have failed and need targeted strategic guidance
           </p>
-          <p className="text-lg text-white/80 mb-8">
+          <p className="text-lg text-white/70 mb-10">
             Most students pass after just 1-2 sessions
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button 
-              size="lg" 
-              variant="secondary" 
-              className="bg-white text-[#0D2137] hover:bg-gray-100"
+            <Button
+              size="lg"
+              variant="secondary"
+              className="bg-white text-[#0D2137] hover:bg-gray-100 font-semibold text-base px-8 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
               onClick={() => window.open('https://path2medic.thinkific.com/enroll/3570436?price_id=4503585', '_blank')}
             >
               Book Your Session - $189
+              <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </div>
         </div>
       </section>
 
       {/* 3-Phase Process */}
-      <section className="py-16 bg-white">
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#0D2137] mb-12">
-            The 3-Phase Process
-          </h2>
-          <div className="space-y-8">
+          <div className="text-center mb-14">
+            <Badge className="mb-4 bg-[#0D2137]/10 text-[#0D2137] border-0 px-4 py-1.5 text-sm font-semibold hover:bg-[#0D2137]/10">How It Works</Badge>
+            <h2 className="text-3xl md:text-4xl font-bold text-[#0D2137]">
+              The 3-Phase Process
+            </h2>
+          </div>
+          <div className="space-y-6">
             {phases.map((phase) => (
-              <Card key={phase.number} className="border-2 hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <div className="flex items-start gap-4">
-                    <div className="bg-gradient-to-br from-[#0D2137] to-[#1a5f7a] w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
+              <Card key={phase.number} className="border-0 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden">
+                <CardHeader className="pb-4">
+                  <div className="flex items-start gap-5">
+                    <div className="bg-[#E03038] w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 shadow-md">
                       <span className="text-white text-xl font-bold">{phase.number}</span>
                     </div>
                     <div>
-                      <CardTitle className="text-2xl mb-2">Phase {phase.number}: {phase.title}</CardTitle>
+                      <CardTitle className="text-2xl mb-2 text-[#0D2137]">Phase {phase.number}: {phase.title}</CardTitle>
                       {phase.subtitle && (
                         <CardDescription className="text-base text-[#E03038] font-semibold">
                           {phase.subtitle}
@@ -160,10 +168,10 @@ export default function TutoringPage() {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <ul className="space-y-2 ml-16">
+                  <ul className="space-y-3 ml-16">
                     {phase.items.map((item, index) => (
-                      <li key={index} className="flex items-start gap-2">
-                        <CheckCircle className="h-5 w-5 text-[#1a5f7a] flex-shrink-0 mt-0.5" />
+                      <li key={index} className="flex items-start gap-3">
+                        <CheckCircle className="h-5 w-5 text-[#0D2137] flex-shrink-0 mt-0.5" />
                         <span className="text-gray-700">{item}</span>
                       </li>
                     ))}
@@ -176,24 +184,27 @@ export default function TutoringPage() {
       </section>
 
       {/* Why It Works */}
-      <section className="py-16 bg-[#F8F9FA]">
+      <section className="py-20 bg-[#F8F9FA]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#0D2137] mb-12">
-            Why It Works
-          </h2>
+          <div className="text-center mb-14">
+            <Badge className="mb-4 bg-[#E03038]/10 text-[#E03038] border-0 px-4 py-1.5 text-sm font-semibold hover:bg-[#E03038]/10">Our Approach</Badge>
+            <h2 className="text-3xl md:text-4xl font-bold text-[#0D2137]">
+              Why It Works
+            </h2>
+          </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {differentiators.map((item, index) => {
               const Icon = item.icon;
               return (
-                <Card key={index} className="border-2 hover:shadow-lg transition-shadow">
+                <Card key={index} className="border-0 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 group">
                   <CardHeader>
-                    <div className="bg-[#E03038] w-16 h-16 rounded-full flex items-center justify-center mb-4">
-                      <Icon className="h-8 w-8 text-white" />
+                    <div className="bg-[#E03038] w-14 h-14 rounded-xl flex items-center justify-center mb-4 group-hover:scale-105 transition-transform duration-300 shadow-sm">
+                      <Icon className="h-7 w-7 text-white" />
                     </div>
-                    <CardTitle className="text-xl">{item.title}</CardTitle>
+                    <CardTitle className="text-xl text-[#0D2137]">{item.title}</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-gray-600">{item.description}</p>
+                    <p className="text-gray-600 leading-relaxed">{item.description}</p>
                   </CardContent>
                 </Card>
               );
@@ -203,36 +214,39 @@ export default function TutoringPage() {
       </section>
 
       {/* Instructor Section */}
-      <section className="py-16 bg-white">
+      <section className="py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#0D2137] mb-8">
-            Your Instructor
-          </h2>
-          <Card className="border-4 border-[#0D2137]">
-            <CardHeader className="text-center">
-              <CardTitle className="text-2xl mb-2">Vincent Burburan, NRP</CardTitle>
+          <div className="text-center mb-10">
+            <Badge className="mb-4 bg-[#0D2137]/10 text-[#0D2137] border-0 px-4 py-1.5 text-sm font-semibold hover:bg-[#0D2137]/10">Meet Your Coach</Badge>
+            <h2 className="text-3xl md:text-4xl font-bold text-[#0D2137]">
+              Your Instructor
+            </h2>
+          </div>
+          <Card className="border-2 border-[#0D2137] rounded-xl shadow-xl overflow-hidden">
+            <CardHeader className="text-center bg-[#0D2137]/[0.03] border-b border-[#0D2137]/10 pb-6">
+              <CardTitle className="text-2xl mb-2 text-[#0D2137]">Vincent Burburan, NRP</CardTitle>
             </CardHeader>
-            <CardContent>
-              <ul className="space-y-3 max-w-2xl mx-auto">
-                <li className="flex items-start gap-2">
-                  <CheckCircle className="h-5 w-5 text-[#1a5f7a] flex-shrink-0 mt-0.5" />
-                  <span>Critical Care Paramedic (CCP)</span>
+            <CardContent className="pt-8 pb-8">
+              <ul className="space-y-4 max-w-2xl mx-auto">
+                <li className="flex items-start gap-3">
+                  <CheckCircle className="h-5 w-5 text-[#0D2137] flex-shrink-0 mt-0.5" />
+                  <span className="text-gray-700">Critical Care Paramedic (CCP)</span>
                 </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle className="h-5 w-5 text-[#1a5f7a] flex-shrink-0 mt-0.5" />
-                  <span>Level 1 NAEMSE Instructor</span>
+                <li className="flex items-start gap-3">
+                  <CheckCircle className="h-5 w-5 text-[#0D2137] flex-shrink-0 mt-0.5" />
+                  <span className="text-gray-700">Level 1 NAEMSE Instructor</span>
                 </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle className="h-5 w-5 text-[#1a5f7a] flex-shrink-0 mt-0.5" />
-                  <span>University of Florida Critical Care Paramedic Program Graduate</span>
+                <li className="flex items-start gap-3">
+                  <CheckCircle className="h-5 w-5 text-[#0D2137] flex-shrink-0 mt-0.5" />
+                  <span className="text-gray-700">University of Florida Critical Care Paramedic Program Graduate</span>
                 </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle className="h-5 w-5 text-[#1a5f7a] flex-shrink-0 mt-0.5" />
-                  <span>10+ years EMS field experience (EMT → Critical Care Paramedic)</span>
+                <li className="flex items-start gap-3">
+                  <CheckCircle className="h-5 w-5 text-[#0D2137] flex-shrink-0 mt-0.5" />
+                  <span className="text-gray-700">10+ years EMS field experience (EMT → Critical Care Paramedic)</span>
                 </li>
-                <li className="flex items-start gap-2">
-                  <CheckCircle className="h-5 w-5 text-[#1a5f7a] flex-shrink-0 mt-0.5" />
-                  <span>Proven track record helping students pass after previous failures</span>
+                <li className="flex items-start gap-3">
+                  <CheckCircle className="h-5 w-5 text-[#0D2137] flex-shrink-0 mt-0.5" />
+                  <span className="text-gray-700">Proven track record helping students pass after previous failures</span>
                 </li>
               </ul>
             </CardContent>
@@ -241,27 +255,32 @@ export default function TutoringPage() {
       </section>
 
       {/* Pricing */}
-      <section className="py-16 bg-[#F8F9FA]">
+      <section className="py-20 bg-[#F8F9FA]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#0D2137] mb-12">
-            Pricing
-          </h2>
-          <Card className="border-4 border-[#E03038]">
-            <CardHeader className="text-center">
-              <CardTitle className="text-3xl mb-2">Single Comprehensive Coaching Session</CardTitle>
+          <div className="text-center mb-14">
+            <Badge className="mb-4 bg-[#E03038]/10 text-[#E03038] border-0 px-4 py-1.5 text-sm font-semibold hover:bg-[#E03038]/10">Investment</Badge>
+            <h2 className="text-3xl md:text-4xl font-bold text-[#0D2137]">
+              Pricing
+            </h2>
+          </div>
+          <Card className="border-2 border-[#0D2137] rounded-xl shadow-xl overflow-hidden">
+            <CardHeader className="text-center bg-[#0D2137]/[0.03] border-b border-[#0D2137]/10 pt-10 pb-8">
+              <CardTitle className="text-3xl mb-3 text-[#0D2137]">Single Comprehensive Coaching Session</CardTitle>
               <CardDescription className="text-lg">90 min to 2+ hours (flexible based on your needs) • 1-on-1 via Zoom</CardDescription>
             </CardHeader>
-            <CardContent className="text-center">
-              <div className="text-5xl font-bold text-[#0D2137] mb-8">
+            <CardContent className="text-center pt-10 pb-10">
+              <div className="text-6xl font-bold text-[#0D2137] mb-2">
                 $189
               </div>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
-                <Button 
-                  size="lg" 
-                  className="bg-[#E03038] hover:bg-[#c52830]"
+              <p className="text-gray-500 mb-8 text-sm">One-time payment</p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+                <Button
+                  size="lg"
+                  className="bg-[#E03038] hover:bg-[#c52830] font-semibold text-base px-10 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
                   onClick={() => window.open('https://path2medic.thinkific.com/enroll/3570436?price_id=4503585', '_blank')}
                 >
                   Book Your Session
+                  <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </div>
               <p className="text-gray-600 mb-2">
@@ -274,18 +293,21 @@ export default function TutoringPage() {
       </section>
 
       {/* FAQ */}
-      <section className="py-16 bg-white">
+      <section className="py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#0D2137] mb-12">
-            Frequently Asked Questions
-          </h2>
+          <div className="text-center mb-14">
+            <Badge className="mb-4 bg-[#0D2137]/10 text-[#0D2137] border-0 px-4 py-1.5 text-sm font-semibold hover:bg-[#0D2137]/10">Common Questions</Badge>
+            <h2 className="text-3xl md:text-4xl font-bold text-[#0D2137]">
+              Frequently Asked Questions
+            </h2>
+          </div>
           <Accordion type="single" collapsible className="space-y-4">
             {faqs.map((faq, index) => (
-              <AccordionItem key={index} value={`item-${index}`} className="border rounded-lg px-6">
-                <AccordionTrigger className="text-left font-semibold text-[#0D2137]">
+              <AccordionItem key={index} value={`item-${index}`} className="border-0 bg-white rounded-xl shadow-md px-6 overflow-hidden">
+                <AccordionTrigger className="text-left font-semibold text-[#0D2137] hover:no-underline py-5">
                   {faq.question}
                 </AccordionTrigger>
-                <AccordionContent className="text-gray-600">
+                <AccordionContent className="text-gray-600 leading-relaxed pb-5">
                   {faq.answer}
                 </AccordionContent>
               </AccordionItem>
@@ -295,22 +317,26 @@ export default function TutoringPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-br from-[#E03038] to-[#c52830] text-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <Calendar className="h-16 w-16 mx-auto mb-6" />
+      <section className="py-20 bg-gradient-to-br from-[#E03038] to-[#c52830] text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(255,255,255,0.08)_0%,_transparent_60%)]" />
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white/15 backdrop-blur-sm mb-8">
+            <Calendar className="h-8 w-8 text-white" />
+          </div>
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             Ready to Pass Your NREMT?
           </h2>
-          <p className="text-xl text-white/90 mb-8">
+          <p className="text-xl text-white/90 mb-10 max-w-2xl mx-auto leading-relaxed">
             Most students pass after just 1-2 coaching sessions. Book yours today.
           </p>
-          <Button 
-            size="lg" 
-            variant="secondary" 
-            className="bg-white text-[#E03038] hover:bg-gray-100"
+          <Button
+            size="lg"
+            variant="secondary"
+            className="bg-white text-[#E03038] hover:bg-gray-100 font-semibold text-base px-8 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
             onClick={() => window.open('https://path2medic.thinkific.com/enroll/3570436?price_id=4503585', '_blank')}
           >
             Book Your Session - $189
+            <ArrowRight className="ml-2 h-5 w-5" />
           </Button>
         </div>
       </section>

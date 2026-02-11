@@ -50,7 +50,7 @@ export function PortalSidebar({
 
       {/* Sidebar */}
       <aside className={cn(
-        "fixed inset-y-0 left-0 z-50 w-64 bg-[#0d3b4c] text-white transition-transform duration-300 ease-in-out md:translate-x-0 md:static md:h-screen flex flex-col",
+        "fixed inset-y-0 left-0 z-50 w-64 bg-[#0D2137] text-white transition-transform duration-300 ease-in-out md:translate-x-0 md:static md:h-screen flex flex-col",
         isOpen ? "translate-x-0" : "-translate-x-full"
       )}>
         {/* Header */}

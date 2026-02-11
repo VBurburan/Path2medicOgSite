@@ -152,7 +152,7 @@ export default function PracticePlatformPage() {
               <div className="flex justify-center">
                  <Button 
                    size="lg" 
-                   className="bg-[#0D2137] hover:bg-[#0d3b4c] text-white px-8" 
+                   className="bg-[#0D2137] hover:bg-[#0D2137] text-white px-8" 
                    onClick={() => navigate('/contact')}
                  >
                     Join Waitlist

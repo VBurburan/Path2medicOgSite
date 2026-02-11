@@ -48,7 +48,7 @@ export function UnderTheHoodHero() {
               "Error Signatures + tagging to generate actionable remediation reports"
             ].map((item, i) => (
               <div key={i} className="flex items-start gap-2">
-                <CheckCircle2 className="w-4 h-4 text-[#1a5f7a] mt-1 flex-shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-[#0D2137] mt-1 flex-shrink-0" />
                 <span className="text-sm text-gray-700">{item}</span>
               </div>
             ))}
@@ -64,7 +64,7 @@ export function UnderTheHoodHero() {
             <a 
               href="#under-the-hood-detail" 
               onClick={scrollToDetail}
-              className="text-[#0D2137] hover:text-[#1a5f7a] text-sm font-medium flex items-center group cursor-pointer"
+              className="text-[#0D2137] hover:text-[#0D2137] text-sm font-medium flex items-center group cursor-pointer"
             >
               See what’s inside
               <ArrowRight className="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1" />
@@ -96,7 +96,7 @@ export function UnderTheHoodDetailed() {
           {/* Left: Large Image */}
           <div className="w-full lg:w-5/12 flex justify-center">
             <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-tr from-[#0D2137] to-[#1a5f7a] rounded-2xl transform -rotate-6 scale-95 opacity-20"></div>
+              <div className="absolute inset-0 bg-gradient-to-tr from-[#0D2137] to-[#0D2137] rounded-2xl transform -rotate-6 scale-95 opacity-20"></div>
               <img 
                 src={bookCover} 
                 alt="Under the Hood eBook cover" 
@@ -127,7 +127,7 @@ export function UnderTheHoodDetailed() {
                 <div className="flex flex-wrap gap-4">
                   <Button 
                     size="lg"
-                    className="bg-[#0D2137] hover:bg-[#0d3b4c] text-white font-bold text-lg px-8"
+                    className="bg-[#0D2137] hover:bg-[#0D2137] text-white font-bold text-lg px-8"
                     onClick={() => window.open('https://path2medic.thinkific.com/enroll/3674017?price_id=4619456', '_blank')}
                   >
                     Buy Now
@@ -148,7 +148,7 @@ export function UnderTheHoodDetailed() {
                 <div className="flex flex-wrap items-center gap-3 mt-6">
                   <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Best for:</span>
                   {["Educators", "Program Directors", "Test-Prep Creators"].map((tag) => (
-                    <Badge key={tag} variant="secondary" className="bg-[#1a5f7a]/10 text-[#0D2137] border-[#1a5f7a]/20">
+                    <Badge key={tag} variant="secondary" className="bg-[#0D2137]/10 text-[#0D2137] border-[#0D2137]/20">
                       {tag}
                     </Badge>
                   ))}

@@ -78,7 +78,7 @@ export default function EducatorsPage() {
   return (
     <Layout>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-[#0D2137] to-[#1a5f7a] py-20 text-white relative overflow-hidden">
+      <section className="bg-[#0D2137] py-20 text-white relative overflow-hidden">
         <div className="absolute top-0 left-0 p-4 opacity-10 transform -rotate-12">
           <GraduationCap className="w-64 h-64" />
         </div>
@@ -138,7 +138,7 @@ export default function EducatorsPage() {
               return (
                 <Card key={index} className="hover:shadow-lg transition-shadow">
                   <CardHeader>
-                    <Icon className="h-10 w-10 text-[#1a5f7a] mb-2" />
+                    <Icon className="h-10 w-10 text-[#0D2137] mb-2" />
                     <CardTitle>{feature.title}</CardTitle>
                   </CardHeader>
                   <CardContent>
@@ -161,10 +161,10 @@ export default function EducatorsPage() {
             {useCases.map((useCase, index) => {
               const Icon = useCase.icon;
               return (
-                <Card key={index} className="border-l-4 border-[#1a5f7a]">
+                <Card key={index} className="border-l-4 border-[#0D2137]">
                   <CardHeader>
                     <div className="flex items-start gap-4">
-                      <Icon className="h-8 w-8 text-[#1a5f7a] flex-shrink-0" />
+                      <Icon className="h-8 w-8 text-[#0D2137] flex-shrink-0" />
                       <div>
                         <CardTitle className="mb-2">{useCase.title}</CardTitle>
                         <CardDescription className="text-base">{useCase.description}</CardDescription>
@@ -189,7 +189,7 @@ export default function EducatorsPage() {
               <div className="grid md:grid-cols-2 gap-4">
                 {benefits.map((benefit, index) => (
                   <div key={index} className="flex items-start gap-3">
-                    <CheckCircle className="h-5 w-5 text-[#1a5f7a] flex-shrink-0 mt-0.5" />
+                    <CheckCircle className="h-5 w-5 text-[#0D2137] flex-shrink-0 mt-0.5" />
                     <span>{benefit}</span>
                   </div>
                 ))}
@@ -223,14 +223,14 @@ export default function EducatorsPage() {
             </CardHeader>
             <CardFooter className="flex flex-col gap-3">
               <Button 
-                className="w-full bg-[#1a5f7a] hover:bg-[#1a5f7a]" 
+                className="w-full bg-[#0D2137] hover:bg-[#162d47]" 
                 size="lg"
                 onClick={() => navigate('/contact')}
               >
                 Contact for Early Access
               </Button>
               <p className="text-sm text-gray-500">
-                Questions? Email <a href="mailto:vincent@path2medic.com" className="text-[#1a5f7a] hover:underline">vincent@path2medic.com</a>
+                Questions? Email <a href="mailto:vincent@path2medic.com" className="text-[#0D2137] hover:underline">vincent@path2medic.com</a>
               </p>
             </CardFooter>
           </Card>
@@ -246,7 +246,7 @@ export default function EducatorsPage() {
           <div className="grid md:grid-cols-3 gap-6">
             <Card className="text-center">
               <CardHeader>
-                <GraduationCap className="h-12 w-12 text-[#1a5f7a] mx-auto mb-2" />
+                <GraduationCap className="h-12 w-12 text-[#0D2137] mx-auto mb-2" />
                 <CardTitle>EMS Programs</CardTitle>
               </CardHeader>
               <CardContent>
@@ -257,7 +257,7 @@ export default function EducatorsPage() {
             </Card>
             <Card className="text-center">
               <CardHeader>
-                <Building2 className="h-12 w-12 text-[#1a5f7a] mx-auto mb-2" />
+                <Building2 className="h-12 w-12 text-[#0D2137] mx-auto mb-2" />
                 <CardTitle>Training Centers</CardTitle>
               </CardHeader>
               <CardContent>
@@ -268,7 +268,7 @@ export default function EducatorsPage() {
             </Card>
             <Card className="text-center">
               <CardHeader>
-                <Users className="h-12 w-12 text-[#1a5f7a] mx-auto mb-2" />
+                <Users className="h-12 w-12 text-[#0D2137] mx-auto mb-2" />
                 <CardTitle>Departments</CardTitle>
               </CardHeader>
               <CardContent>

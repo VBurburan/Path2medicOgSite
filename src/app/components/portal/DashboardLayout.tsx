@@ -11,6 +11,7 @@ import {
   LogOut,
   Menu,
   X,
+  ChevronRight,
 } from 'lucide-react';
 import { cn } from '../ui/utils';
 import logoDark from '@/assets/logo-dark.jpg';
@@ -52,8 +53,16 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
   const displayName = student?.full_name || user?.user_metadata?.full_name || 'Student';
   const certLevel = student?.certification_level || 'EMT';
+  const membershipTier = student?.membership_tier || 'free';
+  const initials = displayName
+    .split(' ')
+    .map((n: string) => n[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2);
 
   const activeNav = navItems.find((item) => location.pathname.startsWith(item.path))?.id || 'dashboard';
+  const pageTitle = navItems.find((item) => item.id === activeNav)?.label || 'Dashboard';
 
   const handleLogout = async () => {
     await signOut();
@@ -61,36 +70,52 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   };
 
   return (
-    <div className="h-screen flex overflow-hidden bg-[#f8f9fa]">
+    <div className="h-screen flex overflow-hidden bg-[#f5f6f8]">
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          className="fixed inset-0 bg-black/50 z-40 md:hidden backdrop-blur-sm"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
-      {/* Sidebar — hidden on mobile (bottom tab bar used instead) */}
+      {/* Sidebar */}
       <aside
         className={cn(
-          'fixed inset-y-0 left-0 z-50 w-64 flex-col transition-transform duration-300 ease-in-out md:translate-x-0 md:static md:z-auto hidden md:flex',
+          'fixed inset-y-0 left-0 z-50 w-[260px] flex-col transition-transform duration-300 ease-in-out md:translate-x-0 md:static md:z-auto hidden md:flex',
           sidebarOpen ? 'translate-x-0 !flex' : '-translate-x-full'
         )}
         style={{ backgroundColor: NAVY }}
       >
-        {/* Logo */}
-        <div className="p-6 flex items-center justify-between border-b border-white/10">
-          <img src={logoDark} alt="Path2Medic" className="h-14 w-auto rounded" />
+        {/* Logo area */}
+        <div className="h-16 px-5 flex items-center justify-between border-b border-white/8">
+          <img src={logoDark} alt="Path2Medic" className="h-10 w-auto rounded" />
           <button
-            className="md:hidden text-white/70 hover:text-white"
+            className="md:hidden text-white/60 hover:text-white transition-colors"
             onClick={() => setSidebarOpen(false)}
           >
             <X className="h-5 w-5" />
           </button>
         </div>
 
+        {/* User info */}
+        <div className="px-5 py-5 border-b border-white/8">
+          <div className="flex items-center gap-3">
+            <div
+              className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white flex-shrink-0"
+              style={{ backgroundColor: ACCENT }}
+            >
+              {initials}
+            </div>
+            <div className="min-w-0">
+              <p className="text-white text-sm font-semibold truncate">{displayName}</p>
+              <p className="text-white/40 text-xs">{certLevel} &middot; {membershipTier === 'free' ? 'Free' : membershipTier === 'pro' ? 'Pro' : 'Max'}</p>
+            </div>
+          </div>
+        </div>
+
         {/* Nav */}
-        <nav className="flex-1 px-3 py-6 space-y-1 overflow-y-auto">
+        <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
           {navItems.map((item) => {
             const isActive = activeNav === item.id;
             return (
@@ -101,27 +126,32 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                   setSidebarOpen(false);
                 }}
                 className={cn(
-                  'w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-colors rounded-r-lg',
+                  'w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-all rounded-lg',
                   isActive
-                    ? 'bg-white/10 text-white border-l-[3px]'
-                    : 'text-gray-400 hover:bg-white/5 hover:text-gray-200 border-l-[3px] border-transparent'
+                    ? 'bg-white/10 text-white'
+                    : 'text-white/50 hover:bg-white/5 hover:text-white/80'
                 )}
-                style={isActive ? { borderLeftColor: ACCENT } : undefined}
               >
-                <item.icon className={cn('h-5 w-5', isActive ? 'text-white' : '')} />
-                {item.label}
+                <div className="relative flex items-center">
+                  {isActive && (
+                    <div className="absolute -left-4 w-[3px] h-5 rounded-r" style={{ backgroundColor: ACCENT }} />
+                  )}
+                  <item.icon className={cn('h-[18px] w-[18px]', isActive ? 'text-white' : '')} />
+                </div>
+                <span>{item.label}</span>
+                {isActive && <ChevronRight className="h-4 w-4 ml-auto text-white/30" />}
               </button>
             );
           })}
         </nav>
 
         {/* Sidebar footer */}
-        <div className="p-4 border-t border-white/10">
+        <div className="px-3 pb-4 pt-2 border-t border-white/8 mt-auto">
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-gray-400 hover:bg-white/5 hover:text-white transition-colors"
+            className="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-white/40 hover:bg-white/5 hover:text-white/70 transition-all"
           >
-            <LogOut className="h-5 w-5" />
+            <LogOut className="h-[18px] w-[18px]" />
             Sign Out
           </button>
         </div>
@@ -130,31 +160,27 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       {/* Main content area */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Top header */}
-        <header className="bg-white border-b border-gray-200 h-16 px-4 md:px-6 flex items-center justify-between flex-shrink-0">
+        <header className="bg-white border-b border-gray-200/80 h-16 px-4 md:px-8 flex items-center justify-between flex-shrink-0">
           <div className="flex items-center gap-4">
             <button
-              className="md:hidden text-gray-600 hover:text-gray-900"
+              className="md:hidden text-gray-500 hover:text-gray-800 transition-colors"
               onClick={() => setSidebarOpen(true)}
             >
               <Menu className="h-6 w-6" />
             </button>
-            {/* Show logo in header on mobile */}
             <img src={logoHorizontal} alt="Path2Medic" className="h-9 w-auto md:hidden" />
+            <h1 className="text-lg font-semibold text-[#0D2137] hidden md:block">{pageTitle}</h1>
           </div>
 
           <div className="flex items-center gap-3">
-            <span className="text-sm font-medium text-gray-700 hidden sm:block">
+            <span className="text-sm text-gray-500 hidden sm:block">
               {displayName}
             </span>
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-[#0D2137] text-white">
-              {certLevel}
-            </span>
-            <button
-              onClick={handleLogout}
-              className="text-sm text-gray-500 hover:text-gray-700 hidden sm:block"
-            >
-              Logout
-            </button>
+            <div className="flex items-center gap-2">
+              <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-[#0D2137] text-white tracking-wide">
+                {certLevel}
+              </span>
+            </div>
           </div>
         </header>
 
@@ -166,7 +192,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
       {/* Mobile bottom tab bar */}
       <nav
-        className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white border-t border-gray-200 flex items-center justify-around px-2 py-1"
+        className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white border-t border-gray-200/80 flex items-center justify-around px-1"
         style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
       >
         {navItems.map((item) => {
@@ -176,11 +202,14 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               key={item.id}
               onClick={() => navigate(item.path)}
               className={cn(
-                'flex flex-col items-center gap-0.5 py-2 px-3 text-[11px] font-medium transition-colors min-w-0',
+                'flex flex-col items-center gap-0.5 py-2.5 px-3 text-[10px] font-semibold transition-colors min-w-0 relative',
                 isActive ? 'text-[#E03038]' : 'text-gray-400'
               )}
             >
-              <item.icon className="h-5 w-5" />
+              {isActive && (
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 rounded-b bg-[#E03038]" />
+              )}
+              <item.icon className={cn('h-5 w-5', isActive ? 'stroke-[2.5]' : '')} />
               <span className="truncate">{item.label}</span>
             </button>
           );

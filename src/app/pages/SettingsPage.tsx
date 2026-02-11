@@ -80,10 +80,11 @@ export default function SettingsPage() {
   if (loading) {
     return (
       <DashboardLayout>
-        <div className="animate-pulse space-y-6 max-w-2xl">
+        <div className="animate-pulse space-y-8 max-w-2xl">
           <div className="h-8 bg-gray-200 rounded w-32" />
-          <div className="h-48 bg-gray-200 rounded-xl" />
-          <div className="h-32 bg-gray-200 rounded-xl" />
+          <div className="h-48 bg-gray-100 rounded-xl" />
+          <div className="h-32 bg-gray-100 rounded-xl" />
+          <div className="h-28 bg-gray-100 rounded-xl" />
         </div>
       </DashboardLayout>
     );
@@ -93,43 +94,46 @@ export default function SettingsPage() {
 
   return (
     <DashboardLayout>
-      <div className="max-w-2xl space-y-6">
+      <div className="max-w-2xl space-y-8">
         <h1 className="text-2xl font-bold text-[#0D2137]">Settings</h1>
 
         {/* Profile Info */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg flex items-center gap-2">
-              <User className="h-5 w-5 text-[#1a5f7a]" />
+        <Card className="rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-lg flex items-center gap-3">
+              <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#0D2137]/10">
+                <User className="h-5 w-5 text-[#0D2137]" />
+              </span>
               Profile
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <CardContent className="space-y-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               <div className="space-y-2">
-                <Label htmlFor="fullName">Full Name</Label>
+                <Label htmlFor="fullName" className="text-sm font-medium text-gray-700">Full Name</Label>
                 <Input
                   id="fullName"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
+                  className="rounded-lg border-gray-300 focus:ring-[#0D2137] focus:border-[#0D2137]"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email" className="text-sm font-medium text-gray-700">Email</Label>
                 <Input
                   id="email"
                   value={user?.email || ''}
                   disabled
-                  className="bg-gray-50"
+                  className="rounded-lg bg-gray-50 text-gray-500 border-gray-200"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="certLevel">Certification Level</Label>
+                <Label htmlFor="certLevel" className="text-sm font-medium text-gray-700">Certification Level</Label>
                 <select
                   id="certLevel"
                   value={certLevel}
                   onChange={(e) => setCertLevel(e.target.value)}
-                  className="flex h-10 w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1a5f7a]"
+                  className="flex h-10 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0D2137] focus:border-[#0D2137]"
                 >
                   <option value="EMT">EMT</option>
                   <option value="AEMT">AEMT</option>
@@ -137,12 +141,13 @@ export default function SettingsPage() {
                 </select>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="examDate">Target Exam Date</Label>
+                <Label htmlFor="examDate" className="text-sm font-medium text-gray-700">Target Exam Date</Label>
                 <Input
                   id="examDate"
                   type="date"
                   value={targetExamDate}
                   onChange={(e) => setTargetExamDate(e.target.value)}
+                  className="rounded-lg border-gray-300 focus:ring-[#0D2137] focus:border-[#0D2137]"
                 />
               </div>
             </div>
@@ -150,42 +155,44 @@ export default function SettingsPage() {
         </Card>
 
         {/* Preferences */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg flex items-center gap-2">
-              <SettingsIcon className="h-5 w-5 text-gray-500" />
+        <Card className="rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-lg flex items-center gap-3">
+              <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-gray-100">
+                <SettingsIcon className="h-5 w-5 text-gray-600" />
+              </span>
               Preferences
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-center justify-between">
+          <CardContent className="space-y-1">
+            <div className="flex items-center justify-between py-4 border-b border-gray-100">
               <div>
-                <Label className="text-sm font-medium">Default Question Count</Label>
-                <p className="text-xs text-gray-500">Questions per practice session</p>
+                <Label className="text-sm font-medium text-gray-800">Default Question Count</Label>
+                <p className="text-xs text-gray-500 mt-0.5">Questions per practice session</p>
               </div>
               <select
                 value={preferredCount}
                 onChange={(e) => setPreferredCount(Number(e.target.value))}
-                className="h-9 w-20 rounded-md border border-gray-300 bg-white px-3 text-sm"
+                className="h-9 w-20 rounded-lg border border-gray-300 bg-white px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#0D2137] focus:border-[#0D2137]"
               >
                 <option value={10}>10</option>
                 <option value={25}>25</option>
                 <option value={50}>50</option>
               </select>
             </div>
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between py-4">
               <div>
-                <Label className="text-sm font-medium">Show Rationales Immediately</Label>
-                <p className="text-xs text-gray-500">See correct answers after each question vs. after exam</p>
+                <Label className="text-sm font-medium text-gray-800">Show Rationales Immediately</Label>
+                <p className="text-xs text-gray-500 mt-0.5">See correct answers after each question vs. after exam</p>
               </div>
               <button
                 onClick={() => setShowRationales(!showRationales)}
                 className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                  showRationales ? 'bg-[#1a5f7a]' : 'bg-gray-200'
+                  showRationales ? 'bg-[#0D2137]' : 'bg-gray-300'
                 }`}
               >
                 <span
-                  className={`inline-block h-4 w-4 rounded-full bg-white shadow transition-transform ${
+                  className={`inline-block h-4 w-4 rounded-full bg-white shadow-sm transition-transform ${
                     showRationales ? 'translate-x-6' : 'translate-x-1'
                   }`}
                 />
@@ -195,44 +202,71 @@ export default function SettingsPage() {
         </Card>
 
         {/* Membership */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg flex items-center gap-2">
-              <CreditCard className="h-5 w-5 text-[#d4a843]" />
+        <Card className={`rounded-xl shadow-sm overflow-hidden ${
+          membershipTier === 'free'
+            ? 'border border-gray-200'
+            : 'border border-[#d4a843]'
+        }`}>
+          <CardHeader className="pb-4">
+            <CardTitle className="text-lg flex items-center gap-3">
+              <span className={`flex h-9 w-9 items-center justify-center rounded-lg ${
+                membershipTier === 'free' ? 'bg-gray-100' : 'bg-[#d4a843]/10'
+              }`}>
+                <CreditCard className={`h-5 w-5 ${
+                  membershipTier === 'free' ? 'text-gray-500' : 'text-[#d4a843]'
+                }`} />
+              </span>
               Membership
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border">
+            <div className={`flex items-center justify-between p-4 rounded-xl ${
+              membershipTier === 'free'
+                ? 'bg-gray-50 border border-gray-200'
+                : 'bg-[#d4a843]/5 border border-[#d4a843]/30'
+            }`}>
               <div>
-                <p className="font-medium text-[#0D2137]">
+                <p className="font-semibold text-[#0D2137]">
                   {membershipTier === 'free' ? 'Free' : membershipTier === 'pro' ? 'Pro ($19/mo)' : membershipTier === 'max' ? 'Max ($39/mo)' : membershipTier}
                 </p>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gray-500 mt-0.5">
                   {membershipTier === 'free'
                     ? 'Upgrade to access the practice question bank'
                     : 'Full access to practice questions and features'}
                 </p>
               </div>
-              <Button variant="outline" size="sm">
-                {membershipTier === 'free' ? 'Upgrade' : 'Manage'}
-              </Button>
+              {membershipTier === 'free' ? (
+                <Button
+                  size="sm"
+                  className="bg-[#E03038] hover:bg-[#c72a31] text-white rounded-lg shadow-sm"
+                >
+                  Upgrade
+                </Button>
+              ) : (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="border-[#d4a843] text-[#d4a843] hover:bg-[#d4a843]/10 rounded-lg"
+                >
+                  Manage
+                </Button>
+              )}
             </div>
           </CardContent>
         </Card>
 
         {/* Save / Logout */}
-        <div className="flex items-center justify-between pt-2">
+        <div className="flex items-center justify-between pt-4 pb-2">
           <Button
             onClick={handleSave}
             disabled={saving}
-            className="bg-[#0D2137] hover:bg-[#1a3a5c]"
+            className="bg-[#0D2137] hover:bg-[#162d47] text-white rounded-lg px-6 shadow-sm"
           >
             {saving ? 'Saving...' : 'Save Changes'}
           </Button>
           <Button
             variant="outline"
-            className="text-red-600 border-red-200 hover:bg-red-50"
+            className="text-[#E03038] border-[#E03038]/20 hover:bg-[#E03038]/5 rounded-lg"
             onClick={signOut}
           >
             Log Out

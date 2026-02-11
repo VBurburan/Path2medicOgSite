@@ -28,7 +28,7 @@ interface ProductCardProps {
 
 const LEVEL_COLORS: Record<string, string> = {
   EMT: 'bg-[#1a5f7a]',
-  AEMT: 'bg-[#0d3b4c]',
+  AEMT: 'bg-[#0D2137]',
   Paramedic: 'bg-[#E03038]',
   'AEMT & Paramedic': 'bg-[#E03038]',
   'EMT & Paramedic': 'bg-[#d4a843] text-[#0D2137]',
@@ -74,7 +74,7 @@ export default function ProductCard({ title, subtitle, description, price, level
           )}
         </div>
       ) : (
-        <div className="h-48 bg-gradient-to-br from-[#0D2137] to-[#1a5f7a] rounded-t-lg flex items-center justify-center">
+        <div className="h-48 bg-gradient-to-br from-[#0D2137] to-[#162d47] rounded-t-lg flex items-center justify-center">
           <div className="text-white text-center p-6">
             <div className="text-sm font-semibold mb-2">{subtitle}</div>
             <div className="text-2xl font-bold">{title}</div>
@@ -140,7 +140,7 @@ export default function ProductCard({ title, subtitle, description, price, level
               <div className="space-y-4">
                 <div>
                   <h4 className="font-semibold text-[#0D2137] mb-2 flex items-center gap-2">
-                    <BookOpen className="h-4 w-4 text-[#1a5f7a]" />
+                    <BookOpen className="h-4 w-4 text-[#0D2137]" />
                     Description
                   </h4>
                   <p className="text-gray-600 text-sm leading-relaxed">{description}</p>
@@ -150,20 +150,20 @@ export default function ProductCard({ title, subtitle, description, price, level
                   <h4 className="font-semibold text-[#0D2137] mb-2">Included</h4>
                   <ul className="space-y-2">
                     <li className="flex items-center gap-2 text-sm text-gray-600">
-                      <CheckCircle2 className="h-4 w-4 text-[#1a5f7a]" />
+                      <CheckCircle2 className="h-4 w-4 text-[#0D2137]" />
                       <span>Instant Digital Delivery</span>
                     </li>
                     <li className="flex items-center gap-2 text-sm text-gray-600">
-                      <CheckCircle2 className="h-4 w-4 text-[#1a5f7a]" />
+                      <CheckCircle2 className="h-4 w-4 text-[#0D2137]" />
                       <span>Mobile & Tablet Friendly</span>
                     </li>
                     <li className="flex items-center gap-2 text-sm text-gray-600">
-                      <CheckCircle2 className="h-4 w-4 text-[#1a5f7a]" />
+                      <CheckCircle2 className="h-4 w-4 text-[#0D2137]" />
                       <span>High-Quality PDF Format</span>
                     </li>
                     {effectiveLink && (
                       <li className="flex items-center gap-2 text-sm text-gray-600">
-                        <Download className="h-4 w-4 text-[#1a5f7a]" />
+                        <Download className="h-4 w-4 text-[#0D2137]" />
                         <span>Secure Download via Thinkific</span>
                       </li>
                     )}

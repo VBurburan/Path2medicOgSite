@@ -6,7 +6,7 @@ import DashboardLayout from '../components/portal/DashboardLayout';
 import { Card, CardContent } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
 import { Button } from '../components/ui/button';
-import { CheckCircle, Clock, AlertCircle, Play } from 'lucide-react';
+import { CheckCircle, Clock, AlertCircle, Play, FileText } from 'lucide-react';
 
 interface ExamAssignment {
   id: string;
@@ -25,30 +25,38 @@ interface ExamAssignment {
   total_questions: number | null;
 }
 
-const statusConfig: Record<string, { icon: React.ReactNode; label: string; color: string; bgColor: string }> = {
+const statusConfig: Record<string, { icon: React.ReactNode; label: string; color: string; bgColor: string; borderColor: string; iconBg: string }> = {
   available: {
-    icon: <Play className="h-4 w-4" />,
+    icon: <Play className="h-3.5 w-3.5" />,
     label: 'Available — Not Yet Started',
-    color: 'text-[#1a5f7a]',
+    color: 'text-[#0D2137]',
     bgColor: 'bg-blue-50',
+    borderColor: 'border-l-[#0D2137]',
+    iconBg: 'bg-[#0D2137]/10 text-[#0D2137]',
   },
   in_progress: {
-    icon: <Clock className="h-4 w-4" />,
+    icon: <Clock className="h-3.5 w-3.5" />,
     label: 'In Progress',
     color: 'text-amber-600',
     bgColor: 'bg-amber-50',
+    borderColor: 'border-l-amber-500',
+    iconBg: 'bg-amber-100 text-amber-600',
   },
   submitted: {
-    icon: <AlertCircle className="h-4 w-4" />,
+    icon: <AlertCircle className="h-3.5 w-3.5" />,
     label: 'Submitted — Awaiting Review',
-    color: 'text-gray-600',
-    bgColor: 'bg-gray-100',
+    color: 'text-gray-500',
+    bgColor: 'bg-gray-50',
+    borderColor: 'border-l-gray-400',
+    iconBg: 'bg-gray-100 text-gray-500',
   },
   graded: {
-    icon: <CheckCircle className="h-4 w-4" />,
+    icon: <CheckCircle className="h-3.5 w-3.5" />,
     label: 'Graded',
     color: 'text-green-600',
     bgColor: 'bg-green-50',
+    borderColor: 'border-l-green-500',
+    iconBg: 'bg-green-100 text-green-600',
   },
 };
 
@@ -62,6 +70,13 @@ function examTitle(exam: ExamAssignment) {
   const version = exam.exam_version && exam.exam_version !== 'v1' ? ` ${exam.exam_version}` : '';
   const qCount = exam.total_questions ? ` (${exam.total_questions} Questions)` : '';
   return `${exam.certification_level} ${type}${version}${qCount}`;
+}
+
+function scoreColor(score: number): string {
+  if (score >= 90) return 'text-[#28a745]';
+  if (score >= 80) return 'text-[#17a2b8]';
+  if (score >= 70) return 'text-[#ffc107]';
+  return 'text-[#dc3545]';
 }
 
 export default function ExamsPage() {
@@ -162,10 +177,10 @@ export default function ExamsPage() {
   if (loading) {
     return (
       <DashboardLayout>
-        <div className="animate-pulse space-y-6 max-w-3xl">
-          <div className="h-8 bg-gray-200 rounded w-40" />
+        <div className="animate-pulse space-y-5 max-w-3xl">
+          <div className="h-8 bg-gray-200 rounded-lg w-40" />
           {[...Array(3)].map((_, i) => (
-            <div key={i} className="h-28 bg-gray-200 rounded-xl" />
+            <div key={i} className="h-28 bg-gray-100 rounded-xl" />
           ))}
         </div>
       </DashboardLayout>
@@ -176,14 +191,19 @@ export default function ExamsPage() {
 
   return (
     <DashboardLayout>
-      <div className="space-y-6 max-w-3xl">
+      <div className="space-y-5 max-w-3xl">
         <h1 className="text-2xl font-bold text-[#0D2137]">My Exams</h1>
 
         {allEmpty && (
-          <Card>
-            <CardContent className="py-12 text-center">
-              <p className="text-gray-500">No exams have been assigned yet.</p>
-              <p className="text-sm text-gray-400 mt-2">
+          <Card className="rounded-xl border-gray-200/60 shadow-sm">
+            <CardContent className="py-16 text-center">
+              <div className="flex justify-center mb-4">
+                <div className="w-14 h-14 rounded-full bg-gray-100 flex items-center justify-center">
+                  <FileText className="h-7 w-7 text-gray-400" />
+                </div>
+              </div>
+              <p className="text-gray-600 font-medium text-lg">No exams assigned yet</p>
+              <p className="text-sm text-gray-400 mt-2 max-w-sm mx-auto">
                 When you purchase a coaching session, your exams will appear here.
               </p>
             </CardContent>
@@ -194,20 +214,30 @@ export default function ExamsPage() {
         {assignments.map((exam) => {
           const config = statusConfig[exam.status] || statusConfig.available;
           return (
-            <Card key={exam.id} className="overflow-hidden">
+            <Card
+              key={exam.id}
+              className={`overflow-hidden rounded-xl border-gray-200/60 shadow-sm border-l-4 ${config.borderColor}`}
+            >
               <CardContent className="p-6">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                  <div className="space-y-1">
+                  <div className="space-y-2">
                     <h3 className="text-lg font-semibold text-[#0D2137]">
                       {examTitle(exam)}
                     </h3>
                     <div className="flex items-center gap-2">
-                      <Badge variant="outline" className={`${config.bgColor} ${config.color} border-0`}>
-                        <span className="mr-1">{config.icon}</span>
+                      <div className={`w-6 h-6 rounded-full flex items-center justify-center ${config.iconBg}`}>
+                        {config.icon}
+                      </div>
+                      <Badge variant="outline" className={`${config.bgColor} ${config.color} border-0 text-xs`}>
                         {exam.status === 'graded' && exam.score_percentage != null
                           ? `Graded — ${Math.round(exam.score_percentage)}%`
                           : config.label}
                       </Badge>
+                      {exam.status === 'graded' && exam.score_percentage != null && (
+                        <span className={`text-lg font-bold ${scoreColor(exam.score_percentage)}`}>
+                          {Math.round(exam.score_percentage)}%
+                        </span>
+                      )}
                     </div>
                     <p className="text-sm text-gray-400">
                       {exam.status === 'available' && `Issued: ${formatDate(exam.assigned_at)}`}
@@ -216,7 +246,7 @@ export default function ExamsPage() {
                       {exam.status === 'graded' && `Submitted: ${formatDate(exam.submitted_at)}`}
                     </p>
                     {exam.notes && (
-                      <p className="text-sm text-gray-600 mt-2 italic">Note: {exam.notes}</p>
+                      <p className="text-sm text-gray-500 mt-1 italic">Note: {exam.notes}</p>
                     )}
                   </div>
 
@@ -224,7 +254,7 @@ export default function ExamsPage() {
                     {exam.status === 'available' && (
                       <Button
                         onClick={() => handleStartExam(exam)}
-                        className="bg-[#1a5f7a] hover:bg-[#134b61]"
+                        className="bg-[#E03038] hover:bg-[#c52830] text-white shadow-sm"
                       >
                         Start Exam
                       </Button>
@@ -233,18 +263,22 @@ export default function ExamsPage() {
                       <Button
                         onClick={() => handleStartExam(exam)}
                         variant="outline"
-                        className="border-[#1a5f7a] text-[#1a5f7a]"
+                        className="border-[#E03038] text-[#E03038] hover:bg-[#E03038]/5"
                       >
                         Resume Exam
                       </Button>
                     )}
                     {exam.status === 'submitted' && (
-                      <span className="text-sm text-gray-400">Awaiting review</span>
+                      <span className="inline-flex items-center gap-1.5 text-sm text-gray-400 italic">
+                        <Clock className="h-3.5 w-3.5" />
+                        Awaiting review
+                      </span>
                     )}
                     {exam.status === 'graded' && (
                       <Button
                         onClick={() => navigate('/results')}
                         variant="outline"
+                        className="border-[#0D2137] text-[#0D2137] hover:bg-[#0D2137]/5"
                       >
                         View Results
                       </Button>
@@ -263,18 +297,28 @@ export default function ExamsPage() {
           const title = `${exam.certification_level} ${exam.type === 'intake' ? 'Intake Exam' : 'Post-Test'}${exam.total_questions ? ` (${exam.total_questions} Questions)` : ''}`;
 
           return (
-            <Card key={exam.id} className="overflow-hidden">
+            <Card
+              key={exam.id}
+              className={`overflow-hidden rounded-xl border-gray-200/60 shadow-sm border-l-4 ${config.borderColor}`}
+            >
               <CardContent className="p-6">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                  <div className="space-y-1">
+                  <div className="space-y-2">
                     <h3 className="text-lg font-semibold text-[#0D2137]">{title}</h3>
                     <div className="flex items-center gap-2">
-                      <Badge variant="outline" className={`${config.bgColor} ${config.color} border-0`}>
-                        <span className="mr-1">{config.icon}</span>
+                      <div className={`w-6 h-6 rounded-full flex items-center justify-center ${config.iconBg}`}>
+                        {config.icon}
+                      </div>
+                      <Badge variant="outline" className={`${config.bgColor} ${config.color} border-0 text-xs`}>
                         {isGraded && exam.score_percentage != null
                           ? `Graded — ${Math.round(Number(exam.score_percentage))}%`
                           : config.label}
                       </Badge>
+                      {isGraded && exam.score_percentage != null && (
+                        <span className={`text-lg font-bold ${scoreColor(Number(exam.score_percentage))}`}>
+                          {Math.round(Number(exam.score_percentage))}%
+                        </span>
+                      )}
                     </div>
                     <p className="text-sm text-gray-400">
                       Submitted: {formatDate(exam.submitted_at)}
@@ -283,12 +327,19 @@ export default function ExamsPage() {
 
                   <div className="flex-shrink-0">
                     {isGraded && (
-                      <Button onClick={() => navigate('/results')} variant="outline">
+                      <Button
+                        onClick={() => navigate('/results')}
+                        variant="outline"
+                        className="border-[#0D2137] text-[#0D2137] hover:bg-[#0D2137]/5"
+                      >
                         View Results
                       </Button>
                     )}
                     {!isGraded && (
-                      <span className="text-sm text-gray-400">Awaiting review</span>
+                      <span className="inline-flex items-center gap-1.5 text-sm text-gray-400 italic">
+                        <Clock className="h-3.5 w-3.5" />
+                        Awaiting review
+                      </span>
                     )}
                   </div>
                 </div>

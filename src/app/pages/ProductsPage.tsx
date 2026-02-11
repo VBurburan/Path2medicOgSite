@@ -103,7 +103,7 @@ export default function ProductsPage() {
   return (
     <Layout>
       {/* Page Header */}
-      <section className="bg-gradient-to-br from-[#0D2137] to-[#1a5f7a] py-16 text-white">
+      <section className="bg-gradient-to-br from-[#0D2137] to-[#162d47] py-16 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Study Resources</h1>
           <p className="text-xl text-white/90">
@@ -149,7 +149,7 @@ export default function ProductsPage() {
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center">
-              <div className="bg-[#1a5f7a] w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="bg-[#0D2137] w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-white text-2xl font-bold">1</span>
               </div>
               <h3 className="text-xl font-semibold mb-2">Evidence-Based</h3>
@@ -158,7 +158,7 @@ export default function ProductsPage() {
               </p>
             </div>
             <div className="text-center">
-              <div className="bg-[#1a5f7a] w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="bg-[#0D2137] w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-white text-2xl font-bold">2</span>
               </div>
               <h3 className="text-xl font-semibold mb-2">Exam-Aligned</h3>
