@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 import { Button } from '../ui/button';
 import { cn } from '../../components/ui/utils';
-import logo from 'figma:asset/7e2353c04204bd5b39085f4855f3eadf3139a233.png';
+import logo from '@/assets/logo.png';
 
 interface PortalSidebarProps {
   activeTab: string;

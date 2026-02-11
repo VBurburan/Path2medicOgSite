@@ -7,7 +7,7 @@ import { Badge } from '../components/ui/badge';
 import { CheckCircle2, ArrowRight, User } from 'lucide-react';
 
 // Author image import
-import vincentHeadshot from 'figma:asset/42669bdc65e993029f5d4739d20ffe09c5cc9f74.png';
+import vincentHeadshot from '@/assets/vincent-headshot.png';
 
 export default function ProductDetailPage() {
   const { slug } = useParams<{ slug: string }>();

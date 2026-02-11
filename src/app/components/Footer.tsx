@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, Facebook, Twitter, Linkedin } from 'lucide-react';
-import logo from 'figma:asset/7e2353c04204bd5b39085f4855f3eadf3139a233.png';
+import logo from '@/assets/logo.png';
 
 export default function Footer() {
   return (

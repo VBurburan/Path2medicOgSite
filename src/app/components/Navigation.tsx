@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Menu, X, ChevronDown, BookOpen, GraduationCap, User } from 'lucide-react';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
-import logo from 'figma:asset/7e2353c04204bd5b39085f4855f3eadf3139a233.png';
+import logo from '@/assets/logo.png';
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
 import { CheckCircle2, ArrowRight, BookOpen, Layers, AlertTriangle, FileText, Database, BarChart3, Star } from 'lucide-react';
-import bookCover from 'figma:asset/f6622333bd9fe8e9767231b0875a1ba83a528937.png';
+import bookCover from '@/assets/underhood-cover.png';
 
 export function UnderTheHoodHero() {
   const scrollToDetail = (e: React.MouseEvent) => {

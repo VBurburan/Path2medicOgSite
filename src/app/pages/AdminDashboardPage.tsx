@@ -20,7 +20,7 @@ import {
 import { AdminQuestionList } from '../components/admin/AdminQuestionList';
 import { AdminSubmissionList } from '../components/admin/AdminSubmissionList';
 import { AdminDatabaseTools } from '../components/admin/AdminDatabaseTools';
-import logo from 'figma:asset/7e2353c04204bd5b39085f4855f3eadf3139a233.png';
+import logo from '@/assets/logo.png';
 
 // User List Component
 import { 
