@@ -80,7 +80,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       >
         {/* Logo */}
         <div className="p-6 flex items-center justify-between border-b border-white/10">
-          <img src={logo} alt="Path2Medic" className="h-8 w-auto brightness-0 invert" />
+          <img src={logo} alt="Path2Medic" className="h-8 w-auto rounded" />
           <button
             className="md:hidden text-white/70 hover:text-white"
             onClick={() => setSidebarOpen(false)}

@@ -413,7 +413,7 @@ export default function AdminDashboardPage() {
       {/* Sidebar */}
       <aside className="w-64 bg-[#1a5f7a] text-white hidden md:flex flex-col shadow-lg">
         <div className="p-6 border-b border-white/10 flex items-center justify-center">
-          <img src={logo} alt="Path2Medic" className="h-8 w-auto brightness-0 invert" />
+          <img src={logo} alt="Path2Medic" className="h-8 w-auto rounded" />
         </div>
         
         <nav className="flex-1 p-4 space-y-2">
