@@ -148,6 +148,79 @@ function isAnswerCorrect(question: Question, userAnswer: UserAnswer): boolean {
   return false;
 }
 
+/**
+ * Normalize a raw question from Supabase into the expected Question shape.
+ * Supabase may return options as:
+ *   - string[] like ["Option A", "Option B", ...]
+ *   - {id,text}[] (already correct)
+ *   - JSON string that needs parsing
+ *   - JSONB object like {"A":"text","B":"text"}
+ * correct_answer may be string, string[], or stringified JSON.
+ */
+function normalizeQuestion(raw: any): Question {
+  // Parse options
+  let opts: QuestionOption[] = [];
+  let rawOptions = raw.options;
+
+  // If string, try to parse
+  if (typeof rawOptions === 'string') {
+    try { rawOptions = JSON.parse(rawOptions); } catch { rawOptions = [rawOptions]; }
+  }
+
+  if (Array.isArray(rawOptions)) {
+    opts = rawOptions.map((o: any, i: number) => {
+      if (typeof o === 'object' && o !== null && 'text' in o) {
+        return { id: o.id || String.fromCharCode(65 + i), text: String(o.text) };
+      }
+      // Simple string option — generate letter id (A, B, C, D, ...)
+      return { id: String.fromCharCode(65 + i), text: String(o) };
+    });
+  } else if (typeof rawOptions === 'object' && rawOptions !== null) {
+    // Object like {"A": "text", "B": "text"}
+    opts = Object.entries(rawOptions).map(([key, val]) => ({
+      id: key,
+      text: String(val),
+    }));
+  }
+
+  // Parse correct_answer
+  let correctAnswer = raw.correct_answer;
+  if (typeof correctAnswer === 'string') {
+    // Try to parse as JSON in case it's a stringified array
+    try {
+      const parsed = JSON.parse(correctAnswer);
+      if (Array.isArray(parsed) || typeof parsed === 'object') {
+        correctAnswer = parsed;
+      }
+    } catch {
+      // It's a plain string — leave as-is
+    }
+  }
+
+  // Parse rationales_distractors
+  let distractors = raw.rationales_distractors;
+  if (typeof distractors === 'string') {
+    try { distractors = JSON.parse(distractors); } catch { distractors = {}; }
+  }
+  if (!distractors || typeof distractors !== 'object') distractors = {};
+
+  return {
+    id: raw.id,
+    stem: raw.stem || '',
+    options: opts,
+    correct_answer: correctAnswer,
+    item_type: raw.item_type || 'MC',
+    difficulty_level: raw.difficulty_level || 1,
+    domain: raw.domain || '',
+    cj_step: raw.cj_step || '',
+    rationale_correct: raw.rationale_correct || '',
+    rationales_distractors: distractors,
+    scenario_context: raw.scenario_context || null,
+    certification_level: raw.certification_level || '',
+    image_url: raw.image_url || null,
+  };
+}
+
 /** Format seconds as mm:ss */
 function formatTime(seconds: number): string {
   const m = Math.floor(seconds / 60);
@@ -412,8 +485,8 @@ function DDRenderer({ question, value, onChange }: DDRendererProps) {
   const categories = useMemo(() => {
     const cats = new Set<string>();
     if (Array.isArray(question.correct_answer)) {
-      (question.correct_answer as string[][]).forEach((pair) => {
-        if (pair.length === 2) cats.add(pair[1]);
+      question.correct_answer.forEach((pair: unknown) => {
+        if (Array.isArray(pair) && pair.length === 2) cats.add(String(pair[1]));
       });
     }
     return Array.from(cats);
@@ -617,7 +690,9 @@ function OBRenderer({ question, value, onChange }: OBRendererProps) {
   // Options represent possible column choices; rows come from correct_answer structure
   const rows = useMemo(() => {
     if (!Array.isArray(question.correct_answer)) return [];
-    return (question.correct_answer as string[][]).map((pair) => pair[0]);
+    return question.correct_answer
+      .filter((pair: unknown) => Array.isArray(pair) && pair.length >= 1)
+      .map((pair: any) => String(pair[0]));
   }, [question.correct_answer]);
 
   const columnOptions = useMemo(() => question.options.map((o) => o.id), [question.options]);
@@ -928,20 +1003,46 @@ export default function PracticeSessionPage() {
       try {
         setLoading(true);
 
-        // Get student profile
-        const { data: student, error: stuErr } = await supabase
+        // Get or create student profile
+        let { data: student, error: stuErr } = await supabase
           .from('students')
           .select('id')
           .eq('user_id', user!.id)
-          .single();
+          .maybeSingle();
 
-        if (stuErr) throw stuErr;
-        setStudentId(student.id);
+        if (stuErr) {
+          console.warn('Student profile fetch error:', stuErr);
+        }
+
+        if (!student) {
+          // Auto-create student profile if missing
+          const { data: newStudent, error: createErr } = await supabase
+            .from('students')
+            .insert({
+              user_id: user!.id,
+              email: user!.email || '',
+              full_name: user!.user_metadata?.full_name || '',
+              certification_level: level,
+              membership_tier: 'free',
+              member_status: 'active',
+              preferred_question_count: count,
+            })
+            .select('id')
+            .single();
+
+          if (createErr) {
+            console.warn('Could not create student profile:', createErr);
+            // Continue without student ID — practice still works
+          }
+          student = newStudent;
+        }
+
+        if (student) setStudentId(student.id);
 
         let query = supabase
           .from('questions')
           .select('id, stem, options, correct_answer, item_type, difficulty_level, domain, cj_step, rationale_correct, rationales_distractors, scenario_context, certification_level, image_url')
-          .eq('certification_level', level);
+          .ilike('certification_level', level);
 
         // Apply mode-specific filters
         if (mode === 'domain' && domainParam) {
@@ -991,9 +1092,12 @@ export default function PracticeSessionPage() {
           return;
         }
 
+        // Normalize raw Supabase data → proper Question objects
+        const normalized = rawQuestions.map(normalizeQuestion);
+
         // Shuffle and take the requested count
-        const shuffled = fisherYatesShuffle([...rawQuestions]);
-        const selected = shuffled.slice(0, Math.min(count, shuffled.length)) as Question[];
+        const shuffled = fisherYatesShuffle([...normalized]);
+        const selected = shuffled.slice(0, Math.min(count, shuffled.length));
 
         setQuestions(selected);
         sessionStartRef.current = Date.now();
