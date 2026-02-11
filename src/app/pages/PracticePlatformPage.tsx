@@ -54,13 +54,13 @@ export default function PracticePlatformPage() {
   return (
     <Layout>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-[#1B4F72] to-[#5DADE2] py-20 text-white relative overflow-hidden">
+      <section className="bg-gradient-to-br from-[#0D2137] to-[#1a5f7a] py-20 text-white relative overflow-hidden">
         <div className="absolute top-0 right-0 p-4 opacity-10 transform rotate-12">
           <Bell className="w-64 h-64" />
         </div>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <div className="inline-flex items-center justify-center p-1 rounded-full bg-white/10 backdrop-blur-sm mb-8 border border-white/20">
-            <Badge className="bg-[#E67E22] text-white hover:bg-[#D35400] px-6 py-2 text-lg font-bold border-none shadow-lg animate-pulse">
+            <Badge className="bg-[#E03038] text-white hover:bg-[#c52830] px-6 py-2 text-lg font-bold border-none shadow-lg animate-pulse">
               🚀 COMING SOON
             </Badge>
           </div>
@@ -73,7 +73,7 @@ export default function PracticePlatformPage() {
           <Button 
             size="lg" 
             variant="secondary" 
-            className="bg-white text-[#1B4F72] hover:bg-gray-100 font-semibold"
+            className="bg-white text-[#0D2137] hover:bg-gray-100 font-semibold"
             onClick={() => navigate('/contact')}
           >
             Get Notified When We Launch
@@ -84,7 +84,7 @@ export default function PracticePlatformPage() {
       {/* TEI Formats Section */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#1B4F72] mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#0D2137] mb-4">
             All 6 TEI Question Formats
           </h2>
           <p className="text-center text-gray-600 mb-12">
@@ -96,7 +96,7 @@ export default function PracticePlatformPage() {
               return (
                 <Card key={index} className="text-center hover:shadow-lg transition-shadow">
                   <CardHeader>
-                    <Icon className="h-10 w-10 text-[#E67E22] mx-auto mb-2" />
+                    <Icon className="h-10 w-10 text-[#E03038] mx-auto mb-2" />
                     <CardTitle className="text-sm">{format.name}</CardTitle>
                   </CardHeader>
                   <CardContent>
@@ -113,7 +113,7 @@ export default function PracticePlatformPage() {
       <section className="py-16 bg-[#F8F9FA]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-[#1B4F72] mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-[#0D2137] mb-4">
               Master the Question Formats Before Test Day
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
@@ -128,7 +128,7 @@ export default function PracticePlatformPage() {
                 <ul className="space-y-3">
                   {studentFeatures.map((feature, index) => (
                     <li key={index} className="flex items-start gap-3">
-                      <CheckCircle className="h-5 w-5 text-[#7FA99B] flex-shrink-0 mt-0.5" />
+                      <CheckCircle className="h-5 w-5 text-[#1a5f7a] flex-shrink-0 mt-0.5" />
                       <span>{feature}</span>
                     </li>
                   ))}
@@ -138,12 +138,12 @@ export default function PracticePlatformPage() {
           </div>
 
           {/* Coming Soon Call to Action */}
-          <Card className="max-w-3xl mx-auto text-center border-2 border-[#E67E22]/20 shadow-lg">
+          <Card className="max-w-3xl mx-auto text-center border-2 border-[#E03038]/20 shadow-lg">
             <CardHeader>
               <div className="mx-auto bg-[#FFF3E0] p-4 rounded-full w-fit mb-4">
-                  <Bell className="h-10 w-10 text-[#E67E22]" />
+                  <Bell className="h-10 w-10 text-[#E03038]" />
               </div>
-              <CardTitle className="text-2xl text-[#1B4F72]">Launch Notification</CardTitle>
+              <CardTitle className="text-2xl text-[#0D2137]">Launch Notification</CardTitle>
               <CardDescription className="text-lg">
                 Join our waitlist to be the first to know when the platform goes live.
               </CardDescription>
@@ -152,7 +152,7 @@ export default function PracticePlatformPage() {
               <div className="flex justify-center">
                  <Button 
                    size="lg" 
-                   className="bg-[#1B4F72] hover:bg-[#154360] text-white px-8" 
+                   className="bg-[#0D2137] hover:bg-[#0d3b4c] text-white px-8" 
                    onClick={() => navigate('/contact')}
                  >
                     Join Waitlist
@@ -168,19 +168,19 @@ export default function PracticePlatformPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-4 gap-8 text-center">
             <div>
-              <div className="text-4xl font-bold text-[#1B4F72] mb-2">1000+</div>
+              <div className="text-4xl font-bold text-[#0D2137] mb-2">1000+</div>
               <p className="text-gray-600">Practice Questions</p>
             </div>
             <div>
-              <div className="text-4xl font-bold text-[#1B4F72] mb-2">6</div>
+              <div className="text-4xl font-bold text-[#0D2137] mb-2">6</div>
               <p className="text-gray-600">TEI Question Types</p>
             </div>
             <div>
-              <div className="text-4xl font-bold text-[#1B4F72] mb-2">3</div>
+              <div className="text-4xl font-bold text-[#0D2137] mb-2">3</div>
               <p className="text-gray-600">Certification Levels</p>
             </div>
             <div>
-              <div className="text-4xl font-bold text-[#1B4F72] mb-2">100%</div>
+              <div className="text-4xl font-bold text-[#0D2137] mb-2">100%</div>
               <p className="text-gray-600">Evidence-Based</p>
             </div>
           </div>

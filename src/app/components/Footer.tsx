@@ -1,118 +1,66 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Mail, Facebook, Twitter, Linkedin } from 'lucide-react';
-import logo from 'figma:asset/7e2353c04204bd5b39085f4855f3eadf3139a233.png';
+import { Mail, Facebook, Instagram } from 'lucide-react';
+import logo from '@/assets/logo.png';
 
 export default function Footer() {
   return (
-    <footer className="bg-[#2C3E50] text-white">
+    <footer className="bg-[#0d3b4c] text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Brand Column */}
           <div>
             <div className="mb-4">
               <img src={logo} alt="Path2Medic" className="h-12 w-auto" />
             </div>
             <p className="text-gray-300 mb-4 text-sm">
-              Master the thinking process, not just the content.
+              Think Like a Clinician. Pass Like a Pro.
             </p>
             <div className="flex items-center space-x-2 text-sm">
-              <Mail className="h-4 w-4 text-[#E67E22]" />
-              <a href="mailto:vincent@path2medic.com" className="hover:text-[#E67E22] transition-colors">
+              <Mail className="h-4 w-4 text-[#E03038]" />
+              <a href="mailto:vincent@path2medic.com" className="hover:text-[#E03038] transition-colors">
                 vincent@path2medic.com
               </a>
             </div>
             <div className="flex items-center space-x-4 mt-4">
-              <a href="#" className="hover:text-[#E67E22] transition-colors">
+              <a href="https://www.tiktok.com/@path2medic" target="_blank" rel="noopener noreferrer" className="hover:text-[#E03038] transition-colors">
+                <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.34-6.34V8.78a8.18 8.18 0 003.76.91V6.24a4.85 4.85 0 01-1-.24v.69z"/></svg>
+              </a>
+              <a href="https://www.instagram.com/path2medic" target="_blank" rel="noopener noreferrer" className="hover:text-[#E03038] transition-colors">
+                <Instagram className="h-5 w-5" />
+              </a>
+              <a href="https://www.facebook.com/path2medic" target="_blank" rel="noopener noreferrer" className="hover:text-[#E03038] transition-colors">
                 <Facebook className="h-5 w-5" />
-              </a>
-              <a href="#" className="hover:text-[#E67E22] transition-colors">
-                <Twitter className="h-5 w-5" />
-              </a>
-              <a href="#" className="hover:text-[#E67E22] transition-colors">
-                <Linkedin className="h-5 w-5" />
               </a>
             </div>
           </div>
 
-          {/* Products Column */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Products</h3>
+            <h3 className="text-lg font-semibold mb-4">Study Guides</h3>
             <ul className="space-y-2 text-sm">
-              <li>
-                <Link to="/products" className="text-gray-300 hover:text-[#E67E22] transition-colors">
-                  EMT Resources
-                </Link>
-              </li>
-              <li>
-                <Link to="/products" className="text-gray-300 hover:text-[#E67E22] transition-colors">
-                  AEMT Resources
-                </Link>
-              </li>
-              <li>
-                <Link to="/products" className="text-gray-300 hover:text-[#E67E22] transition-colors">
-                  Paramedic Resources
-                </Link>
-              </li>
-              <li>
-                <Link to="/products" className="text-gray-300 hover:text-[#E67E22] transition-colors">
-                  Bundles
-                </Link>
-              </li>
+              <li><Link to="/products/proof-is-in-the-pudding" className="text-gray-300 hover:text-[#E03038] transition-colors">The Proof is in the Pudding</Link></li>
+              <li><Link to="/products/spot-it-sort-it-solve-it" className="text-gray-300 hover:text-[#E03038] transition-colors">Spot It, Sort It, Solve It</Link></li>
+              <li><Link to="/products/cat-got-your-tongue" className="text-gray-300 hover:text-[#E03038] transition-colors">CAT Got Your Tongue?</Link></li>
+              <li><Link to="/products/clinical-judgment-workbook-paramedic" className="text-gray-300 hover:text-[#E03038] transition-colors">CJ & TEI Workbook</Link></li>
+              <li><Link to="/products/under-the-hood" className="text-gray-300 hover:text-[#E03038] transition-colors">Under the Hood</Link></li>
             </ul>
           </div>
 
-          {/* Platform Column */}
           <div>
             <h3 className="text-lg font-semibold mb-4">Platform</h3>
             <ul className="space-y-2 text-sm">
-              <li>
-                <Link to="/practice" className="text-gray-300 hover:text-[#E67E22] transition-colors">
-                  Practice Questions
-                </Link>
-              </li>
-              <li>
-                <Link to="/tutoring" className="text-gray-300 hover:text-[#E67E22] transition-colors">
-                  Tutoring
-                </Link>
-              </li>
-              <li>
-                <Link to="/login" className="text-gray-300 hover:text-[#E67E22] transition-colors">
-                  Login
-                </Link>
-              </li>
-              <li className="pt-2">
-                <Link to="/customer-portal" className="inline-block px-3 py-1 bg-[#1a5f7a] text-white text-xs rounded hover:bg-[#134b61] transition-colors">
-                  Portal
-                </Link>
-              </li>
+              <li><Link to="/practice" className="text-gray-300 hover:text-[#E03038] transition-colors">Practice Questions</Link></li>
+              <li><Link to="/tutoring" className="text-gray-300 hover:text-[#E03038] transition-colors">1-on-1 Coaching</Link></li>
+              <li><Link to="/dashboard" className="text-gray-300 hover:text-[#E03038] transition-colors">Student Dashboard</Link></li>
+              <li><Link to="/login" className="text-gray-300 hover:text-[#E03038] transition-colors">Login / Sign Up</Link></li>
             </ul>
           </div>
 
-          {/* Company Column */}
           <div>
             <h3 className="text-lg font-semibold mb-4">Company</h3>
             <ul className="space-y-2 text-sm">
-              <li>
-                <Link to="/about" className="text-gray-300 hover:text-[#E67E22] transition-colors">
-                  About
-                </Link>
-              </li>
-              <li>
-                <Link to="/contact" className="text-gray-300 hover:text-[#E67E22] transition-colors">
-                  Contact
-                </Link>
-              </li>
-              <li>
-                <a href="#" className="text-gray-300 hover:text-[#E67E22] transition-colors">
-                  Privacy Policy
-                </a>
-              </li>
-              <li>
-                <a href="#" className="text-gray-300 hover:text-[#E67E22] transition-colors">
-                  Terms of Service
-                </a>
-              </li>
+              <li><Link to="/about" className="text-gray-300 hover:text-[#E03038] transition-colors">About</Link></li>
+              <li><Link to="/contact" className="text-gray-300 hover:text-[#E03038] transition-colors">Contact</Link></li>
+              <li><Link to="/educators" className="text-gray-300 hover:text-[#E03038] transition-colors">For Educators</Link></li>
             </ul>
           </div>
         </div>

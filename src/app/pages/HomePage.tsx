@@ -8,12 +8,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../co
 import { CheckCircle, Award, Brain, TrendingUp, BookOpen, Users, Star } from 'lucide-react';
 
 // Import book covers
-import proofCover from 'figma:asset/5c9cc05b9263baa3a352ea86e5d9e616da333add.png';
-import spotItCover from 'figma:asset/c96381ee722dcf250fe4e2642e201c8802dc3930.png';
-import catCover from 'figma:asset/82e98b0c076d1ccc611ae137148c3b03243ef9d8.png';
-import workbookCover from 'figma:asset/fdfb19885d9e08b5312f32a21629fca03db0d3ad.png';
-import vincentHeadshot from 'figma:asset/42669bdc65e993029f5d4739d20ffe09c5cc9f74.png';
-import underTheHoodCover from 'figma:asset/f6622333bd9fe8e9767231b0875a1ba83a528937.png';
+import proofCover from '@/assets/proof-cover.png';
+import spotItCover from '@/assets/spotit-cover.png';
+import catCover from '@/assets/cat-cover.png';
+import workbookCover from '@/assets/workbook-cover.png';
+import vincentHeadshot from '@/assets/vincent-headshot.png';
+import underTheHoodCover from '@/assets/underhood-cover.png';
 
 export default function HomePage() {
   const trustBadges = [
@@ -73,7 +73,7 @@ export default function HomePage() {
       title: 'Clinical Judgment & TEI Workbook',
       subtitle: 'Paramedic Edition',
       description: 'Stop guessing and start thinking like an expert! This 70-page workbook enhances your clinical judgment skills with high-quality practice scenarios.',
-      price: 11.99,
+      price: 15.99,
       level: 'Paramedic' as const,
       coverImage: workbookCover,
       purchaseLink: 'https://path2medic.thinkific.com/enroll/3605333?price_id=4541954'
@@ -82,7 +82,7 @@ export default function HomePage() {
       title: 'CAT Got Your Tongue?',
       subtitle: 'Guide to Computer Adaptive Testing (CAT)',
       description: 'Struggling with the NREMT CAT test format? This detailed guide offers proven strategies to conquer CAT confusion and approach your exam with confidence. Learn how the algorithm works and how to leverage it to your advantage.',
-      price: 11.99,
+      price: 15.99,
       level: 'All' as const,
       coverImage: catCover,
       purchaseLink: 'https://path2medic.thinkific.com/enroll/3636485?price_id=4577181'
@@ -100,10 +100,10 @@ export default function HomePage() {
   return (
     <Layout>
       {/* Hero Section */}
-      <section 
+      <section
         className="relative bg-cover bg-center py-24 md:py-32"
         style={{
-          backgroundImage: `linear-gradient(rgba(27, 79, 114, 0.8), rgba(27, 79, 114, 0.6)), url(https://images.unsplash.com/photo-1649768862026-f21a814945f7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhbWJ1bGFuY2UlMjBtb3Rpb258ZW58MXx8fHwxNzY3NzE0MDYwfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral)`
+          backgroundImage: `linear-gradient(rgba(13, 33, 55, 0.85), rgba(26, 95, 122, 0.7)), url(https://images.unsplash.com/photo-1649768862026-f21a814945f7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhbWJ1bGFuY2UlMjBtb3Rpb258ZW58MXx8fHwxNzY3NzE0MDYwfDA&ixlib=rb-4.1.0&q=80&w=1080)`
         }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -118,12 +118,12 @@ export default function HomePage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
             <Link to="/tutoring">
-              <Button size="lg" className="bg-[#E67E22] hover:bg-[#D35400] text-lg px-8 py-6 shadow-lg">
+              <Button size="lg" className="bg-[#E03038] hover:bg-[#c52830] text-lg px-8 py-6 shadow-lg">
                 Book 1-on-1 Coaching
               </Button>
             </Link>
             <Link to="/products">
-              <Button size="lg" className="bg-[#E67E22] hover:bg-[#D35400] text-lg px-8 py-6">
+              <Button size="lg" className="bg-[#E03038] hover:bg-[#c52830] text-lg px-8 py-6">
                 Purchase Study Materials
               </Button>
             </Link>
@@ -141,7 +141,7 @@ export default function HomePage() {
       {/* Products Showcase */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#1B4F72] mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#0D2137] mb-4">
             Study Resources Built for the New NREMT
           </h2>
           <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
@@ -154,7 +154,7 @@ export default function HomePage() {
           </div>
           <div className="text-center mt-8">
             <Link to="/products">
-              <Button size="lg" variant="outline" className="border-[#1B4F72] text-[#1B4F72]">
+              <Button size="lg" variant="outline" className="border-[#0D2137] text-[#0D2137]">
                 View All Products
               </Button>
             </Link>
@@ -165,7 +165,7 @@ export default function HomePage() {
       {/* Problem/Solution Section */}
       <section className="py-16 bg-[#F8F9FA]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#1B4F72] mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#0D2137] mb-12">
             Traditional Test Prep Doesn't Work. Here's What Does.
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
@@ -174,8 +174,8 @@ export default function HomePage() {
               return (
                 <Card key={index} className="border-2 hover:shadow-lg transition-shadow">
                   <CardHeader>
-                    <Icon className="h-12 w-12 text-[#E67E22] mb-4" />
-                    <CardTitle className="text-xl text-[#1B4F72]">{problem.title}</CardTitle>
+                    <Icon className="h-12 w-12 text-[#E03038] mb-4" />
+                    <CardTitle className="text-xl text-[#0D2137]">{problem.title}</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-gray-600">{problem.description}</p>
@@ -190,11 +190,11 @@ export default function HomePage() {
       {/* Practice Platform Preview */}
       <section className="py-16 bg-[#F8F9FA]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#1B4F72] mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#0D2137] mb-12">
             Practice Like It's Test Day
           </h2>
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="bg-gradient-to-br from-[#1B4F72] to-[#5DADE2] rounded-lg p-8 aspect-video flex items-center justify-center">
+            <div className="bg-gradient-to-br from-[#0D2137] to-[#1a5f7a] rounded-lg p-8 aspect-video flex items-center justify-center">
               <div className="text-center text-white">
                 <BookOpen className="h-24 w-24 mx-auto mb-4" />
                 <p className="text-lg">Interactive Practice Interface</p>
@@ -204,14 +204,14 @@ export default function HomePage() {
               <div className="space-y-4">
                 {features.map((feature, index) => (
                   <div key={index} className="flex items-start gap-3">
-                    <CheckCircle className="h-6 w-6 text-[#7FA99B] flex-shrink-0 mt-1" />
+                    <CheckCircle className="h-6 w-6 text-[#1a5f7a] flex-shrink-0 mt-1" />
                     <p className="text-gray-700">{feature}</p>
                   </div>
                 ))}
               </div>
               <Link to="/practice">
-                <Button size="lg" className="mt-8 bg-[#E67E22] hover:bg-[#D35400]">
-                  Join Monthly Membership
+                <Button size="lg" className="mt-8 bg-[#E03038] hover:bg-[#c52830]">
+                  Start Practicing
                 </Button>
               </Link>
             </div>
@@ -220,7 +220,7 @@ export default function HomePage() {
       </section>
 
       {/* Tutoring CTA */}
-      <section className="py-16 bg-gradient-to-br from-[#5DADE2] to-[#3498DB] text-white">
+      <section className="py-16 bg-gradient-to-br from-[#1a5f7a] to-[#0d3b4c] text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <Users className="h-16 w-16 mx-auto mb-6" />
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -230,7 +230,7 @@ export default function HomePage() {
             1-on-1 coaching sessions via Zoom with a National Registry Paramedic and certified instructor.
           </p>
           <Link to="/tutoring">
-            <Button size="lg" variant="secondary" className="bg-white text-[#3498DB] hover:bg-gray-100">
+            <Button size="lg" variant="secondary" className="bg-white text-[#1a5f7a] hover:bg-gray-100">
               Book a Coaching Call
             </Button>
           </Link>
@@ -249,30 +249,30 @@ export default function HomePage() {
               />
             </div>
             <div>
-              <h2 className="text-3xl font-bold text-[#1B4F72] mb-4">
+              <h2 className="text-3xl font-bold text-[#0D2137] mb-4">
                 Vincent Burburan, NRP
               </h2>
               <div className="flex flex-wrap gap-2 mb-6">
-                <Badge variant="secondary" className="bg-[#7FA99B] text-white">
+                <Badge variant="secondary" className="bg-[#1a5f7a] text-white">
                   All 6 TEI Formats
                 </Badge>
-                <Badge variant="secondary" className="bg-[#5DADE2] text-white">
+                <Badge variant="secondary" className="bg-[#0d3b4c] text-white">
                   Evidence-Based Content
                 </Badge>
-                <Badge variant="secondary" className="bg-[#E67E22] text-white">
+                <Badge variant="secondary" className="bg-[#E03038] text-white">
                   Updated Monthly
                 </Badge>
               </div>
               <p className="text-gray-700 mb-4">
-                "After years of tutoring EMS students, I discovered a pattern: candidates weren't failing 
-                because they lacked knowledge. They failed because they couldn't systematically reason through 
+                "After years of tutoring EMS students, I discovered a pattern: candidates weren't failing
+                because they lacked knowledge. They failed because they couldn't systematically reason through
                 complex scenarios."
               </p>
               <p className="text-gray-700 mb-6">
                 "That's why I created Path2Medic - to teach the thinking process that expert clinicians use daily."
               </p>
               <Link to="/about">
-                <Button variant="outline" className="border-[#1B4F72] text-[#1B4F72]">
+                <Button variant="outline" className="border-[#0D2137] text-[#0D2137]">
                   Read My Story
                 </Button>
               </Link>

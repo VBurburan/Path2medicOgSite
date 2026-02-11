@@ -4,11 +4,11 @@ import ProductCard from '../components/ProductCard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 
 // Import book covers
-import proofCover from 'figma:asset/5c9cc05b9263baa3a352ea86e5d9e616da333add.png';
-import spotItCover from 'figma:asset/c96381ee722dcf250fe4e2642e201c8802dc3930.png';
-import catCover from 'figma:asset/82e98b0c076d1ccc611ae137148c3b03243ef9d8.png';
-import workbookCover from 'figma:asset/fdfb19885d9e08b5312f32a21629fca03db0d3ad.png';
-import underTheHoodCover from 'figma:asset/f6622333bd9fe8e9767231b0875a1ba83a528937.png';
+import proofCover from '@/assets/proof-cover.png';
+import spotItCover from '@/assets/spotit-cover.png';
+import catCover from '@/assets/cat-cover.png';
+import workbookCover from '@/assets/workbook-cover.png';
+import underTheHoodCover from '@/assets/underhood-cover.png';
 
 export default function ProductsPage() {
   const [activeTab, setActiveTab] = useState('all');
@@ -48,7 +48,7 @@ export default function ProductsPage() {
       title: 'Clinical Judgment & TEI Workbook- Paramedic',
       subtitle: 'Paramedic Edition',
       description: 'Stop guessing and start thinking like an expert! This 70-page workbook enhances your clinical judgment skills with high-quality practice scenarios. Designed specifically for paramedic-level NREMT preparation.',
-      price: 11.99,
+      price: 15.99,
       level: 'Paramedic' as const,
       category: ['paramedic', 'educators'],
       coverImage: workbookCover,
@@ -58,7 +58,7 @@ export default function ProductsPage() {
       title: 'CAT Got Your Tongue?',
       subtitle: 'Guide to Computer Adaptive Testing (CAT)',
       description: 'Struggling with the NREMT CAT test format? This detailed guide offers proven strategies to conquer CAT confusion and approach your exam with confidence. Learn how the algorithm works and how to leverage it to your advantage.',
-      price: 11.99,
+      price: 15.99,
       level: 'All' as const,
       category: ['emt', 'aemt', 'paramedic', 'educators', 'all'],
       coverImage: catCover,
@@ -103,7 +103,7 @@ export default function ProductsPage() {
   return (
     <Layout>
       {/* Page Header */}
-      <section className="bg-gradient-to-br from-[#1B4F72] to-[#5DADE2] py-16 text-white">
+      <section className="bg-gradient-to-br from-[#0D2137] to-[#1a5f7a] py-16 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Study Resources</h1>
           <p className="text-xl text-white/90">
@@ -144,12 +144,12 @@ export default function ProductsPage() {
       {/* Key Features Section */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center text-[#1B4F72] mb-12">
+          <h2 className="text-3xl font-bold text-center text-[#0D2137] mb-12">
             Why Path2Medic Resources Are Different
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center">
-              <div className="bg-[#7FA99B] w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="bg-[#1a5f7a] w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-white text-2xl font-bold">1</span>
               </div>
               <h3 className="text-xl font-semibold mb-2">Evidence-Based</h3>
@@ -158,7 +158,7 @@ export default function ProductsPage() {
               </p>
             </div>
             <div className="text-center">
-              <div className="bg-[#5DADE2] w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="bg-[#1a5f7a] w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-white text-2xl font-bold">2</span>
               </div>
               <h3 className="text-xl font-semibold mb-2">Exam-Aligned</h3>
@@ -167,7 +167,7 @@ export default function ProductsPage() {
               </p>
             </div>
             <div className="text-center">
-              <div className="bg-[#E67E22] w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="bg-[#E03038] w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-white text-2xl font-bold">3</span>
               </div>
               <h3 className="text-xl font-semibold mb-2">Systematic Approach</h3>

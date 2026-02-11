@@ -3,7 +3,7 @@ import Layout from '../components/Layout';
 import { Badge } from '../components/ui/badge';
 import { Card, CardContent } from '../components/ui/card';
 import { Award, BookOpen, Users, Target } from 'lucide-react';
-import vincentHeadshot from 'figma:asset/42669bdc65e993029f5d4739d20ffe09c5cc9f74.png';
+import vincentHeadshot from '@/assets/vincent-headshot.png';
 
 export default function AboutPage() {
   const credentials = [
@@ -39,7 +39,7 @@ export default function AboutPage() {
   return (
     <Layout>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-[#1B4F72] to-[#5DADE2] py-20 text-white">
+      <section className="bg-gradient-to-br from-[#0D2137] to-[#1a5f7a] py-20 text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Meet the Instructor</h1>
           <p className="text-xl text-white/90">
@@ -60,10 +60,10 @@ export default function AboutPage() {
               />
             </div>
             <div>
-              <h2 className="text-3xl font-bold text-[#1B4F72] mb-4">Vincent Burburan, NRP</h2>
+              <h2 className="text-3xl font-bold text-[#0D2137] mb-4">Vincent Burburan, NRP</h2>
               <div className="flex flex-wrap gap-2 mb-6">
                 {credentials.map((cred, index) => (
-                  <Badge key={index} variant="secondary" className="bg-[#5DADE2] text-white px-3 py-1">
+                  <Badge key={index} variant="secondary" className="bg-[#1a5f7a] text-white px-3 py-1">
                     {cred.title}
                   </Badge>
                 ))}
@@ -86,7 +86,7 @@ export default function AboutPage() {
                   on peer-reviewed research in clinical judgment. Every strategy, framework, and practice scenario 
                   is designed to help students master the THINKING PROCESS that expert clinicians use daily.
                 </p>
-                <p className="italic font-semibold text-[#1B4F72]">
+                <p className="italic font-semibold text-[#0D2137]">
                   "Clinical judgment isn't innate talent—it's a trainable skill that can be learned, practiced, 
                   and perfected."
                 </p>
@@ -99,10 +99,10 @@ export default function AboutPage() {
       {/* Mission */}
       <section className="py-16 bg-[#F8F9FA]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#1B4F72] mb-8">
+          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#0D2137] mb-8">
             The Path2Medic Mission
           </h2>
-          <Card className="border-4 border-[#E67E22]">
+          <Card className="border-4 border-[#E03038]">
             <CardContent className="p-8 space-y-4 text-gray-700">
               <p className="text-lg">
                 I created Path2Medic to bridge the gap between EMS education and exam success. Too many capable 
@@ -113,7 +113,7 @@ export default function AboutPage() {
                 My guides are different. Every claim is supported by research. Every scenario builds systematic 
                 reasoning. Every strategy is evidence-based.
               </p>
-              <p className="text-lg font-semibold text-[#1B4F72]">
+              <p className="text-lg font-semibold text-[#0D2137]">
                 You're not just studying for an exam—you're becoming the clinician your future patients need.
               </p>
             </CardContent>
@@ -124,7 +124,7 @@ export default function AboutPage() {
       {/* Values */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#1B4F72] mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#0D2137] mb-12">
             Our Core Values
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -133,10 +133,10 @@ export default function AboutPage() {
               return (
                 <Card key={index} className="text-center">
                   <CardContent className="pt-6">
-                    <div className="bg-[#E67E22] w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <div className="bg-[#E03038] w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                       <Icon className="h-8 w-8 text-white" />
                     </div>
-                    <h3 className="text-xl font-semibold mb-2 text-[#1B4F72]">{value.title}</h3>
+                    <h3 className="text-xl font-semibold mb-2 text-[#0D2137]">{value.title}</h3>
                     <p className="text-gray-600">{value.description}</p>
                   </CardContent>
                 </Card>
@@ -149,7 +149,7 @@ export default function AboutPage() {
       {/* Timeline */}
       <section className="py-16 bg-[#F8F9FA]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#1B4F72] mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#0D2137] mb-12">
             My EMS Journey
           </h2>
           <div className="space-y-8">
@@ -161,7 +161,7 @@ export default function AboutPage() {
               { year: '2025', event: 'Founded Path2Medic to help students master clinical judgment' }
             ].map((item, index) => (
               <div key={index} className="flex gap-8 items-center">
-                <div className="bg-[#1B4F72] text-white px-6 py-3 rounded-lg font-bold text-xl min-w-[100px] text-center">
+                <div className="bg-[#0D2137] text-white px-6 py-3 rounded-lg font-bold text-xl min-w-[100px] text-center">
                   {item.year}
                 </div>
                 <div className="flex-1">

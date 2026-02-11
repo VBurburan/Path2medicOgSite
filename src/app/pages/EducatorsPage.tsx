@@ -78,14 +78,14 @@ export default function EducatorsPage() {
   return (
     <Layout>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-[#1B4F72] to-[#5DADE2] py-20 text-white relative overflow-hidden">
+      <section className="bg-gradient-to-br from-[#0D2137] to-[#1a5f7a] py-20 text-white relative overflow-hidden">
         <div className="absolute top-0 left-0 p-4 opacity-10 transform -rotate-12">
           <GraduationCap className="w-64 h-64" />
         </div>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          <Badge className="bg-white text-[#1B4F72] mb-6 mr-2 py-1.5 px-3">FOR INSTRUCTORS & PROGRAMS</Badge>
+          <Badge className="bg-white text-[#0D2137] mb-6 mr-2 py-1.5 px-3">FOR INSTRUCTORS & PROGRAMS</Badge>
           <div className="block mt-2 mb-8">
-            <Badge className="bg-[#E67E22] text-white px-6 py-2 text-lg font-bold border-none shadow-lg animate-pulse">
+            <Badge className="bg-[#E03038] text-white px-6 py-2 text-lg font-bold border-none shadow-lg animate-pulse">
               🚧 PLATFORM COMING SOON
             </Badge>
           </div>
@@ -99,7 +99,7 @@ export default function EducatorsPage() {
             <Button 
               size="lg" 
               variant="secondary" 
-              className="bg-white text-[#1B4F72] hover:bg-gray-100"
+              className="bg-white text-[#0D2137] hover:bg-gray-100"
               onClick={() => navigate('/contact')}
             >
               Get Notified on Launch
@@ -126,7 +126,7 @@ export default function EducatorsPage() {
       {/* Why Educators Choose Path2Medic */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#1B4F72] mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#0D2137] mb-4">
             Why EMS Programs Choose Path2Medic
           </h2>
           <p className="text-center text-gray-600 mb-12 max-w-3xl mx-auto">
@@ -138,7 +138,7 @@ export default function EducatorsPage() {
               return (
                 <Card key={index} className="hover:shadow-lg transition-shadow">
                   <CardHeader>
-                    <Icon className="h-10 w-10 text-[#5DADE2] mb-2" />
+                    <Icon className="h-10 w-10 text-[#1a5f7a] mb-2" />
                     <CardTitle>{feature.title}</CardTitle>
                   </CardHeader>
                   <CardContent>
@@ -154,17 +154,17 @@ export default function EducatorsPage() {
       {/* Use Cases */}
       <section className="py-16 bg-[#F8F9FA]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#1B4F72] mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#0D2137] mb-12">
             How Instructors Use Path2Medic
           </h2>
           <div className="grid md:grid-cols-2 gap-8">
             {useCases.map((useCase, index) => {
               const Icon = useCase.icon;
               return (
-                <Card key={index} className="border-l-4 border-[#5DADE2]">
+                <Card key={index} className="border-l-4 border-[#1a5f7a]">
                   <CardHeader>
                     <div className="flex items-start gap-4">
-                      <Icon className="h-8 w-8 text-[#5DADE2] flex-shrink-0" />
+                      <Icon className="h-8 w-8 text-[#1a5f7a] flex-shrink-0" />
                       <div>
                         <CardTitle className="mb-2">{useCase.title}</CardTitle>
                         <CardDescription className="text-base">{useCase.description}</CardDescription>
@@ -181,7 +181,7 @@ export default function EducatorsPage() {
       {/* Benefits List */}
       <section className="py-16 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#1B4F72] mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#0D2137] mb-12">
             Benefits for Your Program
           </h2>
           <Card>
@@ -189,7 +189,7 @@ export default function EducatorsPage() {
               <div className="grid md:grid-cols-2 gap-4">
                 {benefits.map((benefit, index) => (
                   <div key={index} className="flex items-start gap-3">
-                    <CheckCircle className="h-5 w-5 text-[#7FA99B] flex-shrink-0 mt-0.5" />
+                    <CheckCircle className="h-5 w-5 text-[#1a5f7a] flex-shrink-0 mt-0.5" />
                     <span>{benefit}</span>
                   </div>
                 ))}
@@ -205,16 +205,16 @@ export default function EducatorsPage() {
       {/* Coming Soon Call to Action */}
       <section className="py-16 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#1B4F72] mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-[#0D2137] mb-4">
             Institutional Pricing Coming Soon
           </h2>
           <p className="text-xl text-gray-600 mb-8">
             We are working on custom solutions for EMS programs, departments, and training centers.
           </p>
-          <Card className="max-w-2xl mx-auto border-2 border-[#E67E22]/20">
+          <Card className="max-w-2xl mx-auto border-2 border-[#E03038]/20">
             <CardHeader>
               <div className="mx-auto bg-[#FFF3E0] p-4 rounded-full w-fit mb-4">
-                <Bell className="h-10 w-10 text-[#E67E22]" />
+                <Bell className="h-10 w-10 text-[#E03038]" />
               </div>
               <CardTitle className="text-2xl">Partner With Us</CardTitle>
               <CardDescription>
@@ -223,14 +223,14 @@ export default function EducatorsPage() {
             </CardHeader>
             <CardFooter className="flex flex-col gap-3">
               <Button 
-                className="w-full bg-[#5DADE2] hover:bg-[#3498DB]" 
+                className="w-full bg-[#1a5f7a] hover:bg-[#1a5f7a]" 
                 size="lg"
                 onClick={() => navigate('/contact')}
               >
                 Contact for Early Access
               </Button>
               <p className="text-sm text-gray-500">
-                Questions? Email <a href="mailto:vincent@path2medic.com" className="text-[#5DADE2] hover:underline">vincent@path2medic.com</a>
+                Questions? Email <a href="mailto:vincent@path2medic.com" className="text-[#1a5f7a] hover:underline">vincent@path2medic.com</a>
               </p>
             </CardFooter>
           </Card>
@@ -240,13 +240,13 @@ export default function EducatorsPage() {
       {/* Who This Is For */}
       <section className="py-16 bg-[#F8F9FA]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#1B4F72] mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#0D2137] mb-12">
             Perfect For
           </h2>
           <div className="grid md:grid-cols-3 gap-6">
             <Card className="text-center">
               <CardHeader>
-                <GraduationCap className="h-12 w-12 text-[#5DADE2] mx-auto mb-2" />
+                <GraduationCap className="h-12 w-12 text-[#1a5f7a] mx-auto mb-2" />
                 <CardTitle>EMS Programs</CardTitle>
               </CardHeader>
               <CardContent>
@@ -257,7 +257,7 @@ export default function EducatorsPage() {
             </Card>
             <Card className="text-center">
               <CardHeader>
-                <Building2 className="h-12 w-12 text-[#5DADE2] mx-auto mb-2" />
+                <Building2 className="h-12 w-12 text-[#1a5f7a] mx-auto mb-2" />
                 <CardTitle>Training Centers</CardTitle>
               </CardHeader>
               <CardContent>
@@ -268,7 +268,7 @@ export default function EducatorsPage() {
             </Card>
             <Card className="text-center">
               <CardHeader>
-                <Users className="h-12 w-12 text-[#5DADE2] mx-auto mb-2" />
+                <Users className="h-12 w-12 text-[#1a5f7a] mx-auto mb-2" />
                 <CardTitle>Departments</CardTitle>
               </CardHeader>
               <CardContent>

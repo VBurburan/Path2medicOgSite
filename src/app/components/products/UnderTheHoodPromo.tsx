@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
 import { CheckCircle2, ArrowRight, BookOpen, Layers, AlertTriangle, FileText, Database, BarChart3, Star } from 'lucide-react';
-import bookCover from 'figma:asset/f6622333bd9fe8e9767231b0875a1ba83a528937.png';
+import bookCover from '@/assets/underhood-cover.png';
 
 export function UnderTheHoodHero() {
   const scrollToDetail = (e: React.MouseEvent) => {
@@ -17,8 +17,8 @@ export function UnderTheHoodHero() {
     <div className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden max-w-4xl mx-auto my-8">
       <div className="flex flex-col md:flex-row">
         {/* Image Section */}
-        <div className="w-full md:w-1/3 bg-[#1B4F72] relative p-6 flex items-center justify-center">
-          <Badge className="absolute top-4 left-4 bg-white text-[#E67E22] hover:bg-white font-bold px-3">
+        <div className="w-full md:w-1/3 bg-[#0D2137] relative p-6 flex items-center justify-center">
+          <Badge className="absolute top-4 left-4 bg-white text-[#E03038] hover:bg-white font-bold px-3">
             New
           </Badge>
           <img 
@@ -30,10 +30,10 @@ export function UnderTheHoodHero() {
 
         {/* Content Section */}
         <div className="w-full md:w-2/3 p-6 md:p-8 flex flex-col justify-center">
-          <h3 className="text-2xl font-bold text-[#1B4F72] mb-1">
+          <h3 className="text-2xl font-bold text-[#0D2137] mb-1">
             Under the Hood: Writing Better NREMT-Aligned EMS Questions
           </h3>
-          <p className="text-sm font-medium text-[#E67E22] mb-4">
+          <p className="text-sm font-medium text-[#E03038] mb-4">
             A practical guide to Clinical Judgment item writing, TEIs, and diagnostic error analysis for EMS educators.
           </p>
           
@@ -48,7 +48,7 @@ export function UnderTheHoodHero() {
               "Error Signatures + tagging to generate actionable remediation reports"
             ].map((item, i) => (
               <div key={i} className="flex items-start gap-2">
-                <CheckCircle2 className="w-4 h-4 text-[#7FA99B] mt-1 flex-shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-[#1a5f7a] mt-1 flex-shrink-0" />
                 <span className="text-sm text-gray-700">{item}</span>
               </div>
             ))}
@@ -56,7 +56,7 @@ export function UnderTheHoodHero() {
 
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
             <Button 
-              className="bg-[#E67E22] hover:bg-[#D35400] text-white w-full sm:w-auto font-semibold"
+              className="bg-[#E03038] hover:bg-[#c52830] text-white w-full sm:w-auto font-semibold"
               onClick={() => window.open('https://path2medic.thinkific.com/enroll/3674017?price_id=4619456', '_blank')}
             >
               Get the eBook
@@ -64,7 +64,7 @@ export function UnderTheHoodHero() {
             <a 
               href="#under-the-hood-detail" 
               onClick={scrollToDetail}
-              className="text-[#1B4F72] hover:text-[#5DADE2] text-sm font-medium flex items-center group cursor-pointer"
+              className="text-[#0D2137] hover:text-[#1a5f7a] text-sm font-medium flex items-center group cursor-pointer"
             >
               See what’s inside
               <ArrowRight className="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1" />
@@ -90,13 +90,13 @@ export function UnderTheHoodDetailed() {
   return (
     <section id="under-the-hood-detail" className="py-16 bg-[#F8F9FA]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-3xl font-bold text-[#1B4F72] mb-12 text-center">Under the Hood</h2>
+        <h2 className="text-3xl font-bold text-[#0D2137] mb-12 text-center">Under the Hood</h2>
         
         <div className="flex flex-col lg:flex-row gap-12 items-center">
           {/* Left: Large Image */}
           <div className="w-full lg:w-5/12 flex justify-center">
             <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-tr from-[#1B4F72] to-[#5DADE2] rounded-2xl transform -rotate-6 scale-95 opacity-20"></div>
+              <div className="absolute inset-0 bg-gradient-to-tr from-[#0D2137] to-[#1a5f7a] rounded-2xl transform -rotate-6 scale-95 opacity-20"></div>
               <img 
                 src={bookCover} 
                 alt="Under the Hood eBook cover" 
@@ -115,8 +115,8 @@ export function UnderTheHoodDetailed() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-8">
                 {features.map((feature, idx) => (
                   <div key={idx} className="flex items-center p-3 bg-white rounded-lg border border-gray-200 shadow-sm">
-                    <div className="bg-[#E67E22]/10 p-2 rounded-full mr-3">
-                      <feature.icon className="w-5 h-5 text-[#E67E22]" />
+                    <div className="bg-[#E03038]/10 p-2 rounded-full mr-3">
+                      <feature.icon className="w-5 h-5 text-[#E03038]" />
                     </div>
                     <span className="font-medium text-gray-800 text-sm">{feature.label}</span>
                   </div>
@@ -127,7 +127,7 @@ export function UnderTheHoodDetailed() {
                 <div className="flex flex-wrap gap-4">
                   <Button 
                     size="lg"
-                    className="bg-[#1B4F72] hover:bg-[#154160] text-white font-bold text-lg px-8"
+                    className="bg-[#0D2137] hover:bg-[#0d3b4c] text-white font-bold text-lg px-8"
                     onClick={() => window.open('https://path2medic.thinkific.com/enroll/3674017?price_id=4619456', '_blank')}
                   >
                     Buy Now
@@ -135,7 +135,7 @@ export function UnderTheHoodDetailed() {
                   <Button 
                     size="lg"
                     variant="outline"
-                    className="border-[#1B4F72] text-[#1B4F72] hover:bg-[#1B4F72]/5"
+                    className="border-[#0D2137] text-[#0D2137] hover:bg-[#0D2137]/5"
                     onClick={() => window.open('https://path2medic.thinkific.com/enroll/3674017?price_id=4619456', '_blank')} 
                   >
                     Preview the Table of Contents
@@ -148,7 +148,7 @@ export function UnderTheHoodDetailed() {
                 <div className="flex flex-wrap items-center gap-3 mt-6">
                   <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Best for:</span>
                   {["Educators", "Program Directors", "Test-Prep Creators"].map((tag) => (
-                    <Badge key={tag} variant="secondary" className="bg-[#5DADE2]/10 text-[#1B4F72] border-[#5DADE2]/20">
+                    <Badge key={tag} variant="secondary" className="bg-[#1a5f7a]/10 text-[#0D2137] border-[#1a5f7a]/20">
                       {tag}
                     </Badge>
                   ))}

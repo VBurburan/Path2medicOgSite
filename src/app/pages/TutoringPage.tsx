@@ -110,7 +110,7 @@ export default function TutoringPage() {
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-[#1B4F72] to-[#5DADE2] py-20 text-white">
+      <section className="bg-gradient-to-br from-[#0D2137] to-[#1a5f7a] py-20 text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <Users className="h-20 w-20 mx-auto mb-6" />
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
@@ -126,7 +126,7 @@ export default function TutoringPage() {
             <Button 
               size="lg" 
               variant="secondary" 
-              className="bg-white text-[#1B4F72] hover:bg-gray-100"
+              className="bg-white text-[#0D2137] hover:bg-gray-100"
               onClick={() => window.open('https://path2medic.thinkific.com/enroll/3570436?price_id=4503585', '_blank')}
             >
               Book Your Session - $189
@@ -138,7 +138,7 @@ export default function TutoringPage() {
       {/* 3-Phase Process */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#1B4F72] mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#0D2137] mb-12">
             The 3-Phase Process
           </h2>
           <div className="space-y-8">
@@ -146,13 +146,13 @@ export default function TutoringPage() {
               <Card key={phase.number} className="border-2 hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <div className="flex items-start gap-4">
-                    <div className="bg-gradient-to-br from-[#1B4F72] to-[#5DADE2] w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
+                    <div className="bg-gradient-to-br from-[#0D2137] to-[#1a5f7a] w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0">
                       <span className="text-white text-xl font-bold">{phase.number}</span>
                     </div>
                     <div>
                       <CardTitle className="text-2xl mb-2">Phase {phase.number}: {phase.title}</CardTitle>
                       {phase.subtitle && (
-                        <CardDescription className="text-base text-[#E67E22] font-semibold">
+                        <CardDescription className="text-base text-[#E03038] font-semibold">
                           {phase.subtitle}
                         </CardDescription>
                       )}
@@ -163,7 +163,7 @@ export default function TutoringPage() {
                   <ul className="space-y-2 ml-16">
                     {phase.items.map((item, index) => (
                       <li key={index} className="flex items-start gap-2">
-                        <CheckCircle className="h-5 w-5 text-[#7FA99B] flex-shrink-0 mt-0.5" />
+                        <CheckCircle className="h-5 w-5 text-[#1a5f7a] flex-shrink-0 mt-0.5" />
                         <span className="text-gray-700">{item}</span>
                       </li>
                     ))}
@@ -178,7 +178,7 @@ export default function TutoringPage() {
       {/* Why It Works */}
       <section className="py-16 bg-[#F8F9FA]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#1B4F72] mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#0D2137] mb-12">
             Why It Works
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -187,7 +187,7 @@ export default function TutoringPage() {
               return (
                 <Card key={index} className="border-2 hover:shadow-lg transition-shadow">
                   <CardHeader>
-                    <div className="bg-[#E67E22] w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                    <div className="bg-[#E03038] w-16 h-16 rounded-full flex items-center justify-center mb-4">
                       <Icon className="h-8 w-8 text-white" />
                     </div>
                     <CardTitle className="text-xl">{item.title}</CardTitle>
@@ -205,33 +205,33 @@ export default function TutoringPage() {
       {/* Instructor Section */}
       <section className="py-16 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#1B4F72] mb-8">
+          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#0D2137] mb-8">
             Your Instructor
           </h2>
-          <Card className="border-4 border-[#1B4F72]">
+          <Card className="border-4 border-[#0D2137]">
             <CardHeader className="text-center">
               <CardTitle className="text-2xl mb-2">Vincent Burburan, NRP</CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="space-y-3 max-w-2xl mx-auto">
                 <li className="flex items-start gap-2">
-                  <CheckCircle className="h-5 w-5 text-[#7FA99B] flex-shrink-0 mt-0.5" />
+                  <CheckCircle className="h-5 w-5 text-[#1a5f7a] flex-shrink-0 mt-0.5" />
                   <span>Critical Care Paramedic (CCP)</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle className="h-5 w-5 text-[#7FA99B] flex-shrink-0 mt-0.5" />
+                  <CheckCircle className="h-5 w-5 text-[#1a5f7a] flex-shrink-0 mt-0.5" />
                   <span>Level 1 NAEMSE Instructor</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle className="h-5 w-5 text-[#7FA99B] flex-shrink-0 mt-0.5" />
+                  <CheckCircle className="h-5 w-5 text-[#1a5f7a] flex-shrink-0 mt-0.5" />
                   <span>University of Florida Critical Care Paramedic Program Graduate</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle className="h-5 w-5 text-[#7FA99B] flex-shrink-0 mt-0.5" />
+                  <CheckCircle className="h-5 w-5 text-[#1a5f7a] flex-shrink-0 mt-0.5" />
                   <span>10+ years EMS field experience (EMT → Critical Care Paramedic)</span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle className="h-5 w-5 text-[#7FA99B] flex-shrink-0 mt-0.5" />
+                  <CheckCircle className="h-5 w-5 text-[#1a5f7a] flex-shrink-0 mt-0.5" />
                   <span>Proven track record helping students pass after previous failures</span>
                 </li>
               </ul>
@@ -243,29 +243,29 @@ export default function TutoringPage() {
       {/* Pricing */}
       <section className="py-16 bg-[#F8F9FA]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#1B4F72] mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#0D2137] mb-12">
             Pricing
           </h2>
-          <Card className="border-4 border-[#E67E22]">
+          <Card className="border-4 border-[#E03038]">
             <CardHeader className="text-center">
               <CardTitle className="text-3xl mb-2">Single Comprehensive Coaching Session</CardTitle>
               <CardDescription className="text-lg">90 min to 2+ hours (flexible based on your needs) • 1-on-1 via Zoom</CardDescription>
             </CardHeader>
             <CardContent className="text-center">
-              <div className="text-5xl font-bold text-[#1B4F72] mb-8">
+              <div className="text-5xl font-bold text-[#0D2137] mb-8">
                 $189
               </div>
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
                 <Button 
                   size="lg" 
-                  className="bg-[#E67E22] hover:bg-[#D35400]"
+                  className="bg-[#E03038] hover:bg-[#c52830]"
                   onClick={() => window.open('https://path2medic.thinkific.com/enroll/3570436?price_id=4503585', '_blank')}
                 >
                   Book Your Session
                 </Button>
               </div>
               <p className="text-gray-600 mb-2">
-                TikTok: <span className="font-semibold text-[#1B4F72]">@path2medic.education</span>
+                TikTok: <span className="font-semibold text-[#0D2137]">@path2medic.education</span>
               </p>
               <p className="text-sm text-gray-500 mt-4">Limited availability - book early</p>
             </CardContent>
@@ -276,13 +276,13 @@ export default function TutoringPage() {
       {/* FAQ */}
       <section className="py-16 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#1B4F72] mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#0D2137] mb-12">
             Frequently Asked Questions
           </h2>
           <Accordion type="single" collapsible className="space-y-4">
             {faqs.map((faq, index) => (
               <AccordionItem key={index} value={`item-${index}`} className="border rounded-lg px-6">
-                <AccordionTrigger className="text-left font-semibold text-[#1B4F72]">
+                <AccordionTrigger className="text-left font-semibold text-[#0D2137]">
                   {faq.question}
                 </AccordionTrigger>
                 <AccordionContent className="text-gray-600">
@@ -295,7 +295,7 @@ export default function TutoringPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-br from-[#E67E22] to-[#D35400] text-white">
+      <section className="py-16 bg-gradient-to-br from-[#E03038] to-[#c52830] text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <Calendar className="h-16 w-16 mx-auto mb-6" />
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -307,7 +307,7 @@ export default function TutoringPage() {
           <Button 
             size="lg" 
             variant="secondary" 
-            className="bg-white text-[#E67E22] hover:bg-gray-100"
+            className="bg-white text-[#E03038] hover:bg-gray-100"
             onClick={() => window.open('https://path2medic.thinkific.com/enroll/3570436?price_id=4503585', '_blank')}
           >
             Book Your Session - $189
