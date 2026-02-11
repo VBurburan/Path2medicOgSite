@@ -78,11 +78,11 @@ export function DashboardView({
       {/* Welcome Section */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h2 className="text-3xl font-bold text-[#1a5f7a]">Welcome back, {name}</h2>
+          <h2 className="text-3xl font-bold text-[#0D2137]">Welcome back, {name}</h2>
           <p className="text-gray-500 mt-1">Here's your performance overview and what to focus on today.</p>
         </div>
         <div className="flex gap-2">
-          {intakeSubmission && <Badge variant="secondary" className="bg-[#1a5f7a]/10 text-[#1a5f7a]">Coaching Student</Badge>}
+          {intakeSubmission && <Badge variant="secondary" className="bg-[#0D2137]/10 text-[#0D2137]">Coaching Student</Badge>}
           <Badge variant="secondary" className="bg-[#d4a843]/10 text-[#d4a843]">Active Member</Badge>
         </div>
       </div>
@@ -145,13 +145,13 @@ export function DashboardView({
           </CardHeader>
           <CardContent>
             <div className="flex flex-col">
-              <div className="text-4xl font-bold text-[#1a5f7a]">
+              <div className="text-4xl font-bold text-[#0D2137]">
                 {profile.total_questions_answered || 0}
               </div>
               <div className="text-xs text-gray-500 mt-1">Questions answered</div>
               <div className="w-full bg-gray-100 rounded-full h-1.5 mt-3">
                 <div 
-                  className="bg-[#1a5f7a] h-1.5 rounded-full" 
+                  className="bg-[#0D2137] h-1.5 rounded-full" 
                   style={{ width: `${Math.min(((profile.questions_used_this_period || 0) / (profile.questions_limit || 25)) * 100, 100)}%` }}
                 />
               </div>
@@ -171,7 +171,7 @@ export function DashboardView({
           <CardContent>
             {intakeSubmission?.coaching_session_scheduled ? (
               <div className="flex flex-col">
-                <div className="text-lg font-bold text-[#1a5f7a]">
+                <div className="text-lg font-bold text-[#0D2137]">
                   {new Date(intakeSubmission.coaching_session_date).toLocaleDateString()}
                 </div>
                 <div className="text-sm font-medium text-gray-600">
@@ -240,7 +240,7 @@ export function DashboardView({
 
         {/* Smart Next Steps */}
         <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-[#1a5f7a] flex items-center">
+          <h3 className="text-lg font-semibold text-[#0D2137] flex items-center">
             <Activity className="h-5 w-5 mr-2" />
             Recommended Actions
           </h3>
@@ -262,13 +262,13 @@ export function DashboardView({
           )}
 
           {/* Recommendation 2: TEI or General */}
-          <Card className="border-l-4 border-l-[#1a5f7a]">
+          <Card className="border-l-4 border-l-[#0D2137]">
             <CardContent className="pt-6">
               <h4 className="font-bold text-gray-900 mb-1">Quick Practice</h4>
               <p className="text-sm text-gray-600 mb-3">
                 Keep your momentum going with a quick 10-question mixed quiz.
               </p>
-              <Button className="w-full bg-[#1a5f7a] hover:bg-[#134b61]" onClick={() => onNavigate('practice')}>
+              <Button className="w-full bg-[#0D2137] hover:bg-[#162d47]" onClick={() => onNavigate('practice')}>
                 <TrendingUp className="h-4 w-4 mr-2" />
                 Start Quick Quiz
               </Button>

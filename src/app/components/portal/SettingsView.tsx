@@ -25,13 +25,13 @@ export function SettingsView({ user, onLogout }: SettingsViewProps) {
 
   return (
     <div className="max-w-4xl mx-auto space-y-8 pb-10">
-      <h2 className="text-2xl font-bold text-[#1a5f7a]">Profile & Settings</h2>
+      <h2 className="text-2xl font-bold text-[#0D2137]">Profile & Settings</h2>
 
       {/* Profile Info */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <User className="h-5 w-5 text-[#1a5f7a]" />
+            <User className="h-5 w-5 text-[#0D2137]" />
             Student Information
           </CardTitle>
           <CardDescription>Manage your personal details and certification goals.</CardDescription>
@@ -65,7 +65,7 @@ export function SettingsView({ user, onLogout }: SettingsViewProps) {
           </div>
         </CardContent>
         <CardFooter className="border-t pt-6 flex justify-end">
-          <Button className="bg-[#1a5f7a] hover:bg-[#134b61]">Save Changes</Button>
+          <Button className="bg-[#0D2137] hover:bg-[#162d47]">Save Changes</Button>
         </CardFooter>
       </Card>
 

@@ -45,7 +45,7 @@ export default function ResourcesPage() {
                     <h3 className="font-semibold text-[#0D2137] truncate">{guide.title}</h3>
                     <p className="text-sm text-gray-500 truncate">{guide.subtitle}</p>
                     <div className="flex items-center gap-3 mt-1">
-                      <span className="text-sm font-medium text-[#1a5f7a]">${guide.price}</span>
+                      <span className="text-sm font-medium text-[#0D2137]">${guide.price}</span>
                       <span className="text-xs text-gray-400">{guide.pages} pages</span>
                       <span className="text-xs text-gray-400">{guide.level}</span>
                     </div>

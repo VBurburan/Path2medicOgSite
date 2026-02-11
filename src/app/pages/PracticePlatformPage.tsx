@@ -54,7 +54,7 @@ export default function PracticePlatformPage() {
   return (
     <Layout>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-[#0D2137] to-[#1a5f7a] py-20 text-white relative overflow-hidden">
+      <section className="bg-gradient-to-br from-[#0D2137] to-[#0D2137] py-20 text-white relative overflow-hidden">
         <div className="absolute top-0 right-0 p-4 opacity-10 transform rotate-12">
           <Bell className="w-64 h-64" />
         </div>
@@ -128,7 +128,7 @@ export default function PracticePlatformPage() {
                 <ul className="space-y-3">
                   {studentFeatures.map((feature, index) => (
                     <li key={index} className="flex items-start gap-3">
-                      <CheckCircle className="h-5 w-5 text-[#1a5f7a] flex-shrink-0 mt-0.5" />
+                      <CheckCircle className="h-5 w-5 text-[#0D2137] flex-shrink-0 mt-0.5" />
                       <span>{feature}</span>
                     </li>
                   ))}

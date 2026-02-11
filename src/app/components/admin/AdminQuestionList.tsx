@@ -125,7 +125,7 @@ export function AdminQuestionList() {
         </div>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
-            <Button className="bg-[#1a5f7a] hover:bg-[#134b61]">
+            <Button className="bg-[#0D2137] hover:bg-[#162d47]">
               <Plus className="h-4 w-4 mr-2" />
               Add Question
             </Button>

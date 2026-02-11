@@ -411,7 +411,7 @@ export default function AdminDashboardPage() {
   return (
     <div className="min-h-screen bg-gray-50 flex font-sans">
       {/* Sidebar */}
-      <aside className="w-64 bg-[#1a5f7a] text-white hidden md:flex flex-col shadow-lg">
+      <aside className="w-64 bg-[#0D2137] text-white hidden md:flex flex-col shadow-lg">
         <div className="p-6 border-b border-white/10 flex items-center justify-center">
           <img src={logoDark} alt="Path2Medic" className="h-14 w-auto rounded" />
         </div>
@@ -463,7 +463,7 @@ export default function AdminDashboardPage() {
         <div className="p-8 max-w-7xl mx-auto">
           <div className="flex justify-between items-center mb-8">
             <div>
-              <h1 className="text-3xl font-bold text-[#1a5f7a]">
+              <h1 className="text-3xl font-bold text-[#0D2137]">
                 {navItems.find(i => i.id === activeTab)?.label || 'Dashboard'}
               </h1>
               <p className="text-gray-500">Manage your NREMT preparation platform.</p>
@@ -477,7 +477,7 @@ export default function AdminDashboardPage() {
                   <CardTitle className="text-sm font-medium text-gray-500">Total Students</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-3xl font-bold text-[#1a5f7a]">{users.length}</div>
+                  <div className="text-3xl font-bold text-[#0D2137]">{users.length}</div>
                   <p className="text-xs text-gray-500 mt-1">Registered + Exam Submissions</p>
                 </CardContent>
               </Card>

@@ -78,7 +78,7 @@ export function PortalSidebar({
               className={cn(
                 "w-full flex items-center px-4 py-3 rounded-lg transition-colors text-sm font-medium",
                 activeTab === item.id 
-                  ? "bg-[#1a5f7a] text-white border-l-4 border-[#d4a843]" 
+                  ? "bg-[#0D2137] text-white border-l-4 border-[#d4a843]" 
                   : "text-gray-300 hover:bg-white/5 hover:text-white"
               )}
             >

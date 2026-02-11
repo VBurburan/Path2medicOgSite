@@ -169,7 +169,7 @@ export default function PosttestExamPage() {
                   type="text"
                   value={studentName}
                   onChange={(e) => setStudentName(e.target.value)}
-                  className="w-full px-3 py-2 border border-[#dee2e6] rounded-md focus:outline-none focus:ring-2 focus:ring-[#1a5f7a]"
+                  className="w-full px-3 py-2 border border-[#dee2e6] rounded-md focus:outline-none focus:ring-2 focus:ring-[#0D2137]"
                   placeholder="Your full name"
                 />
               </div>
@@ -179,7 +179,7 @@ export default function PosttestExamPage() {
                   type="email"
                   value={studentEmail}
                   onChange={(e) => setStudentEmail(e.target.value)}
-                  className="w-full px-3 py-2 border border-[#dee2e6] rounded-md focus:outline-none focus:ring-2 focus:ring-[#1a5f7a]"
+                  className="w-full px-3 py-2 border border-[#dee2e6] rounded-md focus:outline-none focus:ring-2 focus:ring-[#0D2137]"
                   placeholder="your.email@example.com"
                 />
               </div>
@@ -189,7 +189,7 @@ export default function PosttestExamPage() {
                   {error}
                 </div>
               )}
-              <Button onClick={handleStartExam} className="w-full bg-[#0D2137] hover:bg-[#1a5f7a]">
+              <Button onClick={handleStartExam} className="w-full bg-[#0D2137] hover:bg-[#0D2137]">
                 Begin Post-Test
               </Button>
             </CardContent>
@@ -261,7 +261,7 @@ export default function PosttestExamPage() {
             <Button variant="outline" onClick={() => setCurrentPage(p => Math.max(0, p - 1))} disabled={currentPage === 0}>Previous</Button>
             <span className="text-sm text-[#6c757d]">Page {currentPage + 1} of {totalPages}</span>
             {currentPage < totalPages - 1 ? (
-              <Button onClick={() => setCurrentPage(p => p + 1)} className="bg-[#0D2137] hover:bg-[#1a5f7a]">Next</Button>
+              <Button onClick={() => setCurrentPage(p => p + 1)} className="bg-[#0D2137] hover:bg-[#0D2137]">Next</Button>
             ) : (
               <Button onClick={handleSubmit} disabled={submitting} className="bg-[#E03038] hover:bg-[#c52830]">
                 {submitting ? <><Loader2 className="h-4 w-4 animate-spin mr-2" />Submitting...</> : 'Submit Post-Test'}

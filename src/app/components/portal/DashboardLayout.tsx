@@ -17,7 +17,6 @@ import { cn } from '../ui/utils';
 import logoDark from '@/assets/logo-dark.jpg';
 import logoHorizontal from '@/assets/logo-horizontal.png';
 
-const NAVY = '#0D2137';
 const ACCENT = '#E03038';
 
 const navItems = [
@@ -69,53 +68,72 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     navigate('/login');
   };
 
+  const tierLabel = membershipTier === 'free' ? 'Free' : membershipTier === 'pro' ? 'Pro' : 'Max';
+  const tierBadgeClass =
+    membershipTier === 'pro'
+      ? 'bg-[#E03038]/15 text-[#E03038] border border-[#E03038]/20'
+      : membershipTier === 'max'
+        ? 'bg-[#d4a843]/15 text-[#d4a843] border border-[#d4a843]/20'
+        : 'bg-white/10 text-white/50 border border-white/10';
+
   return (
     <div className="h-screen flex overflow-hidden bg-[#f5f6f8]">
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-40 md:hidden backdrop-blur-sm"
+          className="fixed inset-0 bg-black/40 z-40 md:hidden backdrop-blur-sm transition-opacity duration-300"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
-      {/* Sidebar */}
+      {/* Sidebar — premium gradient */}
       <aside
         className={cn(
           'fixed inset-y-0 left-0 z-50 w-[260px] flex-col transition-transform duration-300 ease-in-out md:translate-x-0 md:static md:z-auto hidden md:flex',
           sidebarOpen ? 'translate-x-0 !flex' : '-translate-x-full'
         )}
-        style={{ backgroundColor: NAVY }}
+        style={{
+          background: 'linear-gradient(180deg, #0F2640 0%, #0D2137 40%, #091A2D 100%)',
+        }}
       >
         {/* Logo area */}
-        <div className="h-16 px-5 flex items-center justify-between border-b border-white/8">
+        <div className="h-16 px-5 flex items-center justify-between border-b border-white/[0.06]">
           <img src={logoDark} alt="Path2Medic" className="h-10 w-auto rounded" />
           <button
-            className="md:hidden text-white/60 hover:text-white transition-colors"
+            className="md:hidden text-white/60 hover:text-white transition-all duration-300"
             onClick={() => setSidebarOpen(false)}
           >
             <X className="h-5 w-5" />
           </button>
         </div>
 
-        {/* User info */}
-        <div className="px-5 py-5 border-b border-white/8">
+        {/* User info — premium avatar */}
+        <div className="px-5 py-5 border-b border-white/[0.06]">
           <div className="flex items-center gap-3">
-            <div
-              className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white flex-shrink-0"
-              style={{ backgroundColor: ACCENT }}
-            >
-              {initials}
+            <div className="relative">
+              <div
+                className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white flex-shrink-0 ring-2 ring-white/10 ring-offset-2 ring-offset-[#0D2137] transition-all duration-300"
+                style={{ backgroundColor: ACCENT }}
+              >
+                {initials}
+              </div>
+              {/* Online indicator dot */}
+              <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-400 border-2 border-[#0D2137]" />
             </div>
-            <div className="min-w-0">
+            <div className="min-w-0 flex-1">
               <p className="text-white text-sm font-semibold truncate">{displayName}</p>
-              <p className="text-white/40 text-xs">{certLevel} &middot; {membershipTier === 'free' ? 'Free' : membershipTier === 'pro' ? 'Pro' : 'Max'}</p>
+              <div className="flex items-center gap-2 mt-1">
+                <span className="text-white/40 text-xs">{certLevel}</span>
+                <span className={cn('text-[10px] font-semibold px-2 py-0.5 rounded-full', tierBadgeClass)}>
+                  {tierLabel}
+                </span>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
+        <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
           {navItems.map((item) => {
             const isActive = activeNav === item.id;
             return (
@@ -126,32 +144,40 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                   setSidebarOpen(false);
                 }}
                 className={cn(
-                  'w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-all rounded-lg',
+                  'w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-all duration-300 rounded-lg group relative',
                   isActive
-                    ? 'bg-white/10 text-white'
-                    : 'text-white/50 hover:bg-white/5 hover:text-white/80'
+                    ? 'bg-white/[0.08] text-white shadow-sm shadow-black/10'
+                    : 'text-white/45 hover:bg-white/[0.04] hover:text-white/80'
                 )}
               >
                 <div className="relative flex items-center">
                   {isActive && (
-                    <div className="absolute -left-4 w-[3px] h-5 rounded-r" style={{ backgroundColor: ACCENT }} />
+                    <div
+                      className="absolute -left-4 w-[3px] h-5 rounded-r transition-all duration-300"
+                      style={{ backgroundColor: ACCENT, boxShadow: '0 0 8px rgba(224, 48, 56, 0.3)' }}
+                    />
                   )}
-                  <item.icon className={cn('h-[18px] w-[18px]', isActive ? 'text-white' : '')} />
+                  <item.icon
+                    className={cn(
+                      'h-[18px] w-[18px] transition-all duration-300',
+                      isActive ? 'text-white' : 'group-hover:text-white/70'
+                    )}
+                  />
                 </div>
-                <span>{item.label}</span>
-                {isActive && <ChevronRight className="h-4 w-4 ml-auto text-white/30" />}
+                <span className="transition-all duration-300">{item.label}</span>
+                {isActive && <ChevronRight className="h-4 w-4 ml-auto text-white/25" />}
               </button>
             );
           })}
         </nav>
 
         {/* Sidebar footer */}
-        <div className="px-3 pb-4 pt-2 border-t border-white/8 mt-auto">
+        <div className="px-3 pb-4 pt-2 border-t border-white/[0.06] mt-auto">
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-white/40 hover:bg-white/5 hover:text-white/70 transition-all"
+            className="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-white/35 hover:bg-white/[0.04] hover:text-white/60 transition-all duration-300 group"
           >
-            <LogOut className="h-[18px] w-[18px]" />
+            <LogOut className="h-[18px] w-[18px] transition-all duration-300 group-hover:text-[#E03038]/70" />
             Sign Out
           </button>
         </div>
@@ -159,25 +185,28 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
       {/* Main content area */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        {/* Top header */}
-        <header className="bg-white border-b border-gray-200/80 h-16 px-4 md:px-8 flex items-center justify-between flex-shrink-0">
+        {/* Top header — premium with subtle bottom highlight */}
+        <header className="bg-white/95 backdrop-blur-sm border-b border-gray-200/60 h-16 px-4 md:px-8 flex items-center justify-between flex-shrink-0 relative">
+          {/* Subtle top accent line */}
+          <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-gray-200/80 to-transparent" />
+
           <div className="flex items-center gap-4">
             <button
-              className="md:hidden text-gray-500 hover:text-gray-800 transition-colors"
+              className="md:hidden text-gray-400 hover:text-gray-700 transition-all duration-300"
               onClick={() => setSidebarOpen(true)}
             >
               <Menu className="h-6 w-6" />
             </button>
             <img src={logoHorizontal} alt="Path2Medic" className="h-9 w-auto md:hidden" />
-            <h1 className="text-lg font-semibold text-[#0D2137] hidden md:block">{pageTitle}</h1>
+            <h1 className="text-lg font-semibold text-[#0D2137] hidden md:block tracking-tight">{pageTitle}</h1>
           </div>
 
-          <div className="flex items-center gap-3">
-            <span className="text-sm text-gray-500 hidden sm:block">
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-gray-500 hidden sm:block font-medium">
               {displayName}
             </span>
             <div className="flex items-center gap-2">
-              <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-[#0D2137] text-white tracking-wide">
+              <span className="text-[11px] font-bold px-3 py-1 rounded-full bg-[#0D2137] text-white tracking-wide shadow-sm">
                 {certLevel}
               </span>
             </div>
@@ -190,9 +219,9 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         </main>
       </div>
 
-      {/* Mobile bottom tab bar */}
+      {/* Mobile bottom tab bar — premium styling */}
       <nav
-        className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white border-t border-gray-200/80 flex items-center justify-around px-1"
+        className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white/95 backdrop-blur-sm border-t border-gray-200/60 flex items-center justify-around px-1"
         style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
       >
         {navItems.map((item) => {
@@ -202,14 +231,17 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               key={item.id}
               onClick={() => navigate(item.path)}
               className={cn(
-                'flex flex-col items-center gap-0.5 py-2.5 px-3 text-[10px] font-semibold transition-colors min-w-0 relative',
-                isActive ? 'text-[#E03038]' : 'text-gray-400'
+                'flex flex-col items-center gap-0.5 py-2.5 px-3 text-[10px] font-semibold transition-all duration-300 min-w-0 relative',
+                isActive ? 'text-[#E03038]' : 'text-gray-400 hover:text-gray-500'
               )}
             >
               {isActive && (
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 rounded-b bg-[#E03038]" />
+                <div
+                  className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 rounded-b"
+                  style={{ backgroundColor: ACCENT, boxShadow: '0 1px 4px rgba(224, 48, 56, 0.3)' }}
+                />
               )}
-              <item.icon className={cn('h-5 w-5', isActive ? 'stroke-[2.5]' : '')} />
+              <item.icon className={cn('h-5 w-5 transition-all duration-300', isActive ? 'stroke-[2.5]' : '')} />
               <span className="truncate">{item.label}</span>
             </button>
           );

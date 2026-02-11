@@ -2,10 +2,26 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import logoLight from '@/assets/logo-light.jpg';
-import { Eye, EyeOff, Mail, Lock, ArrowRight } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, ArrowRight, User, ChevronDown } from 'lucide-react';
 
 const NAVY = '#0D2137';
+const ACCENT = '#E03038';
 const CERT_LEVELS = ['EMT', 'AEMT', 'Paramedic'] as const;
+
+/* keyframes injected once */
+const fadeStyle = document.getElementById('auth-fade-style') || (() => {
+  const s = document.createElement('style');
+  s.id = 'auth-fade-style';
+  s.textContent = `
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  `;
+  document.head.appendChild(s);
+  return s;
+})();
+void fadeStyle;
 
 export default function SignupPage() {
   const navigate = useNavigate();
@@ -50,139 +66,225 @@ export default function SignupPage() {
     }
   };
 
-  const inputClass =
-    'w-full px-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#0D2137]/20 focus:border-[#0D2137]/40 transition-colors';
+  const inputBase =
+    'w-full px-4 py-3 rounded-lg border border-gray-200 text-sm bg-gray-50/50 placeholder:text-gray-300 focus:outline-none focus:border-[#0D2137] focus:ring-2 focus:ring-[#0D2137]/10 focus:bg-white transition-all duration-200';
 
   return (
     <div className="min-h-screen flex">
-      {/* Left: Branded panel */}
-      <div className="hidden lg:flex lg:w-[480px] flex-col justify-between p-10" style={{ backgroundColor: NAVY }}>
-        <div>
-          <img src={logoLight} alt="Path2Medic" className="h-14 w-auto mb-16" />
-          <h2 className="text-3xl font-bold text-white leading-tight mb-4">
+      {/* ── Left: Branded panel ── */}
+      <div
+        className="hidden lg:flex lg:w-[480px] flex-col justify-between relative overflow-hidden"
+        style={{ backgroundColor: NAVY }}
+      >
+        {/* Red accent line at top */}
+        <div
+          className="absolute top-0 left-0 right-0 h-[3px]"
+          style={{ background: `linear-gradient(90deg, ${ACCENT}, ${ACCENT}dd, transparent)` }}
+        />
+
+        {/* Dot pattern overlay */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0)',
+            backgroundSize: '32px 32px',
+          }}
+        />
+
+        <div className="relative z-10 p-10 pt-12">
+          <img src={logoLight} alt="Path2Medic" className="h-14 w-auto mb-20" />
+          <h2 className="text-[2.1rem] font-extrabold text-white leading-[1.18] mb-5 tracking-[-0.02em]">
             Join thousands<br />preparing smarter.
           </h2>
-          <p className="text-white/50 text-base leading-relaxed">
+          <p className="text-white/50 text-[15px] leading-relaxed max-w-[340px]">
             Create your free account and start preparing for your NREMT certification exam today.
           </p>
         </div>
-        <p className="text-white/30 text-xs">&copy; {new Date().getFullYear()} Path2Medic. All rights reserved.</p>
+
+        <div className="relative z-10 p-10 pb-8 flex flex-col gap-4">
+          <p className="text-white/40 text-[13px] font-medium tracking-wide">
+            Trusted by 500+ EMS students nationwide
+          </p>
+          <p className="text-white/25 text-xs">&copy; {new Date().getFullYear()} Path2Medic. All rights reserved.</p>
+        </div>
       </div>
 
-      {/* Right: Signup form */}
+      {/* ── Right: Signup form ── */}
       <div className="flex-1 flex items-center justify-center bg-[#f5f6f8] px-4 py-12">
-        <div className="w-full max-w-[400px]">
-          <div className="flex justify-center mb-8 lg:hidden">
+        <div
+          className="w-full max-w-[420px]"
+          style={{ animation: 'fadeInUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.05s both' }}
+        >
+          {/* Mobile logo */}
+          <div className="flex justify-center mb-10 lg:hidden">
             <img src={logoLight} alt="Path2Medic" className="h-16 w-auto" />
           </div>
 
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-200/60 overflow-hidden">
-            <form onSubmit={handleSubmit} className="p-7 space-y-4">
-              <div className="mb-1">
-                <h2 className="text-xl font-bold" style={{ color: NAVY }}>Create account</h2>
-                <p className="text-sm text-gray-400 mt-1">Start your NREMT prep journey</p>
+          <div
+            className="bg-white rounded-2xl border border-gray-200/60 overflow-hidden"
+            style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.04)' }}
+          >
+            <form onSubmit={handleSubmit} className="p-8 space-y-5">
+              {/* Header */}
+              <div
+                className="mb-1"
+                style={{ animation: 'fadeInUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.1s both' }}
+              >
+                <h2 className="text-[22px] font-bold tracking-[-0.01em]" style={{ color: NAVY }}>
+                  Create account
+                </h2>
+                <p className="text-sm text-gray-400 mt-1.5">Start your NREMT prep journey</p>
               </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Full Name</label>
-                <input
-                  type="text"
-                  required
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="John Doe"
-                  className={inputClass}
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Email</label>
+              {/* Full Name */}
+              <div style={{ animation: 'fadeInUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.12s both' }}>
+                <label className="block text-xs uppercase tracking-wider font-semibold text-gray-500 mb-2">
+                  Full Name
+                </label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-300" />
+                  <User className="absolute left-3.5 top-1/2 -translate-y-1/2 h-[15px] w-[15px] text-gray-400" />
+                  <input
+                    type="text"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="John Doe"
+                    className={`${inputBase} pl-10`}
+                  />
+                </div>
+              </div>
+
+              {/* Email */}
+              <div style={{ animation: 'fadeInUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.16s both' }}>
+                <label className="block text-xs uppercase tracking-wider font-semibold text-gray-500 mb-2">
+                  Email
+                </label>
+                <div className="relative">
+                  <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-[15px] w-[15px] text-gray-400" />
                   <input
                     type="email"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="your.email@example.com"
-                    className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#0D2137]/20 focus:border-[#0D2137]/40 transition-colors"
+                    className={`${inputBase} pl-10`}
                   />
                 </div>
               </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Certification Level</label>
-                <select
-                  value={cert}
-                  onChange={(e) => setCert(e.target.value)}
-                  className={`${inputClass} bg-white`}
-                >
-                  {CERT_LEVELS.map((level) => (
-                    <option key={level} value={level}>{level}</option>
-                  ))}
-                </select>
+              {/* Certification Level */}
+              <div style={{ animation: 'fadeInUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.2s both' }}>
+                <label className="block text-xs uppercase tracking-wider font-semibold text-gray-500 mb-2">
+                  Certification Level
+                </label>
+                <div className="relative">
+                  <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
+                  <select
+                    value={cert}
+                    onChange={(e) => setCert(e.target.value)}
+                    className={`${inputBase} bg-white appearance-none pr-10 cursor-pointer`}
+                  >
+                    {CERT_LEVELS.map((level) => (
+                      <option key={level} value={level}>{level}</option>
+                    ))}
+                  </select>
+                </div>
               </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Password</label>
+              {/* Password */}
+              <div style={{ animation: 'fadeInUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.24s both' }}>
+                <label className="block text-xs uppercase tracking-wider font-semibold text-gray-500 mb-2">
+                  Password
+                </label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-300" />
+                  <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-[15px] w-[15px] text-gray-400" />
                   <input
                     type={showPw ? 'text' : 'password'}
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="At least 6 characters"
-                    className="w-full pl-10 pr-10 py-2.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#0D2137]/20 focus:border-[#0D2137]/40 transition-colors"
+                    className={`${inputBase} pl-10 pr-11`}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPw(!showPw)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-300 hover:text-gray-500 transition-colors"
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-300 hover:text-gray-500 transition-all duration-300"
                   >
                     {showPw ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
                 </div>
               </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Confirm Password</label>
-                <input
-                  type="password"
-                  required
-                  value={confirm}
-                  onChange={(e) => setConfirm(e.target.value)}
-                  placeholder="Re-enter password"
-                  className={inputClass}
-                />
+              {/* Confirm Password */}
+              <div style={{ animation: 'fadeInUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.28s both' }}>
+                <label className="block text-xs uppercase tracking-wider font-semibold text-gray-500 mb-2">
+                  Confirm Password
+                </label>
+                <div className="relative">
+                  <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-[15px] w-[15px] text-gray-400" />
+                  <input
+                    type="password"
+                    required
+                    value={confirm}
+                    onChange={(e) => setConfirm(e.target.value)}
+                    placeholder="Re-enter password"
+                    className={`${inputBase} pl-10`}
+                  />
+                </div>
               </div>
 
+              {/* Error */}
               {error && (
-                <div className="rounded-lg bg-red-50 border border-red-200 p-3 text-sm text-red-600">{error}</div>
-              )}
-              {success && (
-                <div className="rounded-lg bg-green-50 border border-green-200 p-3 text-sm text-green-700">{success}</div>
+                <div className="rounded-lg bg-red-50 border border-red-200/80 p-3.5 text-sm text-red-600 flex items-start gap-2.5">
+                  <div className="w-1 h-1 rounded-full bg-red-400 mt-1.5 shrink-0" />
+                  {error}
+                </div>
               )}
 
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full py-2.5 rounded-lg text-white font-semibold text-sm transition-all hover:shadow-lg disabled:opacity-60 flex items-center justify-center gap-2"
-                style={{ backgroundColor: NAVY }}
-              >
-                {loading ? 'Creating account...' : (
-                  <>
-                    Create Account
-                    <ArrowRight className="h-4 w-4" />
-                  </>
-                )}
-              </button>
+              {/* Success */}
+              {success && (
+                <div className="rounded-xl bg-green-50 border border-green-200/80 p-4 text-sm text-green-700 flex items-start gap-2.5">
+                  <div className="w-1 h-1 rounded-full bg-green-500 mt-1.5 shrink-0" />
+                  {success}
+                </div>
+              )}
+
+              {/* Submit */}
+              <div style={{ animation: 'fadeInUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.32s both' }}>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full py-3 rounded-lg text-white font-semibold text-sm transition-all duration-300 hover:translate-y-[-1px] hover:shadow-lg active:translate-y-0 disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:shadow-none flex items-center justify-center gap-2"
+                  style={{ backgroundColor: NAVY }}
+                >
+                  {loading ? (
+                    <span className="flex items-center gap-2">
+                      <span className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      Creating account...
+                    </span>
+                  ) : (
+                    <>
+                      Create Account
+                      <ArrowRight className="h-4 w-4" />
+                    </>
+                  )}
+                </button>
+              </div>
             </form>
           </div>
 
-          <p className="text-center text-sm text-gray-400 mt-6">
+          {/* Footer */}
+          <p
+            className="text-center text-sm text-gray-400 mt-7"
+            style={{ animation: 'fadeInUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.36s both' }}
+          >
             Already have an account?{' '}
-            <Link to="/login" className="font-semibold hover:underline" style={{ color: NAVY }}>
+            <Link
+              to="/login"
+              className="font-semibold hover:underline transition-all duration-300"
+              style={{ color: NAVY }}
+            >
               Sign in
             </Link>
           </p>

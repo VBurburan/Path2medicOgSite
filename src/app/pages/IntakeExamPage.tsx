@@ -157,7 +157,7 @@ export default function IntakeExamPage() {
             <CardHeader>
               <div className="flex items-center gap-2 mb-2">
                 <FileText className="h-5 w-5 text-[#0D2137]" />
-                <Badge className="bg-[#1a5f7a] text-white">{certLevel}</Badge>
+                <Badge className="bg-[#0D2137] text-white">{certLevel}</Badge>
               </div>
               <CardTitle className="text-2xl text-[#0D2137]">Intake Assessment</CardTitle>
               <p className="text-[#6c757d] mt-2">
@@ -171,7 +171,7 @@ export default function IntakeExamPage() {
                   type="text"
                   value={studentName}
                   onChange={(e) => setStudentName(e.target.value)}
-                  className="w-full px-3 py-2 border border-[#dee2e6] rounded-md focus:outline-none focus:ring-2 focus:ring-[#1a5f7a]"
+                  className="w-full px-3 py-2 border border-[#dee2e6] rounded-md focus:outline-none focus:ring-2 focus:ring-[#0D2137]"
                   placeholder="Your full name"
                 />
               </div>
@@ -181,7 +181,7 @@ export default function IntakeExamPage() {
                   type="email"
                   value={studentEmail}
                   onChange={(e) => setStudentEmail(e.target.value)}
-                  className="w-full px-3 py-2 border border-[#dee2e6] rounded-md focus:outline-none focus:ring-2 focus:ring-[#1a5f7a]"
+                  className="w-full px-3 py-2 border border-[#dee2e6] rounded-md focus:outline-none focus:ring-2 focus:ring-[#0D2137]"
                   placeholder="your.email@example.com"
                 />
               </div>
@@ -191,7 +191,7 @@ export default function IntakeExamPage() {
                   {error}
                 </div>
               )}
-              <Button onClick={handleStartExam} className="w-full bg-[#0D2137] hover:bg-[#1a5f7a]">
+              <Button onClick={handleStartExam} className="w-full bg-[#0D2137] hover:bg-[#0D2137]">
                 Begin Assessment
               </Button>
             </CardContent>
@@ -221,7 +221,7 @@ export default function IntakeExamPage() {
         <div className="sticky top-20 z-40 bg-white border-b border-[#dee2e6] shadow-sm">
           <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <Badge className="bg-[#1a5f7a] text-white">{certLevel} Intake</Badge>
+              <Badge className="bg-[#0D2137] text-white">{certLevel} Intake</Badge>
               <span className="text-sm text-[#6c757d]">
                 {answeredCount} / {questions.length} answered
               </span>
@@ -235,7 +235,7 @@ export default function IntakeExamPage() {
           </div>
           <div className="h-1 bg-gray-200">
             <div
-              className="h-1 bg-[#1a5f7a] transition-all duration-300"
+              className="h-1 bg-[#0D2137] transition-all duration-300"
               style={{ width: `${(answeredCount / questions.length) * 100}%` }}
             />
           </div>
@@ -263,8 +263,8 @@ export default function IntakeExamPage() {
                           onClick={() => handleAnswer(q.question_number, optionLabel)}
                           className={`w-full text-left px-4 py-3 rounded-lg border transition-all ${
                             isSelected
-                              ? 'border-[#1a5f7a] bg-[#1a5f7a]/10 text-[#0D2137]'
-                              : 'border-[#dee2e6] hover:border-[#1a5f7a]/50 text-[#333]'
+                              ? 'border-[#0D2137] bg-[#0D2137]/10 text-[#0D2137]'
+                              : 'border-[#dee2e6] hover:border-[#0D2137]/50 text-[#333]'
                           }`}
                         >
                           <span className="font-medium mr-2">{optionLabel}.</span>
@@ -293,7 +293,7 @@ export default function IntakeExamPage() {
             {currentPage < totalPages - 1 ? (
               <Button
                 onClick={() => setCurrentPage(p => p + 1)}
-                className="bg-[#0D2137] hover:bg-[#1a5f7a]"
+                className="bg-[#0D2137] hover:bg-[#0D2137]"
               >
                 Next
               </Button>

@@ -64,7 +64,7 @@ export function PracticeView({ user, onStartModule }: PracticeViewProps) {
       {/* Header & Level Selector */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-[#1a5f7a]">Practice Modules</h2>
+          <h2 className="text-2xl font-bold text-[#0D2137]">Practice Modules</h2>
           <p className="text-gray-500">Select a module to start your training session.</p>
         </div>
         <div className="bg-white p-1 rounded-lg border border-gray-200 flex">
@@ -74,8 +74,8 @@ export function PracticeView({ user, onStartModule }: PracticeViewProps) {
               onClick={() => setSelectedLevel(level)}
               className={`px-4 py-2 text-sm font-medium rounded-md transition-all ${
                 selectedLevel === level 
-                  ? 'bg-[#1a5f7a] text-white shadow-sm' 
-                  : 'text-gray-500 hover:text-[#1a5f7a]'
+                  ? 'bg-[#0D2137] text-white shadow-sm' 
+                  : 'text-gray-500 hover:text-[#0D2137]'
               }`}
             >
               {level}
@@ -87,7 +87,7 @@ export function PracticeView({ user, onStartModule }: PracticeViewProps) {
       {/* Quick Actions Row */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Quick Quiz */}
-        <Card className="bg-gradient-to-br from-[#1a5f7a] to-[#0D2137] text-white border-none shadow-md">
+        <Card className="bg-gradient-to-br from-[#0D2137] to-[#0D2137] text-white border-none shadow-md">
           <CardContent className="pt-6">
             <div className="flex justify-between items-start mb-4">
               <div className="bg-white/10 p-2 rounded-lg">
@@ -132,7 +132,7 @@ export function PracticeView({ user, onStartModule }: PracticeViewProps) {
           <CardContent className="pt-6">
             <div className="flex justify-between items-start mb-4">
               <div className="bg-blue-100 p-2 rounded-lg">
-                <Clock className="h-6 w-6 text-[#1a5f7a]" />
+                <Clock className="h-6 w-6 text-[#0D2137]" />
               </div>
               <Badge variant="secondary">Simulation</Badge>
             </div>
@@ -153,13 +153,13 @@ export function PracticeView({ user, onStartModule }: PracticeViewProps) {
 
       {/* Domain Modules */}
       <div>
-        <h3 className="text-xl font-bold text-[#1a5f7a] mb-4 flex items-center">
+        <h3 className="text-xl font-bold text-[#0D2137] mb-4 flex items-center">
           <Book className="h-5 w-5 mr-2" />
           Study by Domain
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {domains.map((domain) => (
-            <Card key={domain.id} className="hover:shadow-md transition-shadow cursor-pointer border-l-4 border-l-transparent hover:border-l-[#1a5f7a]">
+            <Card key={domain.id} className="hover:shadow-md transition-shadow cursor-pointer border-l-4 border-l-transparent hover:border-l-[#0D2137]">
               <CardHeader className="pb-2">
                 <div className="flex justify-between">
                   <Badge variant="secondary">{domain.percentage_min}-{domain.percentage_max}% of Exam</Badge>
@@ -193,7 +193,7 @@ export function PracticeView({ user, onStartModule }: PracticeViewProps) {
 
       {/* TEI Modules */}
       <div>
-        <h3 className="text-xl font-bold text-[#1a5f7a] mb-4 flex items-center">
+        <h3 className="text-xl font-bold text-[#0D2137] mb-4 flex items-center">
           <LayoutList className="h-5 w-5 mr-2" />
           Study by Question Type (TEI)
         </h3>
@@ -206,7 +206,7 @@ export function PracticeView({ user, onStartModule }: PracticeViewProps) {
                 </div>
               )}
               <CardContent className="pt-6">
-                <div className="mb-2 font-bold text-[#1a5f7a] text-xl">{type.code}</div>
+                <div className="mb-2 font-bold text-[#0D2137] text-xl">{type.code}</div>
                 <h4 className="font-semibold text-sm mb-1">{type.name}</h4>
                 <p className="text-xs text-gray-500 mb-4 h-8">{type.desc}</p>
                 <Button 

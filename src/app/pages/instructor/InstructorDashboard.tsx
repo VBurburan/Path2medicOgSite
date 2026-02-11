@@ -36,7 +36,7 @@ export default function InstructorDashboard() {
                 <Card className="hover:shadow-lg transition-shadow h-full opacity-60 cursor-not-allowed">
                   <CardHeader>
                     <div className="flex items-center justify-between">
-                      <tool.icon className="h-8 w-8 text-[#1a5f7a]" />
+                      <tool.icon className="h-8 w-8 text-[#0D2137]" />
                       <Lock className="h-4 w-4 text-[#6c757d]" />
                     </div>
                     <CardTitle className="text-lg text-[#0D2137]">{tool.title}</CardTitle>

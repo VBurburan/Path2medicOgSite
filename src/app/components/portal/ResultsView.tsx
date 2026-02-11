@@ -41,7 +41,7 @@ export function ResultsView({ results, onRetake, onExit }: ResultsViewProps) {
     <div className="max-w-4xl mx-auto space-y-8 pb-10">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-[#1a5f7a]">Exam Results</h2>
+        <h2 className="text-2xl font-bold text-[#0D2137]">Exam Results</h2>
         <Button variant="outline" onClick={onExit}>
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back to Dashboard
@@ -76,7 +76,7 @@ export function ResultsView({ results, onRetake, onExit }: ResultsViewProps) {
               <RotateCcw className="h-4 w-4 mr-2" />
               Retake Exam
             </Button>
-            <Button className="bg-[#1a5f7a] hover:bg-[#134b61]">
+            <Button className="bg-[#0D2137] hover:bg-[#162d47]">
               Review Answers
             </Button>
           </div>
@@ -85,7 +85,7 @@ export function ResultsView({ results, onRetake, onExit }: ResultsViewProps) {
 
       {/* Question Review */}
       <div className="space-y-4">
-        <h3 className="text-lg font-bold text-[#1a5f7a]">Question Review</h3>
+        <h3 className="text-lg font-bold text-[#0D2137]">Question Review</h3>
         <Accordion type="single" collapsible className="w-full space-y-4">
           {details.map((item: any, index: number) => (
             <AccordionItem key={item.questionId} value={item.questionId} className="border rounded-lg bg-white px-4">

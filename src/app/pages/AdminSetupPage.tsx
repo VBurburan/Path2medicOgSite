@@ -116,7 +116,7 @@ export default function AdminSetupPage() {
             <Button
               variant="ghost"
               onClick={() => navigate('/login')}
-              className="text-[#1a5f7a] hover:text-[#1a5f7a]"
+              className="text-[#0D2137] hover:text-[#0D2137]"
             >
               Back to Login
             </Button>

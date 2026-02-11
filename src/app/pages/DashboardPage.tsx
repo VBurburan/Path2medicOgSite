@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/utils/supabaseClient';
 import { useAuth } from '../context/AuthContext';
 import DashboardLayout from '../components/portal/DashboardLayout';
-import { ArrowRight, ClipboardList, BookOpen, BarChart3 } from 'lucide-react';
+import { ArrowRight, ClipboardList, BookOpen, BarChart3, Sparkles } from 'lucide-react';
 
 const scoreColor = (s: number) => {
   if (s >= 90) return '#28a745';
@@ -81,13 +81,17 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <DashboardLayout>
-        <div className="animate-pulse space-y-6 max-w-3xl">
-          <div className="h-8 bg-gray-200 rounded w-64" />
-          <div className="h-40 bg-gray-200 rounded-xl" />
+        <div className="space-y-6 max-w-3xl">
+          {/* Premium skeleton loader */}
+          <div className="space-y-2">
+            <div className="h-8 bg-gray-200/60 rounded-lg w-64 animate-pulse" />
+            <div className="h-4 bg-gray-100/80 rounded w-40 animate-pulse" />
+          </div>
+          <div className="h-44 bg-gray-200/50 rounded-2xl animate-pulse" />
           <div className="grid grid-cols-3 gap-4">
-            <div className="h-24 bg-gray-200 rounded-xl" />
-            <div className="h-24 bg-gray-200 rounded-xl" />
-            <div className="h-24 bg-gray-200 rounded-xl" />
+            <div className="h-28 bg-gray-200/50 rounded-2xl animate-pulse" />
+            <div className="h-28 bg-gray-200/50 rounded-2xl animate-pulse" style={{ animationDelay: '100ms' }} />
+            <div className="h-28 bg-gray-200/50 rounded-2xl animate-pulse" style={{ animationDelay: '200ms' }} />
           </div>
         </div>
       </DashboardLayout>
@@ -179,50 +183,80 @@ export default function DashboardPage() {
 
   return (
     <DashboardLayout>
-      <div className="space-y-6 max-w-3xl">
-        {/* Welcome */}
-        <div>
-          <h1 className="text-2xl font-bold text-[#0D2137]">
+      <div className="space-y-8 max-w-3xl" style={{ animation: 'fadeIn 0.5s ease-out' }}>
+        {/* Welcome — premium typography */}
+        <div style={{ animation: 'fadeInUp 0.6s ease-out' }}>
+          <h1 className="text-2xl md:text-3xl font-bold text-[#0D2137] tracking-tight">
             Welcome back, {displayName.split(' ')[0]}
           </h1>
-          <p className="text-sm text-gray-400 mt-1">{certLevel} &middot; {membershipTier === 'free' ? 'Free Plan' : membershipTier === 'pro' ? 'Pro Plan' : 'Max Plan'}</p>
+          <p className="text-sm text-gray-400 mt-1.5 font-medium">
+            {certLevel} <span className="text-gray-300 mx-1">/</span> {membershipTier === 'free' ? 'Free Plan' : membershipTier === 'pro' ? 'Pro Plan' : 'Max Plan'}
+          </p>
         </div>
 
-        {/* Action card */}
-        <div className="bg-white rounded-xl border border-gray-200/60 shadow-sm overflow-hidden">
-          <div className="p-6">
-            <h2 className="text-lg font-semibold text-[#0D2137]">{action.heading}</h2>
-            <p className="text-sm text-gray-500 mt-1">{action.subtext}</p>
-            {action.cta && action.link && (
-              <button
-                onClick={() => navigate(action.link!)}
-                className="mt-5 inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-white text-sm font-semibold transition-all hover:shadow-lg"
-                style={{ backgroundColor: '#E03038' }}
-              >
-                {action.cta}
-                <ArrowRight className="h-4 w-4" />
-              </button>
-            )}
+        {/* Action card — premium with gradient accent */}
+        <div
+          className="relative bg-white rounded-2xl border border-gray-200/50 shadow-sm overflow-hidden group"
+          style={{ animation: 'fadeInUp 0.6s ease-out backwards', animationDelay: '0.1s' }}
+        >
+          {/* Top accent gradient bar */}
+          <div className="h-1 bg-gradient-to-r from-[#0D2137] via-[#E03038] to-[#d4a843]" />
+
+          <div className="p-6 md:p-8">
+            <div className="flex items-start gap-4">
+              <div className="hidden sm:flex w-11 h-11 rounded-xl bg-[#E03038]/8 items-center justify-center flex-shrink-0 mt-0.5">
+                <Sparkles className="h-5 w-5 text-[#E03038]" />
+              </div>
+              <div className="flex-1">
+                <h2 className="text-lg md:text-xl font-semibold text-[#0D2137] tracking-tight">{action.heading}</h2>
+                <p className="text-sm text-gray-500 mt-1.5 leading-relaxed">{action.subtext}</p>
+                {action.cta && action.link && (
+                  <button
+                    onClick={() => navigate(action.link!)}
+                    className="mt-6 inline-flex items-center gap-2 px-6 py-2.5 rounded-lg text-white text-sm font-semibold transition-all duration-300 hover:translate-y-[-1px] hover:shadow-lg hover:shadow-[#E03038]/20 active:translate-y-0"
+                    style={{ backgroundColor: '#E03038' }}
+                  >
+                    {action.cta}
+                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Quick links */}
+        {/* Quick links — premium cards */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {quickLinks.map((item) => {
+          {quickLinks.map((item, idx) => {
             const Icon = item.icon;
             return (
               <button
                 key={item.label}
                 onClick={() => navigate(item.path)}
-                className="bg-white rounded-xl border border-gray-200/60 shadow-sm p-4 text-left hover:shadow-md hover:border-gray-300/60 transition-all group"
+                className="bg-white rounded-2xl border border-gray-200/50 shadow-sm p-5 text-left transition-all duration-300 hover:translate-y-[-2px] hover:shadow-md hover:border-gray-300/60 group relative overflow-hidden"
+                style={{
+                  animation: 'fadeInUp 0.5s ease-out backwards',
+                  animationDelay: `${0.2 + idx * 0.08}s`,
+                }}
               >
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-9 h-9 rounded-lg flex items-center justify-center" style={{ backgroundColor: `${item.color}10` }}>
-                    <Icon className="h-[18px] w-[18px]" style={{ color: item.color }} />
+                {/* Subtle hover gradient overlay */}
+                <div
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+                  style={{ background: `linear-gradient(135deg, ${item.color}03 0%, transparent 60%)` }}
+                />
+
+                <div className="relative flex items-center gap-3 mb-3">
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-105"
+                    style={{ backgroundColor: `${item.color}08` }}
+                  >
+                    <Icon className="h-[18px] w-[18px] transition-all duration-300" style={{ color: item.color }} />
                   </div>
-                  <span className="text-sm font-semibold text-[#0D2137]">{item.label}</span>
+                  <span className="text-sm font-semibold text-[#0D2137] tracking-tight">{item.label}</span>
                 </div>
-                <p className="text-xs text-gray-400 group-hover:text-gray-500 transition-colors">{item.stat}</p>
+                <p className="relative text-xs text-gray-400 group-hover:text-gray-500 transition-colors duration-300 font-medium">
+                  {item.stat}
+                </p>
               </button>
             );
           })}

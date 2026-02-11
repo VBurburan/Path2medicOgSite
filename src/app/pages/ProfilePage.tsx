@@ -20,7 +20,7 @@ import {
 /* ── brand palette ── */
 const NAVY = '#0D2137';
 const RED = '#E03038';
-const TEAL = '#1a5f7a';
+const NAVY = '#0D2137';
 const GOLD = '#d4a843';
 const BG = '#f5f5f5';
 
@@ -40,7 +40,7 @@ function tierLabel(tier: string | null | undefined): string {
 function tierColor(tier: string | null | undefined): string {
   const t = (tier ?? 'free').toLowerCase();
   if (t === 'max') return GOLD;
-  if (t === 'pro') return TEAL;
+  if (t === 'pro') return NAVY;
   return '#6b7280';
 }
 
@@ -188,7 +188,7 @@ export default function ProfilePage() {
           {/* ── Personal Information ── */}
           <div className="bg-white rounded-xl shadow p-6 mb-6">
             <div className="flex items-center gap-2 mb-5">
-              <Settings className="h-5 w-5" style={{ color: TEAL }} />
+              <Settings className="h-5 w-5" style={{ color: NAVY }} />
               <h2 className="text-lg font-bold" style={{ color: NAVY }}>
                 Personal Information
               </h2>
@@ -206,7 +206,7 @@ export default function ProfilePage() {
                   onChange={(e) => setFullName(e.target.value)}
                   placeholder="Your full name"
                   className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-opacity-50"
-                  style={{ '--tw-ring-color': TEAL } as React.CSSProperties}
+                  style={{ '--tw-ring-color': NAVY } as React.CSSProperties}
                 />
               </div>
 
@@ -232,7 +232,7 @@ export default function ProfilePage() {
                   value={certLevel}
                   onChange={(e) => setCertLevel(e.target.value)}
                   className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-opacity-50 bg-white"
-                  style={{ '--tw-ring-color': TEAL } as React.CSSProperties}
+                  style={{ '--tw-ring-color': NAVY } as React.CSSProperties}
                 >
                   {CERT_LEVELS.map((level) => (
                     <option key={level} value={level}>
@@ -253,7 +253,7 @@ export default function ProfilePage() {
                   value={targetExamDate}
                   onChange={(e) => setTargetExamDate(e.target.value)}
                   className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-opacity-50"
-                  style={{ '--tw-ring-color': TEAL } as React.CSSProperties}
+                  style={{ '--tw-ring-color': NAVY } as React.CSSProperties}
                 />
               </div>
 
@@ -267,7 +267,7 @@ export default function ProfilePage() {
                   value={questionCount}
                   onChange={(e) => setQuestionCount(Number(e.target.value))}
                   className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-opacity-50 bg-white"
-                  style={{ '--tw-ring-color': TEAL } as React.CSSProperties}
+                  style={{ '--tw-ring-color': NAVY } as React.CSSProperties}
                 >
                   {QUESTION_COUNTS.map((c) => (
                     <option key={c} value={c}>
@@ -359,7 +359,7 @@ export default function ProfilePage() {
               onClick={handleSave}
               disabled={saving}
               className="flex-1 inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg text-white font-semibold transition hover:opacity-90 disabled:opacity-60"
-              style={{ backgroundColor: TEAL }}
+              style={{ backgroundColor: NAVY }}
             >
               <Save className="h-4 w-4" />
               {saving ? 'Saving...' : 'Save Changes'}

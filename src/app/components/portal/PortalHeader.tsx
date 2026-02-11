@@ -36,7 +36,7 @@ export function PortalHeader({ user, toggleSidebar, title, onLogout }: PortalHea
         >
           <Menu className="h-6 w-6 text-gray-600" />
         </Button>
-        <h1 className="text-xl font-bold text-[#1a5f7a] hidden sm:block">{title}</h1>
+        <h1 className="text-xl font-bold text-[#0D2137] hidden sm:block">{title}</h1>
       </div>
 
       <div className="flex items-center space-x-4">
@@ -47,7 +47,7 @@ export function PortalHeader({ user, toggleSidebar, title, onLogout }: PortalHea
         </div>
 
         {/* Level Badge */}
-        <Badge className="bg-[#1a5f7a] hover:bg-[#134b61]">
+        <Badge className="bg-[#0D2137] hover:bg-[#162d47]">
           {level}
         </Badge>
 
@@ -60,7 +60,7 @@ export function PortalHeader({ user, toggleSidebar, title, onLogout }: PortalHea
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-              <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-[#1a5f7a] font-bold border border-blue-200">
+              <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-[#0D2137] font-bold border border-blue-200">
                 {name.charAt(0).toUpperCase()}
               </div>
             </Button>

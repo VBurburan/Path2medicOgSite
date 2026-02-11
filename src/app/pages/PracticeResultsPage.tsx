@@ -392,7 +392,7 @@ export default function PracticeResultsPage() {
         {domainChartData.length > 0 && (
           <section className="mb-10 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
             <h2 className="mb-6 flex items-center gap-2 text-xl font-bold text-[#0D2137]">
-              <BarChart3 className="h-5 w-5 text-[#1a5f7a]" />
+              <BarChart3 className="h-5 w-5 text-[#0D2137]" />
               Domain Performance
               <span className="ml-auto text-xs font-normal text-gray-400">Sorted weakest-first</span>
             </h2>
@@ -432,7 +432,7 @@ export default function PracticeResultsPage() {
           {teiList.length > 0 && (
             <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
               <h2 className="mb-4 flex items-center gap-2 text-lg font-bold text-[#0D2137]">
-                <Layers className="h-5 w-5 text-[#1a5f7a]" />
+                <Layers className="h-5 w-5 text-[#0D2137]" />
                 TEI Type Breakdown
               </h2>
               <div className="space-y-3">
@@ -463,7 +463,7 @@ export default function PracticeResultsPage() {
           {cjList.length > 0 && (
             <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
               <h2 className="mb-4 flex items-center gap-2 text-lg font-bold text-[#0D2137]">
-                <Brain className="h-5 w-5 text-[#1a5f7a]" />
+                <Brain className="h-5 w-5 text-[#0D2137]" />
                 Clinical Judgment Steps
               </h2>
               <div className="space-y-3">
@@ -548,7 +548,7 @@ export default function PracticeResultsPage() {
                       {/* Scenario */}
                       {question.scenario_context && (
                         <div className="rounded-lg bg-blue-50 p-3 text-sm text-gray-700">
-                          <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-[#1a5f7a]">
+                          <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-[#0D2137]">
                             Scenario
                           </span>
                           {question.scenario_context}
@@ -601,8 +601,8 @@ export default function PracticeResultsPage() {
 
                       {/* Rationale for correct answer (show when missed) */}
                       {!isCorrect && question.rationale_correct && (
-                        <div className="rounded-lg border border-[#1a5f7a]/20 bg-[#1a5f7a]/5 p-3">
-                          <p className="text-xs font-semibold uppercase tracking-wide text-[#1a5f7a]">
+                        <div className="rounded-lg border border-[#0D2137]/20 bg-[#0D2137]/5 p-3">
+                          <p className="text-xs font-semibold uppercase tracking-wide text-[#0D2137]">
                             Why the correct answer is right
                           </p>
                           <p className="mt-1 text-sm text-gray-700">{question.rationale_correct}</p>

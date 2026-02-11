@@ -247,7 +247,7 @@ function MCRenderer({ question, value, onChange }: MCRendererProps) {
           key={opt.id}
           className={`flex cursor-pointer items-start gap-3 rounded-lg border-2 p-4 transition-all ${
             value === opt.id
-              ? 'border-[#1a5f7a] bg-[#1a5f7a]/5'
+              ? 'border-[#0D2137] bg-[#0D2137]/5'
               : 'border-gray-200 hover:border-gray-300'
           }`}
         >
@@ -257,7 +257,7 @@ function MCRenderer({ question, value, onChange }: MCRendererProps) {
             value={opt.id}
             checked={value === opt.id}
             onChange={() => onChange(opt.id)}
-            className="mt-0.5 h-4 w-4 shrink-0 accent-[#1a5f7a]"
+            className="mt-0.5 h-4 w-4 shrink-0 accent-[#0D2137]"
           />
           <span className="text-sm text-gray-800">{opt.text}</span>
         </label>
@@ -289,7 +289,7 @@ function MRRenderer({ question, value, onChange }: MRRendererProps) {
           key={opt.id}
           className={`flex cursor-pointer items-start gap-3 rounded-lg border-2 p-4 transition-all ${
             value.includes(opt.id)
-              ? 'border-[#1a5f7a] bg-[#1a5f7a]/5'
+              ? 'border-[#0D2137] bg-[#0D2137]/5'
               : 'border-gray-200 hover:border-gray-300'
           }`}
         >
@@ -298,7 +298,7 @@ function MRRenderer({ question, value, onChange }: MRRendererProps) {
             value={opt.id}
             checked={value.includes(opt.id)}
             onChange={() => toggle(opt.id)}
-            className="mt-0.5 h-4 w-4 shrink-0 accent-[#1a5f7a]"
+            className="mt-0.5 h-4 w-4 shrink-0 accent-[#0D2137]"
           />
           <span className="text-sm text-gray-800">{opt.text}</span>
         </label>
@@ -364,7 +364,7 @@ function BLDragItem({ id, text, index, moveItem, isMobile, onMoveUp, onMoveDown,
     <div
       ref={ref}
       className={`flex items-center gap-3 rounded-lg border-2 border-gray-200 bg-white p-4 transition-all ${
-        isDragging ? 'border-[#1a5f7a] opacity-50 shadow-lg' : 'hover:border-gray-300'
+        isDragging ? 'border-[#0D2137] opacity-50 shadow-lg' : 'hover:border-gray-300'
       }`}
     >
       {!isMobile && <GripVertical className="h-5 w-5 shrink-0 cursor-grab text-gray-400" />}
@@ -537,7 +537,7 @@ function DDRenderer({ question, value, onChange }: DDRendererProps) {
       <div
         ref={drop as unknown as React.Ref<HTMLDivElement>}
         className={`min-h-[80px] rounded-lg border-2 border-dashed p-3 transition-all ${
-          isOver ? 'border-[#1a5f7a] bg-[#1a5f7a]/5' : 'border-gray-300'
+          isOver ? 'border-[#0D2137] bg-[#0D2137]/5' : 'border-gray-300'
         }`}
       >
         <h4 className="mb-2 text-sm font-semibold text-[#0D2137]">{category}</h4>
@@ -587,7 +587,7 @@ function DDRenderer({ question, value, onChange }: DDRendererProps) {
                   onClick={() => setSelectedItem(selectedItem === id ? null : id)}
                   className={`rounded-md border px-3 py-2 text-sm transition-all ${
                     selectedItem === id
-                      ? 'border-[#1a5f7a] bg-[#1a5f7a] text-white'
+                      ? 'border-[#0D2137] bg-[#0D2137] text-white'
                       : 'border-gray-300 bg-white text-gray-800'
                   }`}
                 >
@@ -607,7 +607,7 @@ function DDRenderer({ question, value, onChange }: DDRendererProps) {
               disabled={!selectedItem}
               onClick={() => selectedItem && assignToCategory(selectedItem, cat)}
               className={`w-full rounded-lg border-2 border-dashed p-3 text-left transition-all ${
-                selectedItem ? 'border-[#1a5f7a] hover:bg-[#1a5f7a]/5' : 'border-gray-300'
+                selectedItem ? 'border-[#0D2137] hover:bg-[#0D2137]/5' : 'border-gray-300'
               }`}
             >
               <h4 className="mb-2 text-sm font-semibold text-[#0D2137]">{cat}</h4>
@@ -621,7 +621,7 @@ function DDRenderer({ question, value, onChange }: DDRendererProps) {
                         e.stopPropagation();
                         removeFromCategory(itemId);
                       }}
-                      className="inline-flex items-center gap-1 rounded-md bg-[#1a5f7a]/10 px-2 py-1 text-xs text-[#1a5f7a]"
+                      className="inline-flex items-center gap-1 rounded-md bg-[#0D2137]/10 px-2 py-1 text-xs text-[#0D2137]"
                     >
                       {optMap.get(itemId) || itemId}
                       <X className="h-3 w-3" />
@@ -664,7 +664,7 @@ function DDRenderer({ question, value, onChange }: DDRendererProps) {
                 <span
                   key={itemId}
                   onClick={() => removeFromCategory(itemId)}
-                  className="inline-flex cursor-pointer items-center gap-1 rounded-md bg-[#1a5f7a]/10 px-2 py-1 text-xs text-[#1a5f7a] hover:bg-[#1a5f7a]/20"
+                  className="inline-flex cursor-pointer items-center gap-1 rounded-md bg-[#0D2137]/10 px-2 py-1 text-xs text-[#0D2137] hover:bg-[#0D2137]/20"
                 >
                   {optMap.get(itemId) || itemId}
                   <X className="h-3 w-3" />
@@ -736,7 +736,7 @@ function OBRenderer({ question, value, onChange }: OBRendererProps) {
                   <select
                     value={valMap.get(row) || ''}
                     onChange={(e) => setRowValue(row, e.target.value)}
-                    className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm focus:border-[#1a5f7a] focus:outline-none focus:ring-1 focus:ring-[#1a5f7a]"
+                    className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm focus:border-[#0D2137] focus:outline-none focus:ring-1 focus:ring-[#0D2137]"
                   >
                     <option value="">-- Select --</option>
                     {columnOptions.map((col) => (
@@ -812,7 +812,7 @@ function QuestionGrid({ total, current, answered, flagged, onJump, onClose }: Qu
         {/* Legend */}
         <div className="mb-4 flex flex-wrap gap-4 text-xs text-gray-500">
           <span className="flex items-center gap-1">
-            <span className="h-3 w-3 rounded bg-[#1a5f7a]" /> Answered
+            <span className="h-3 w-3 rounded bg-[#0D2137]" /> Answered
           </span>
           <span className="flex items-center gap-1">
             <span className="h-3 w-3 rounded bg-gray-200" /> Unanswered
@@ -841,7 +841,7 @@ function QuestionGrid({ total, current, answered, flagged, onJump, onClose }: Qu
                   isCurrent
                     ? 'ring-2 ring-[#E03038] ring-offset-1'
                     : ''
-                } ${isAnswered ? 'bg-[#1a5f7a] text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                } ${isAnswered ? 'bg-[#0D2137] text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
               >
                 {i + 1}
                 {isFlagged && (
@@ -885,7 +885,7 @@ function ReviewScreen({ total, answered, flagged, questions, onGoToQuestion, onS
 
       <div className="grid grid-cols-2 gap-4">
         <div className="rounded-xl border border-gray-200 bg-white p-5 text-center">
-          <p className="text-3xl font-bold text-[#1a5f7a]">{answered.size}</p>
+          <p className="text-3xl font-bold text-[#0D2137]">{answered.size}</p>
           <p className="text-sm text-gray-500">Answered</p>
         </div>
         <div className="rounded-xl border border-gray-200 bg-white p-5 text-center">
@@ -1372,7 +1372,7 @@ export default function PracticeSessionPage() {
       <Layout>
         <div className="flex min-h-[60vh] items-center justify-center">
           <div className="text-center">
-            <Loader2 className="mx-auto h-10 w-10 animate-spin text-[#1a5f7a]" />
+            <Loader2 className="mx-auto h-10 w-10 animate-spin text-[#0D2137]" />
             <p className="mt-4 text-gray-500">Loading questions...</p>
           </div>
         </div>
@@ -1535,7 +1535,7 @@ export default function PracticeSessionPage() {
           {/* ---- Progress bar ---- */}
           <div className="mb-8 h-2 w-full overflow-hidden rounded-full bg-gray-200">
             <div
-              className="h-full rounded-full bg-[#1a5f7a] transition-all duration-300"
+              className="h-full rounded-full bg-[#0D2137] transition-all duration-300"
               style={{ width: `${progressPct}%` }}
             />
           </div>
@@ -1545,7 +1545,7 @@ export default function PracticeSessionPage() {
             {/* Scenario context */}
             {currentQuestion.scenario_context && (
               <div className="mb-5 rounded-lg bg-blue-50 p-4 text-sm text-gray-700">
-                <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-[#1a5f7a]">
+                <span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-[#0D2137]">
                   Scenario
                 </span>
                 {currentQuestion.scenario_context}
@@ -1590,7 +1590,7 @@ export default function PracticeSessionPage() {
               {currentIndex < questions.length - 1 ? (
                 <button
                   onClick={goNext}
-                  className="flex items-center gap-1 rounded-lg bg-[#1a5f7a] px-4 py-2 text-sm font-medium text-white transition-all hover:bg-[#1a5f7a]/90"
+                  className="flex items-center gap-1 rounded-lg bg-[#0D2137] px-4 py-2 text-sm font-medium text-white transition-all hover:bg-[#0D2137]/90"
                 >
                   Next
                   <ChevronRight className="h-4 w-4" />

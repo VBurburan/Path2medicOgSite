@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import Layout from '../components/Layout';
 import ProductCard from '../components/ProductCard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
+import { BookOpen, Microscope, Brain } from 'lucide-react';
+import { useInView } from '@/hooks/useInView';
 
 // Import book covers
 import proofCover from '@/assets/proof-cover.png';
@@ -9,6 +11,19 @@ import spotItCover from '@/assets/spotit-cover.png';
 import catCover from '@/assets/cat-cover.png';
 import workbookCover from '@/assets/workbook-cover.png';
 import underTheHoodCover from '@/assets/underhood-cover.png';
+
+function AnimatedSection({ children, className = '', delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
+  const { ref, isInView } = useInView({ threshold: 0.1 });
+  return (
+    <div ref={ref} className={className} style={{
+      opacity: isInView ? 1 : 0,
+      transform: isInView ? 'none' : 'translateY(32px)',
+      transition: `opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) ${delay}s`,
+    }}>
+      {children}
+    </div>
+  );
+}
 
 export default function ProductsPage() {
   const [activeTab, setActiveTab] = useState('all');
@@ -91,8 +106,8 @@ export default function ProductsPage() {
 
   const allProducts = [...products, ...bundles];
 
-  const filteredProducts = activeTab === 'all' 
-    ? allProducts 
+  const filteredProducts = activeTab === 'all'
+    ? allProducts
     : allProducts.filter(p => {
         if (Array.isArray(p.category)) {
           return p.category.includes(activeTab);
@@ -100,81 +115,114 @@ export default function ProductsPage() {
         return p.category === activeTab;
       });
 
+  const features = [
+    {
+      icon: BookOpen,
+      num: '1',
+      title: 'Evidence-Based',
+      description: 'Every strategy is backed by peer-reviewed research on clinical judgment and exam performance',
+      color: '#0D2137'
+    },
+    {
+      icon: Microscope,
+      num: '2',
+      title: 'Exam-Aligned',
+      description: 'Updated for July 2024 changes including all TEI question types and clinical judgment focus',
+      color: '#E03038'
+    },
+    {
+      icon: Brain,
+      num: '3',
+      title: 'Systematic Approach',
+      description: 'Learn the thinking process, not just memorize content - the key to first-time success',
+      color: '#d4a843'
+    }
+  ];
+
   return (
     <Layout>
       {/* Page Header */}
-      <section className="bg-gradient-to-br from-[#0D2137] to-[#162d47] py-16 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Study Resources</h1>
-          <p className="text-xl text-white/90">
-            Evidence-based guides designed for the recent NREMT exam changes
-          </p>
+      <section className="bg-[#0D2137] py-24 text-white relative overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '40px 40px' }} />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(224,48,56,0.1)_0%,_transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(212,168,67,0.06)_0%,_transparent_50%)]" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+          <AnimatedSection>
+            <p className="text-sm font-semibold tracking-widest uppercase text-white/50 mb-4">Study Resources</p>
+          </AnimatedSection>
+          <AnimatedSection delay={0.1}>
+            <h1 className="text-4xl md:text-5xl font-bold mb-5 tracking-tight">Study Resources</h1>
+          </AnimatedSection>
+          <AnimatedSection delay={0.2}>
+            <p className="text-xl text-white/70 max-w-2xl leading-relaxed">
+              Evidence-based guides designed for the recent NREMT exam changes
+            </p>
+          </AnimatedSection>
         </div>
       </section>
 
       {/* Products Section */}
-      <section className="py-16 bg-[#F8F9FA]">
+      <section className="py-20 bg-[#F8F9FA]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-6 mb-12">
-              <TabsTrigger value="all">All</TabsTrigger>
-              <TabsTrigger value="emt">EMT</TabsTrigger>
-              <TabsTrigger value="aemt">AEMT</TabsTrigger>
-              <TabsTrigger value="paramedic">Paramedic</TabsTrigger>
-              <TabsTrigger value="educators">Educators</TabsTrigger>
-              <TabsTrigger value="bundles">Bundles</TabsTrigger>
-            </TabsList>
+          <AnimatedSection>
+            <Tabs value={activeTab} onValueChange={setActiveTab}>
+              <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-6 mb-14 bg-white shadow-md rounded-xl p-1">
+                <TabsTrigger value="all" className="rounded-lg transition-all duration-300 data-[state=active]:shadow-sm">All</TabsTrigger>
+                <TabsTrigger value="emt" className="rounded-lg transition-all duration-300 data-[state=active]:shadow-sm">EMT</TabsTrigger>
+                <TabsTrigger value="aemt" className="rounded-lg transition-all duration-300 data-[state=active]:shadow-sm">AEMT</TabsTrigger>
+                <TabsTrigger value="paramedic" className="rounded-lg transition-all duration-300 data-[state=active]:shadow-sm">Paramedic</TabsTrigger>
+                <TabsTrigger value="educators" className="rounded-lg transition-all duration-300 data-[state=active]:shadow-sm">Educators</TabsTrigger>
+                <TabsTrigger value="bundles" className="rounded-lg transition-all duration-300 data-[state=active]:shadow-sm">Bundles</TabsTrigger>
+              </TabsList>
 
-            <TabsContent value={activeTab}>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredProducts.map((product, index) => (
-                  <ProductCard key={index} {...product} />
-                ))}
-              </div>
-              {filteredProducts.length === 0 && (
-                <div className="text-center py-12">
-                  <p className="text-gray-500 text-lg">No products found in this category.</p>
+              <TabsContent value={activeTab}>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {filteredProducts.map((product, index) => (
+                    <AnimatedSection key={index} delay={index * 0.08}>
+                      <ProductCard {...product} />
+                    </AnimatedSection>
+                  ))}
                 </div>
-              )}
-            </TabsContent>
-          </Tabs>
+                {filteredProducts.length === 0 && (
+                  <div className="text-center py-16">
+                    <p className="text-gray-400 text-lg">No products found in this category.</p>
+                  </div>
+                )}
+              </TabsContent>
+            </Tabs>
+          </AnimatedSection>
         </div>
       </section>
 
       {/* Key Features Section */}
-      <section className="py-16 bg-white">
+      <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-center text-[#0D2137] mb-12">
-            Why Path2Medic Resources Are Different
-          </h2>
+          <AnimatedSection className="text-center mb-16">
+            <p className="text-sm font-semibold tracking-widest uppercase text-[#E03038] mb-3">The Difference</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-[#0D2137] tracking-tight">
+              Why Path2Medic Resources Are Different
+            </h2>
+          </AnimatedSection>
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="bg-[#0D2137] w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-white text-2xl font-bold">1</span>
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Evidence-Based</h3>
-              <p className="text-gray-600">
-                Every strategy is backed by peer-reviewed research on clinical judgment and exam performance
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="bg-[#0D2137] w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-white text-2xl font-bold">2</span>
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Exam-Aligned</h3>
-              <p className="text-gray-600">
-                Updated for July 2024 changes including all TEI question types and clinical judgment focus
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="bg-[#E03038] w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <span className="text-white text-2xl font-bold">3</span>
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Systematic Approach</h3>
-              <p className="text-gray-600">
-                Learn the thinking process, not just memorize content - the key to first-time success
-              </p>
-            </div>
+            {features.map((feature, index) => {
+              const Icon = feature.icon;
+              return (
+                <AnimatedSection key={index} delay={index * 0.12}>
+                  <div className="text-center group">
+                    <div
+                      className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-5 group-hover:scale-110 transition-transform duration-300 shadow-md"
+                      style={{ backgroundColor: feature.color }}
+                    >
+                      <Icon className="h-8 w-8 text-white" />
+                    </div>
+                    <h3 className="text-xl font-semibold mb-3 text-[#0D2137]">{feature.title}</h3>
+                    <p className="text-gray-500 leading-relaxed max-w-sm mx-auto">
+                      {feature.description}
+                    </p>
+                  </div>
+                </AnimatedSection>
+              );
+            })}
           </div>
         </div>
       </section>

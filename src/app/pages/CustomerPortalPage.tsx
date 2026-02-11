@@ -116,7 +116,7 @@ export default function CustomerPortalPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-[#f5f5f5] flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-[#1a5f7a]" />
+        <Loader2 className="h-8 w-8 animate-spin text-[#0D2137]" />
       </div>
     );
   }
@@ -183,7 +183,7 @@ export default function CustomerPortalPage() {
 
               {activeTab === 'coaching' && (
                 <div className="space-y-6">
-                  <h2 className="text-2xl font-bold text-[#1a5f7a]">My Coaching Journey</h2>
+                  <h2 className="text-2xl font-bold text-[#0D2137]">My Coaching Journey</h2>
                    {intakeSubmission ? (
                     <Card>
                       <CardHeader>
@@ -199,9 +199,9 @@ export default function CustomerPortalPage() {
                         {intakeSubmission.coaching_session_scheduled && (
                           <div className="flex items-center justify-between bg-blue-50 p-4 rounded-lg">
                             <div className="flex items-center">
-                              <Calendar className="h-6 w-6 text-[#1a5f7a] mr-4" />
+                              <Calendar className="h-6 w-6 text-[#0D2137] mr-4" />
                               <div>
-                                <p className="font-semibold text-[#1a5f7a]">1-on-1 Strategy Session</p>
+                                <p className="font-semibold text-[#0D2137]">1-on-1 Strategy Session</p>
                                 <p className="text-sm text-gray-600">with Vincent Burburan</p>
                               </div>
                             </div>

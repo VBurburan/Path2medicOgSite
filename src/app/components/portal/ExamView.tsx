@@ -166,8 +166,8 @@ export function ExamView({ user, moduleConfig, onComplete, onExit }: ExamViewPro
           {currentQuestion.scenario_context && (
             <Card className="bg-blue-50 border-blue-100">
               <CardContent className="pt-6">
-                <div className="flex items-center gap-2 text-[#1a5f7a] font-bold mb-2">
-                  <Badge variant="outline" className="bg-white text-[#1a5f7a] border-[#1a5f7a]">Clinical Scenario</Badge>
+                <div className="flex items-center gap-2 text-[#0D2137] font-bold mb-2">
+                  <Badge variant="outline" className="bg-white text-[#0D2137] border-[#0D2137]">Clinical Scenario</Badge>
                 </div>
                 <p className="text-gray-800 leading-relaxed">{currentQuestion.scenario_context}</p>
               </CardContent>
@@ -192,7 +192,7 @@ export function ExamView({ user, moduleConfig, onComplete, onExit }: ExamViewPro
                   onValueChange={handleAnswer}
                 >
                   {currentQuestion.options && Object.entries(currentQuestion.options).map(([key, value]: [string, any]) => (
-                    <div key={key} className={`flex items-start space-x-3 border p-4 rounded-lg transition-colors ${answers[currentQuestion.id] === key ? 'border-[#1a5f7a] bg-[#1a5f7a]/5' : 'border-gray-200 hover:bg-gray-50'}`}>
+                    <div key={key} className={`flex items-start space-x-3 border p-4 rounded-lg transition-colors ${answers[currentQuestion.id] === key ? 'border-[#0D2137] bg-[#0D2137]/5' : 'border-gray-200 hover:bg-gray-50'}`}>
                       <RadioGroupItem value={key} id={key} className="mt-1" />
                       <Label htmlFor={key} className="text-base font-normal cursor-pointer flex-1 leading-relaxed">
                         {value}
@@ -208,7 +208,7 @@ export function ExamView({ user, moduleConfig, onComplete, onExit }: ExamViewPro
                      const currentAnswers = Array.isArray(answers[currentQuestion.id]) ? answers[currentQuestion.id] : [];
                      const isChecked = currentAnswers.includes(key);
                      return (
-                      <div key={key} className={`flex items-start space-x-3 border p-4 rounded-lg transition-colors ${isChecked ? 'border-[#1a5f7a] bg-[#1a5f7a]/5' : 'border-gray-200 hover:bg-gray-50'}`}>
+                      <div key={key} className={`flex items-start space-x-3 border p-4 rounded-lg transition-colors ${isChecked ? 'border-[#0D2137] bg-[#0D2137]/5' : 'border-gray-200 hover:bg-gray-50'}`}>
                         <Checkbox 
                           id={key} 
                           checked={isChecked}
@@ -261,7 +261,7 @@ export function ExamView({ user, moduleConfig, onComplete, onExit }: ExamViewPro
             ) : (
               <Button 
                 onClick={() => setCurrentIndex(prev => Math.min(questions.length - 1, prev + 1))}
-                className="bg-[#1a5f7a] hover:bg-[#134b61] px-8"
+                className="bg-[#0D2137] hover:bg-[#162d47] px-8"
               >
                 Next
                 <ArrowRight className="h-4 w-4 ml-2" />

@@ -7,6 +7,21 @@ import { Eye, EyeOff, Mail, Lock, ArrowRight } from 'lucide-react';
 const NAVY = '#0D2137';
 const ACCENT = '#E03038';
 
+/* keyframes injected once */
+const fadeStyle = document.getElementById('auth-fade-style') || (() => {
+  const s = document.createElement('style');
+  s.id = 'auth-fade-style';
+  s.textContent = `
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  `;
+  document.head.appendChild(s);
+  return s;
+})();
+void fadeStyle; // suppress unused warning
+
 export default function LoginPage() {
   const navigate = useNavigate();
   const { signIn } = useAuth();
@@ -42,68 +57,108 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex">
-      {/* Left: Branded panel (hidden on mobile) */}
-      <div className="hidden lg:flex lg:w-[480px] flex-col justify-between p-10" style={{ backgroundColor: NAVY }}>
-        <div>
-          <img src={logoLight} alt="Path2Medic" className="h-14 w-auto mb-16" />
-          <h2 className="text-3xl font-bold text-white leading-tight mb-4">
+      {/* ── Left: Branded panel ── */}
+      <div
+        className="hidden lg:flex lg:w-[480px] flex-col justify-between relative overflow-hidden"
+        style={{ backgroundColor: NAVY }}
+      >
+        {/* Red accent line at top */}
+        <div
+          className="absolute top-0 left-0 right-0 h-[3px]"
+          style={{ background: `linear-gradient(90deg, ${ACCENT}, ${ACCENT}dd, transparent)` }}
+        />
+
+        {/* Dot pattern overlay */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0)',
+            backgroundSize: '32px 32px',
+          }}
+        />
+
+        <div className="relative z-10 p-10 pt-12">
+          <img src={logoLight} alt="Path2Medic" className="h-14 w-auto mb-20" />
+          <h2 className="text-[2.1rem] font-extrabold text-white leading-[1.18] mb-5 tracking-[-0.02em]">
             Your NREMT<br />success starts here.
           </h2>
-          <p className="text-white/50 text-base leading-relaxed">
+          <p className="text-white/50 text-[15px] leading-relaxed max-w-[340px]">
             Evidence-based coaching and practice questions designed for the new exam format.
           </p>
         </div>
-        <p className="text-white/30 text-xs">&copy; {new Date().getFullYear()} Path2Medic. All rights reserved.</p>
+
+        <div className="relative z-10 p-10 pb-8 flex flex-col gap-4">
+          <p className="text-white/40 text-[13px] font-medium tracking-wide">
+            Trusted by 500+ EMS students nationwide
+          </p>
+          <p className="text-white/25 text-xs">&copy; {new Date().getFullYear()} Path2Medic. All rights reserved.</p>
+        </div>
       </div>
 
-      {/* Right: Login form */}
+      {/* ── Right: Login form ── */}
       <div className="flex-1 flex items-center justify-center bg-[#f5f6f8] px-4 py-12">
-        <div className="w-full max-w-[400px]">
+        <div
+          className="w-full max-w-[420px]"
+          style={{ animation: 'fadeInUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.05s both' }}
+        >
           {/* Mobile logo */}
-          <div className="flex justify-center mb-8 lg:hidden">
+          <div className="flex justify-center mb-10 lg:hidden">
             <img src={logoLight} alt="Path2Medic" className="h-16 w-auto" />
           </div>
 
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-200/60 overflow-hidden">
-            <form onSubmit={handleLogin} className="p-7 space-y-5">
-              <div className="mb-1">
-                <h2 className="text-xl font-bold" style={{ color: NAVY }}>Welcome back</h2>
-                <p className="text-sm text-gray-400 mt-1">Sign in to continue your prep</p>
+          <div
+            className="bg-white rounded-2xl border border-gray-200/60 overflow-hidden"
+            style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.04)' }}
+          >
+            <form onSubmit={handleLogin} className="p-8 space-y-6">
+              {/* Header */}
+              <div
+                className="mb-2"
+                style={{ animation: 'fadeInUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.1s both' }}
+              >
+                <h2 className="text-[22px] font-bold tracking-[-0.01em]" style={{ color: NAVY }}>
+                  Welcome back
+                </h2>
+                <p className="text-sm text-gray-400 mt-1.5">Sign in to continue your prep</p>
               </div>
 
               {/* Email */}
-              <div>
-                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Email</label>
+              <div style={{ animation: 'fadeInUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.15s both' }}>
+                <label className="block text-xs uppercase tracking-wider font-semibold text-gray-500 mb-2">
+                  Email
+                </label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-300" />
+                  <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-[15px] w-[15px] text-gray-400" />
                   <input
                     type="email"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="your.email@example.com"
-                    className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#0D2137]/20 focus:border-[#0D2137]/40 transition-colors"
+                    className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-200 text-sm bg-gray-50/50 placeholder:text-gray-300 focus:outline-none focus:border-[#0D2137] focus:ring-2 focus:ring-[#0D2137]/10 focus:bg-white transition-all duration-200"
                   />
                 </div>
               </div>
 
               {/* Password */}
-              <div>
-                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Password</label>
+              <div style={{ animation: 'fadeInUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.2s both' }}>
+                <label className="block text-xs uppercase tracking-wider font-semibold text-gray-500 mb-2">
+                  Password
+                </label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-300" />
+                  <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-[15px] w-[15px] text-gray-400" />
                   <input
                     type={showPw ? 'text' : 'password'}
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter your password"
-                    className="w-full pl-10 pr-10 py-2.5 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#0D2137]/20 focus:border-[#0D2137]/40 transition-colors"
+                    className="w-full pl-10 pr-11 py-3 rounded-lg border border-gray-200 text-sm bg-gray-50/50 placeholder:text-gray-300 focus:outline-none focus:border-[#0D2137] focus:ring-2 focus:ring-[#0D2137]/10 focus:bg-white transition-all duration-200"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPw(!showPw)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-300 hover:text-gray-500 transition-colors"
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-300 hover:text-gray-500 transition-all duration-300"
                   >
                     {showPw ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
@@ -111,38 +166,62 @@ export default function LoginPage() {
               </div>
 
               {/* Forgot password */}
-              <div className="text-right">
-                <Link to="/forgot-password" className="text-xs font-medium hover:underline" style={{ color: ACCENT }}>
+              <div
+                className="text-right -mt-1"
+                style={{ animation: 'fadeInUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.25s both' }}
+              >
+                <Link
+                  to="/forgot-password"
+                  className="text-xs font-semibold hover:underline transition-all duration-300"
+                  style={{ color: ACCENT }}
+                >
                   Forgot password?
                 </Link>
               </div>
 
               {/* Error */}
               {error && (
-                <div className="rounded-lg bg-red-50 border border-red-200 p-3 text-sm text-red-600">{error}</div>
+                <div className="rounded-lg bg-red-50 border border-red-200/80 p-3.5 text-sm text-red-600 flex items-start gap-2.5">
+                  <div className="w-1 h-1 rounded-full bg-red-400 mt-1.5 shrink-0" />
+                  {error}
+                </div>
               )}
 
               {/* Submit */}
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full py-2.5 rounded-lg text-white font-semibold text-sm transition-all hover:shadow-lg disabled:opacity-60 flex items-center justify-center gap-2"
-                style={{ backgroundColor: NAVY }}
-              >
-                {loading ? 'Signing in...' : (
-                  <>
-                    Sign In
-                    <ArrowRight className="h-4 w-4" />
-                  </>
-                )}
-              </button>
+              <div style={{ animation: 'fadeInUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.3s both' }}>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full py-3 rounded-lg text-white font-semibold text-sm transition-all duration-300 hover:translate-y-[-1px] hover:shadow-lg active:translate-y-0 disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:shadow-none flex items-center justify-center gap-2"
+                  style={{ backgroundColor: NAVY }}
+                >
+                  {loading ? (
+                    <span className="flex items-center gap-2">
+                      <span className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      Signing in...
+                    </span>
+                  ) : (
+                    <>
+                      Sign In
+                      <ArrowRight className="h-4 w-4" />
+                    </>
+                  )}
+                </button>
+              </div>
             </form>
           </div>
 
           {/* Footer */}
-          <p className="text-center text-sm text-gray-400 mt-6">
+          <p
+            className="text-center text-sm text-gray-400 mt-7"
+            style={{ animation: 'fadeInUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.35s both' }}
+          >
             Don't have an account?{' '}
-            <Link to="/signup" className="font-semibold hover:underline" style={{ color: NAVY }}>
+            <Link
+              to="/signup"
+              className="font-semibold hover:underline transition-all duration-300"
+              style={{ color: NAVY }}
+            >
               Create one
             </Link>
           </p>

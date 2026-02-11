@@ -11,7 +11,7 @@ import {
   DialogTrigger,
   DialogFooter,
 } from "./ui/dialog";
-import { CheckCircle2, BookOpen, Download } from 'lucide-react';
+import { CheckCircle2, BookOpen, Download, ArrowRight } from 'lucide-react';
 
 interface ProductCardProps {
   title: string;
@@ -27,7 +27,7 @@ interface ProductCardProps {
 }
 
 const LEVEL_COLORS: Record<string, string> = {
-  EMT: 'bg-[#1a5f7a]',
+  EMT: 'bg-[#0D2137]',
   AEMT: 'bg-[#0D2137]',
   Paramedic: 'bg-[#E03038]',
   'AEMT & Paramedic': 'bg-[#E03038]',
@@ -50,9 +50,9 @@ export default function ProductCard({ title, subtitle, description, price, level
   const badgeClass = LEVEL_COLORS[level] || LEVEL_COLORS.All;
 
   return (
-    <Card className="group hover:shadow-lg transition-all duration-300 border-gray-200 flex flex-col">
+    <Card className="group hover:shadow-lg transition-all duration-300 hover:translate-y-[-4px] border-gray-200/60 flex flex-col overflow-hidden">
       {displayImages.length > 0 ? (
-        <div className="h-64 overflow-hidden rounded-t-lg bg-[#f8f9fa] flex items-center justify-center p-4">
+        <div className="h-64 overflow-hidden bg-[#f8f9fa] flex items-center justify-center p-6 relative">
           {hasMultipleImages ? (
             <div className="flex gap-3 h-full w-full items-center justify-center">
               {displayImages.map((image, index) => (
@@ -60,7 +60,7 @@ export default function ProductCard({ title, subtitle, description, price, level
                   key={index}
                   src={image}
                   alt={`${title} - Book ${index + 1}`}
-                  className="h-full object-contain transition-transform duration-300 group-hover:scale-105"
+                  className="h-full object-contain transition-transform duration-500 group-hover:scale-105"
                   style={{ maxWidth: `${100 / displayImages.length}%` }}
                 />
               ))}
@@ -69,41 +69,47 @@ export default function ProductCard({ title, subtitle, description, price, level
             <img
               src={displayImages[0]}
               alt={title}
-              className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
+              className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
             />
           )}
         </div>
       ) : (
-        <div className="h-48 bg-gradient-to-br from-[#0D2137] to-[#162d47] rounded-t-lg flex items-center justify-center">
+        <div className="h-48 bg-gradient-to-br from-[#0D2137] to-[#162d47] flex items-center justify-center">
           <div className="text-white text-center p-6">
-            <div className="text-sm font-semibold mb-2">{subtitle}</div>
+            <div className="text-sm font-semibold mb-2 text-white/70">{subtitle}</div>
             <div className="text-2xl font-bold">{title}</div>
           </div>
         </div>
       )}
+
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
-          <Badge className={badgeClass}>{level}</Badge>
+          <Badge className={`${badgeClass} text-[11px] font-semibold tracking-wide`}>{level}</Badge>
           <span className="text-2xl font-bold text-[#0D2137]">${price}</span>
         </div>
-        <CardTitle className="text-lg mt-2 text-[#0D2137] leading-tight">{title}</CardTitle>
+        <CardTitle className="text-lg mt-2 text-[#0D2137] leading-tight group-hover:text-[#E03038] transition-colors duration-300">{title}</CardTitle>
         <CardDescription className="text-sm">{subtitle}</CardDescription>
       </CardHeader>
+
       <CardContent className="flex-1">
-        <p className="text-sm text-gray-600 line-clamp-3">{description}</p>
+        <p className="text-sm text-gray-500 line-clamp-3 leading-relaxed">{description}</p>
       </CardContent>
+
       <CardFooter className="flex gap-2 pt-0">
         <Button
-          className="flex-1 bg-[#E03038] hover:bg-[#c52830] font-semibold"
+          className="flex-1 bg-[#E03038] hover:bg-[#c52830] font-semibold transition-all duration-200 hover:shadow-md group/btn"
           onClick={handlePurchase}
           disabled={!effectiveLink}
         >
           {effectiveLink ? 'Buy Now' : 'Coming Soon'}
+          {effectiveLink && <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover/btn:translate-x-0.5" />}
         </Button>
 
         <Dialog>
           <DialogTrigger asChild>
-            <Button variant="outline" className="flex-1 border-[#0D2137] text-[#0D2137] hover:bg-[#0D2137]/5">Details</Button>
+            <Button variant="outline" className="flex-1 border-gray-200 text-[#0D2137] hover:bg-[#0D2137] hover:text-white hover:border-[#0D2137] transition-all duration-200">
+              Details
+            </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto">
             <DialogHeader>
@@ -116,7 +122,7 @@ export default function ProductCard({ title, subtitle, description, price, level
             </DialogHeader>
 
             <div className="grid md:grid-cols-2 gap-6 py-4">
-              <div className="flex items-center justify-center bg-[#f8f9fa] rounded-lg p-4">
+              <div className="flex items-center justify-center bg-[#f8f9fa] rounded-xl p-6">
                 {hasMultipleImages ? (
                   <div className="flex gap-2 items-center justify-center">
                     {displayImages.map((image, index) => (
@@ -137,33 +143,33 @@ export default function ProductCard({ title, subtitle, description, price, level
                 ) : null}
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-5">
                 <div>
-                  <h4 className="font-semibold text-[#0D2137] mb-2 flex items-center gap-2">
+                  <h4 className="font-semibold text-[#0D2137] mb-2 flex items-center gap-2 text-sm">
                     <BookOpen className="h-4 w-4 text-[#0D2137]" />
                     Description
                   </h4>
-                  <p className="text-gray-600 text-sm leading-relaxed">{description}</p>
+                  <p className="text-gray-500 text-sm leading-relaxed">{description}</p>
                 </div>
 
                 <div>
-                  <h4 className="font-semibold text-[#0D2137] mb-2">Included</h4>
-                  <ul className="space-y-2">
-                    <li className="flex items-center gap-2 text-sm text-gray-600">
-                      <CheckCircle2 className="h-4 w-4 text-[#0D2137]" />
+                  <h4 className="font-semibold text-[#0D2137] mb-3 text-sm">Included</h4>
+                  <ul className="space-y-2.5">
+                    <li className="flex items-center gap-2.5 text-sm text-gray-600">
+                      <CheckCircle2 className="h-4 w-4 text-[#28a745] flex-shrink-0" />
                       <span>Instant Digital Delivery</span>
                     </li>
-                    <li className="flex items-center gap-2 text-sm text-gray-600">
-                      <CheckCircle2 className="h-4 w-4 text-[#0D2137]" />
+                    <li className="flex items-center gap-2.5 text-sm text-gray-600">
+                      <CheckCircle2 className="h-4 w-4 text-[#28a745] flex-shrink-0" />
                       <span>Mobile & Tablet Friendly</span>
                     </li>
-                    <li className="flex items-center gap-2 text-sm text-gray-600">
-                      <CheckCircle2 className="h-4 w-4 text-[#0D2137]" />
+                    <li className="flex items-center gap-2.5 text-sm text-gray-600">
+                      <CheckCircle2 className="h-4 w-4 text-[#28a745] flex-shrink-0" />
                       <span>High-Quality PDF Format</span>
                     </li>
                     {effectiveLink && (
-                      <li className="flex items-center gap-2 text-sm text-gray-600">
-                        <Download className="h-4 w-4 text-[#0D2137]" />
+                      <li className="flex items-center gap-2.5 text-sm text-gray-600">
+                        <Download className="h-4 w-4 text-[#0D2137] flex-shrink-0" />
                         <span>Secure Download via Thinkific</span>
                       </li>
                     )}
@@ -173,15 +179,16 @@ export default function ProductCard({ title, subtitle, description, price, level
             </div>
 
             <DialogFooter className="sm:justify-between gap-4 items-center border-t pt-4">
-              <div className="text-sm text-gray-500 italic hidden sm:block">
-                *Secure payment processing
+              <div className="text-sm text-gray-400 hidden sm:block">
+                Secure payment processing
               </div>
               <Button
-                className="w-full sm:w-auto bg-[#E03038] hover:bg-[#c52830] text-lg px-8 font-semibold"
+                className="w-full sm:w-auto bg-[#E03038] hover:bg-[#c52830] text-lg px-8 font-semibold transition-all duration-200 hover:shadow-md"
                 onClick={handlePurchase}
                 disabled={!effectiveLink}
               >
                 {effectiveLink ? 'Buy Now' : 'Coming Soon'}
+                {effectiveLink && <ArrowRight className="ml-1 h-4 w-4" />}
               </Button>
             </DialogFooter>
           </DialogContent>
