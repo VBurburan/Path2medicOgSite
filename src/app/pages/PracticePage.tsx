@@ -2,443 +2,210 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/utils/supabaseClient';
 import { useAuth } from '../context/AuthContext';
-import Layout from '../components/Layout';
-import {
-  BookOpen,
-  Layers,
-  Target,
-  Shuffle,
-  Clock,
-  ChevronRight,
-  AlertCircle,
-  Loader2,
-  GraduationCap,
-  Hash,
-  Zap,
-} from 'lucide-react';
+import DashboardLayout from '../components/portal/DashboardLayout';
+import { Card, CardContent } from '../components/ui/card';
+import { Button } from '../components/ui/button';
+import { BookOpen, Lock } from 'lucide-react';
 
-/* ------------------------------------------------------------------ */
-/* Types                                                               */
-/* ------------------------------------------------------------------ */
-
-interface Domain {
-  id: string;
-  name: string;
-}
-
-interface StudentProfile {
-  id: string;
-  certification_level: string;
-  preferred_question_count: number;
-  total_questions_answered: number;
-}
-
-type PracticeMode = 'domain' | 'tei' | 'weak' | 'random' | 'exam';
-type TEIType = 'MC' | 'MR' | 'BL' | 'DD' | 'OB' | 'Graphics';
-type CertLevel = 'EMT' | 'AEMT' | 'Paramedic';
-type QuestionCount = 10 | 25 | 50;
-
-const TEI_OPTIONS: { value: TEIType; label: string; desc: string }[] = [
-  { value: 'MC', label: 'Multiple Choice', desc: 'Single best answer' },
-  { value: 'MR', label: 'Multiple Response', desc: 'Select all that apply' },
-  { value: 'BL', label: 'Build List', desc: 'Order / prioritize items' },
-  { value: 'DD', label: 'Drag & Drop', desc: 'Match items to categories' },
-  { value: 'OB', label: 'Options Box', desc: 'Matrix grid selections' },
-  { value: 'Graphics', label: 'Graphics', desc: 'Image-based questions' },
-];
-
-const QUESTION_COUNTS: QuestionCount[] = [10, 25, 50];
-
-const CERT_LEVELS: { value: CertLevel; label: string }[] = [
-  { value: 'EMT', label: 'EMT' },
-  { value: 'AEMT', label: 'AEMT' },
-  { value: 'Paramedic', label: 'Paramedic' },
-];
-
-/* ------------------------------------------------------------------ */
-/* Mode Card Component                                                 */
-/* ------------------------------------------------------------------ */
-
-interface ModeCardProps {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-  selected: boolean;
-  onClick: () => void;
-  accent?: string;
-}
-
-function ModeCard({ icon, title, description, selected, onClick, accent = '#1a5f7a' }: ModeCardProps) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={`relative w-full text-left rounded-xl border-2 p-5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
-        selected
-          ? 'border-[#1a5f7a] bg-[#1a5f7a]/5 shadow-md ring-1 ring-[#1a5f7a]/20'
-          : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'
-      }`}
-    >
-      {selected && (
-        <div className="absolute top-3 right-3 h-3 w-3 rounded-full bg-[#1a5f7a]" />
-      )}
-      <div className="flex items-start gap-4">
-        <div
-          className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-lg ${
-            selected ? 'bg-[#1a5f7a] text-white' : 'bg-gray-100 text-gray-500'
-          }`}
-        >
-          {icon}
-        </div>
-        <div className="min-w-0">
-          <h3 className="text-base font-semibold text-[#0D2137]">{title}</h3>
-          <p className="mt-1 text-sm text-gray-500">{description}</p>
-        </div>
-      </div>
-    </button>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/* Main Page Component                                                 */
-/* ------------------------------------------------------------------ */
+const QUESTION_COUNTS = [10, 25, 50];
+const FOCUS_OPTIONS = ['All Domains', 'Weak Areas'];
+const TYPE_OPTIONS = ['All Types', 'MC Only', 'TEI Only'];
 
 export default function PracticePage() {
+  const { user } = useAuth();
   const navigate = useNavigate();
-  const { user, loading: authLoading } = useAuth();
+  const [student, setStudent] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [domains, setDomains] = useState<any[]>([]);
 
-  /* ---- Data state ---- */
-  const [domains, setDomains] = useState<Domain[]>([]);
-  const [studentProfile, setStudentProfile] = useState<StudentProfile | null>(null);
-  const [loadingData, setLoadingData] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  // Config state
+  const [questionCount, setQuestionCount] = useState(25);
+  const [focus, setFocus] = useState('All Domains');
+  const [questionType, setQuestionType] = useState('All Types');
 
-  /* ---- Selection state ---- */
-  const [mode, setMode] = useState<PracticeMode | null>(null);
-  const [selectedDomain, setSelectedDomain] = useState<string>('');
-  const [selectedTEI, setSelectedTEI] = useState<TEIType | ''>('');
-  const [questionCount, setQuestionCount] = useState<QuestionCount>(25);
-  const [certLevel, setCertLevel] = useState<CertLevel>('EMT');
-  const [timerEnabled, setTimerEnabled] = useState(false);
-
-  /* ---- Fetch data on mount ---- */
   useEffect(() => {
-    if (authLoading) return;
-    if (!user) {
-      navigate('/login');
-      return;
-    }
+    if (!user) return;
 
-    async function fetchData() {
+    const fetchData = async () => {
       try {
-        setLoadingData(true);
+        const [studentRes, domainsRes] = await Promise.all([
+          supabase
+            .from('students')
+            .select('membership_tier, certification_level')
+            .eq('user_id', user.id)
+            .maybeSingle(),
+          supabase
+            .from('domains')
+            .select('id, name')
+            .order('display_order', { ascending: true }),
+        ]);
 
-        // Fetch domains
-        const { data: domainRows, error: domErr } = await supabase
-          .from('domains')
-          .select('id, name')
-          .order('name');
-
-        if (domErr) throw domErr;
-        setDomains(domainRows || []);
-
-        // Fetch student profile
-        const { data: student, error: stuErr } = await supabase
-          .from('students')
-          .select('id, certification_level, preferred_question_count, total_questions_answered')
-          .eq('user_id', user!.id)
-          .maybeSingle();
-
-        if (stuErr) console.warn('Student profile fetch:', stuErr);
-
-        if (student) {
-          setStudentProfile(student);
-          setCertLevel((student.certification_level as CertLevel) || 'EMT');
-          if (QUESTION_COUNTS.includes(student.preferred_question_count as QuestionCount)) {
-            setQuestionCount(student.preferred_question_count as QuestionCount);
-          }
-        }
-      } catch (err: any) {
-        console.error('Error fetching practice page data:', err);
-        setError(err.message || 'Failed to load data');
+        if (studentRes.data) setStudent(studentRes.data);
+        if (domainsRes.data) setDomains(domainsRes.data);
+      } catch (err) {
+        console.error('Practice fetch error', err);
       } finally {
-        setLoadingData(false);
+        setLoading(false);
       }
-    }
+    };
 
     fetchData();
-  }, [user, authLoading, navigate]);
+  }, [user]);
 
-  /* ---- Validation ---- */
-  const canStart = (): boolean => {
-    if (!mode) return false;
-    if (mode === 'domain' && !selectedDomain) return false;
-    if (mode === 'tei' && !selectedTEI) return false;
-    return true;
-  };
+  const isSubscribed = student?.membership_tier === 'pro' || student?.membership_tier === 'max';
+  const certLevel = student?.certification_level || 'EMT';
 
-  /* ---- Start session ---- */
   const handleStart = () => {
-    if (!canStart()) return;
-
     const params = new URLSearchParams();
-    params.set('mode', mode!);
     params.set('count', String(questionCount));
     params.set('level', certLevel);
-    if (mode === 'domain') params.set('domain', selectedDomain);
-    if (mode === 'tei') params.set('teiType', selectedTEI);
-    if (mode === 'exam' || timerEnabled) params.set('timed', 'true');
+
+    if (focus === 'Weak Areas') {
+      params.set('mode', 'weak_area');
+    } else if (focus !== 'All Domains') {
+      // It's a specific domain
+      const domain = domains.find((d) => d.name === focus);
+      if (domain) {
+        params.set('mode', 'domain');
+        params.set('domainId', domain.id);
+      }
+    } else {
+      params.set('mode', 'random');
+    }
+
+    if (questionType === 'MC Only') {
+      params.set('typeFilter', 'MC');
+    } else if (questionType === 'TEI Only') {
+      params.set('typeFilter', 'TEI');
+    }
 
     navigate(`/practice/session?${params.toString()}`);
   };
 
-  /* ---- Loading / Error states ---- */
-  if (authLoading || loadingData) {
+  if (loading) {
     return (
-      <Layout>
-        <div className="flex min-h-[60vh] items-center justify-center">
-          <div className="text-center">
-            <Loader2 className="mx-auto h-10 w-10 animate-spin text-[#1a5f7a]" />
-            <p className="mt-4 text-gray-500">Loading practice options...</p>
-          </div>
+      <DashboardLayout>
+        <div className="animate-pulse space-y-6 max-w-2xl">
+          <div className="h-8 bg-gray-200 rounded w-32" />
+          <div className="h-64 bg-gray-200 rounded-xl" />
         </div>
-      </Layout>
+      </DashboardLayout>
     );
   }
 
-  if (error) {
+  // Upsell for non-subscribers
+  if (!isSubscribed) {
     return (
-      <Layout>
-        <div className="flex min-h-[60vh] items-center justify-center">
-          <div className="mx-auto max-w-md rounded-xl border border-red-200 bg-red-50 p-8 text-center">
-            <AlertCircle className="mx-auto h-10 w-10 text-[#E03038]" />
-            <h2 className="mt-4 text-lg font-semibold text-[#0D2137]">Something went wrong</h2>
-            <p className="mt-2 text-sm text-gray-600">{error}</p>
-            <button
-              onClick={() => window.location.reload()}
-              className="mt-6 rounded-lg bg-[#0D2137] px-5 py-2 text-sm font-medium text-white hover:bg-[#0D2137]/90"
-            >
-              Retry
-            </button>
-          </div>
+      <DashboardLayout>
+        <div className="max-w-2xl space-y-6">
+          <h1 className="text-2xl font-bold text-[#0D2137]">Practice</h1>
+          <Card>
+            <CardContent className="py-12 text-center space-y-4">
+              <Lock className="h-12 w-12 text-gray-300 mx-auto" />
+              <h2 className="text-xl font-semibold text-[#0D2137]">
+                Practice Questions Require a Subscription
+              </h2>
+              <p className="text-gray-500 max-w-md mx-auto">
+                Access our full question bank with detailed rationales and performance tracking.
+                Choose a plan that works for you.
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-lg mx-auto pt-4">
+                <div className="border rounded-xl p-6 text-center">
+                  <p className="text-sm font-medium text-gray-500">Pro</p>
+                  <p className="text-3xl font-bold text-[#0D2137] mt-1">$19<span className="text-sm font-normal text-gray-500">/mo</span></p>
+                  <p className="text-sm text-gray-500 mt-2">Access to practice question bank</p>
+                  <Button className="w-full mt-4 bg-[#1a5f7a] hover:bg-[#134b61]">
+                    Subscribe
+                  </Button>
+                </div>
+                <div className="border-2 border-[#d4a843] rounded-xl p-6 text-center">
+                  <p className="text-sm font-medium text-[#d4a843]">Max</p>
+                  <p className="text-3xl font-bold text-[#0D2137] mt-1">$39<span className="text-sm font-normal text-gray-500">/mo</span></p>
+                  <p className="text-sm text-gray-500 mt-2">Unlimited questions + priority support</p>
+                  <Button className="w-full mt-4 bg-[#d4a843] hover:bg-[#b8913a] text-[#0D2137]">
+                    Subscribe
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
-      </Layout>
+      </DashboardLayout>
     );
   }
+
+  // Focus options including domains
+  const focusOptions = [
+    ...FOCUS_OPTIONS,
+    ...domains.map((d) => d.name),
+  ];
 
   return (
-    <Layout>
-      <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
-        {/* ---- Header ---- */}
-        <div className="mb-10">
-          <h1 className="text-3xl font-bold text-[#0D2137]">Practice Exam</h1>
-          <p className="mt-2 text-gray-500">
-            Choose a study mode and customize your session to focus on what matters most.
-          </p>
-        </div>
+    <DashboardLayout>
+      <div className="max-w-2xl space-y-6">
+        <h1 className="text-2xl font-bold text-[#0D2137]">Practice</h1>
 
-        {/* ---- Mode Selection ---- */}
-        <section className="mb-10">
-          <h2 className="mb-4 flex items-center gap-2 text-lg font-semibold text-[#0D2137]">
-            <Zap className="h-5 w-5 text-[#d4a843]" />
-            Select Study Mode
-          </h2>
-
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            <ModeCard
-              icon={<BookOpen className="h-6 w-6" />}
-              title="Study by Domain"
-              description="Focus on a specific NREMT content domain"
-              selected={mode === 'domain'}
-              onClick={() => setMode('domain')}
-            />
-            <ModeCard
-              icon={<Layers className="h-6 w-6" />}
-              title="Study by TEI Type"
-              description="Practice a specific question format"
-              selected={mode === 'tei'}
-              onClick={() => setMode('tei')}
-            />
-            <ModeCard
-              icon={<Target className="h-6 w-6" />}
-              title="Weak Area Drill"
-              description="Auto-targets your lowest scoring domains"
-              selected={mode === 'weak'}
-              onClick={() => setMode('weak')}
-            />
-            <ModeCard
-              icon={<Shuffle className="h-6 w-6" />}
-              title="Random Mix"
-              description="Randomized questions across all areas"
-              selected={mode === 'random'}
-              onClick={() => setMode('random')}
-            />
-            <ModeCard
-              icon={<Clock className="h-6 w-6" />}
-              title="Full Exam Simulation"
-              description="Timed, exam-length practice under real conditions"
-              selected={mode === 'exam'}
-              onClick={() => {
-                setMode('exam');
-                setTimerEnabled(true);
-              }}
-            />
-          </div>
-        </section>
-
-        {/* ---- Domain Picker (conditional) ---- */}
-        {mode === 'domain' && (
-          <section className="mb-10 rounded-xl border border-gray-200 bg-white p-6">
-            <h2 className="mb-4 flex items-center gap-2 text-lg font-semibold text-[#0D2137]">
+        <Card>
+          <CardContent className="p-6 space-y-6">
+            <div className="flex items-center gap-3 mb-2">
               <BookOpen className="h-5 w-5 text-[#1a5f7a]" />
-              Choose Domain
-            </h2>
-            {domains.length === 0 ? (
-              <p className="text-sm text-gray-400">No domains found.</p>
-            ) : (
-              <div className="grid gap-3 sm:grid-cols-2">
-                {domains.map((d) => (
-                  <button
-                    key={d.id}
-                    type="button"
-                    onClick={() => setSelectedDomain(d.id)}
-                    className={`rounded-lg border px-4 py-3 text-left text-sm font-medium transition-all ${
-                      selectedDomain === d.id
-                        ? 'border-[#1a5f7a] bg-[#1a5f7a]/5 text-[#1a5f7a]'
-                        : 'border-gray-200 text-gray-700 hover:border-gray-300'
-                    }`}
-                  >
-                    {d.name}
-                  </button>
-                ))}
+              <p className="text-gray-600 text-sm">Configure your practice session and start.</p>
+            </div>
+
+            {/* 3 Selectors */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {/* Questions */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700">Questions</label>
+                <select
+                  value={questionCount}
+                  onChange={(e) => setQuestionCount(Number(e.target.value))}
+                  className="w-full h-10 rounded-md border border-gray-300 bg-white px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#1a5f7a] focus:border-transparent"
+                >
+                  {QUESTION_COUNTS.map((n) => (
+                    <option key={n} value={n}>{n}</option>
+                  ))}
+                </select>
               </div>
-            )}
-          </section>
-        )}
 
-        {/* ---- TEI Type Picker (conditional) ---- */}
-        {mode === 'tei' && (
-          <section className="mb-10 rounded-xl border border-gray-200 bg-white p-6">
-            <h2 className="mb-4 flex items-center gap-2 text-lg font-semibold text-[#0D2137]">
-              <Layers className="h-5 w-5 text-[#1a5f7a]" />
-              Choose Question Format
-            </h2>
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {TEI_OPTIONS.map((t) => (
-                <button
-                  key={t.value}
-                  type="button"
-                  onClick={() => setSelectedTEI(t.value)}
-                  className={`rounded-lg border px-4 py-3 text-left transition-all ${
-                    selectedTEI === t.value
-                      ? 'border-[#1a5f7a] bg-[#1a5f7a]/5'
-                      : 'border-gray-200 hover:border-gray-300'
-                  }`}
+              {/* Focus */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700">Focus</label>
+                <select
+                  value={focus}
+                  onChange={(e) => setFocus(e.target.value)}
+                  className="w-full h-10 rounded-md border border-gray-300 bg-white px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#1a5f7a] focus:border-transparent"
                 >
-                  <span className="block text-sm font-semibold text-[#0D2137]">{t.label}</span>
-                  <span className="block text-xs text-gray-500">{t.desc}</span>
-                </button>
-              ))}
-            </div>
-          </section>
-        )}
+                  {focusOptions.map((opt) => (
+                    <option key={opt} value={opt}>{opt}</option>
+                  ))}
+                </select>
+              </div>
 
-        {/* ---- Options Row ---- */}
-        <section className="mb-10 grid gap-6 sm:grid-cols-3">
-          {/* Question Count */}
-          <div className="rounded-xl border border-gray-200 bg-white p-6">
-            <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold text-[#0D2137]">
-              <Hash className="h-4 w-4 text-[#d4a843]" />
-              Question Count
-            </h3>
-            <div className="flex gap-2">
-              {QUESTION_COUNTS.map((c) => (
-                <button
-                  key={c}
-                  type="button"
-                  onClick={() => setQuestionCount(c)}
-                  className={`flex-1 rounded-lg border py-2 text-center text-sm font-medium transition-all ${
-                    questionCount === c
-                      ? 'border-[#1a5f7a] bg-[#1a5f7a] text-white'
-                      : 'border-gray-200 text-gray-600 hover:border-gray-300'
-                  }`}
+              {/* Type */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700">Type</label>
+                <select
+                  value={questionType}
+                  onChange={(e) => setQuestionType(e.target.value)}
+                  className="w-full h-10 rounded-md border border-gray-300 bg-white px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#1a5f7a] focus:border-transparent"
                 >
-                  {c}
-                </button>
-              ))}
+                  {TYPE_OPTIONS.map((opt) => (
+                    <option key={opt} value={opt}>{opt}</option>
+                  ))}
+                </select>
+              </div>
             </div>
-          </div>
 
-          {/* Certification Level */}
-          <div className="rounded-xl border border-gray-200 bg-white p-6">
-            <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold text-[#0D2137]">
-              <GraduationCap className="h-4 w-4 text-[#d4a843]" />
-              Certification Level
-            </h3>
-            <div className="flex gap-2">
-              {CERT_LEVELS.map((cl) => (
-                <button
-                  key={cl.value}
-                  type="button"
-                  onClick={() => setCertLevel(cl.value)}
-                  className={`flex-1 rounded-lg border py-2 text-center text-sm font-medium transition-all ${
-                    certLevel === cl.value
-                      ? 'border-[#1a5f7a] bg-[#1a5f7a] text-white'
-                      : 'border-gray-200 text-gray-600 hover:border-gray-300'
-                  }`}
-                >
-                  {cl.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Timer Toggle */}
-          <div className="rounded-xl border border-gray-200 bg-white p-6">
-            <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold text-[#0D2137]">
-              <Clock className="h-4 w-4 text-[#d4a843]" />
-              Timer
-            </h3>
-            <button
-              type="button"
-              onClick={() => {
-                if (mode !== 'exam') setTimerEnabled(!timerEnabled);
-              }}
-              className={`w-full rounded-lg border py-2 text-center text-sm font-medium transition-all ${
-                timerEnabled || mode === 'exam'
-                  ? 'border-[#1a5f7a] bg-[#1a5f7a] text-white'
-                  : 'border-gray-200 text-gray-600 hover:border-gray-300'
-              }`}
+            <Button
+              onClick={handleStart}
+              className="w-full bg-[#0D2137] hover:bg-[#1a3a5c] h-12 text-base font-semibold"
             >
-              {timerEnabled || mode === 'exam' ? 'Timer ON' : 'Timer OFF'}
-            </button>
-            {mode === 'exam' && (
-              <p className="mt-2 text-xs text-gray-400">Timer is always on in exam mode</p>
-            )}
-          </div>
-        </section>
-
-        {/* ---- Start Button ---- */}
-        <div className="flex justify-center">
-          <button
-            type="button"
-            disabled={!canStart()}
-            onClick={handleStart}
-            className={`group flex items-center gap-3 rounded-xl px-10 py-4 text-lg font-bold transition-all ${
-              canStart()
-                ? 'bg-[#E03038] text-white shadow-lg hover:bg-[#c72830] hover:shadow-xl active:scale-[0.98]'
-                : 'cursor-not-allowed bg-gray-200 text-gray-400'
-            }`}
-          >
-            Start Practice
-            <ChevronRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-          </button>
-        </div>
-
-        {!mode && (
-          <p className="mt-4 text-center text-sm text-gray-400">Select a study mode above to begin</p>
-        )}
+              Start Practice Session
+            </Button>
+          </CardContent>
+        </Card>
       </div>
-    </Layout>
+    </DashboardLayout>
   );
 }

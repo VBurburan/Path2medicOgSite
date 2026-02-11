@@ -41,7 +41,179 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../components/ui/dropdown-menu";
-import { MoreVertical, Shield, Mail, UserPlus, FileEdit } from 'lucide-react';
+import { MoreVertical, Shield, Mail, UserPlus, FileEdit, ClipboardList, Plus } from 'lucide-react';
+
+// Exam Assignment Component
+function ExamAssignments() {
+  const [students, setStudents] = useState<any[]>([]);
+  const [assignments, setAssignments] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [showForm, setShowForm] = useState(false);
+  const [formEmail, setFormEmail] = useState('');
+  const [formExamType, setFormExamType] = useState('intake');
+  const [formCertLevel, setFormCertLevel] = useState('EMT');
+  const [formExamId, setFormExamId] = useState('');
+  const [formNotes, setFormNotes] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    fetchAssignments();
+  }, []);
+
+  const fetchAssignments = async () => {
+    try {
+      const { data } = await supabase
+        .from('exam_assignments')
+        .select('*')
+        .order('assigned_at', { ascending: false })
+        .limit(50);
+      if (data) setAssignments(data);
+    } catch (err) {
+      console.error('Error fetching assignments', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleAssign = async () => {
+    if (!formEmail) return;
+    setSubmitting(true);
+    try {
+      const { error } = await supabase.from('exam_assignments').insert({
+        student_email: formEmail.trim().toLowerCase(),
+        exam_type: formExamType,
+        certification_level: formCertLevel,
+        exam_id: formExamId || null,
+        status: 'available',
+        notes: formNotes || null,
+      });
+      if (error) throw error;
+      setShowForm(false);
+      setFormEmail('');
+      setFormExamId('');
+      setFormNotes('');
+      fetchAssignments();
+    } catch (err) {
+      console.error('Error assigning exam', err);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const updateStatus = async (id: string, status: string) => {
+    await supabase.from('exam_assignments').update({ status }).eq('id', id);
+    fetchAssignments();
+  };
+
+  return (
+    <div className="space-y-4">
+      <div className="flex justify-between items-center">
+        <p className="text-sm text-gray-500">Assign and manage student exams</p>
+        <Button onClick={() => setShowForm(!showForm)} size="sm">
+          <Plus className="h-4 w-4 mr-1" /> Assign Exam
+        </Button>
+      </div>
+
+      {showForm && (
+        <Card>
+          <CardContent className="p-4 space-y-3">
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="text-xs font-medium text-gray-500">Student Email</label>
+                <Input value={formEmail} onChange={(e) => setFormEmail(e.target.value)} placeholder="student@email.com" />
+              </div>
+              <div>
+                <label className="text-xs font-medium text-gray-500">Exam Type</label>
+                <select value={formExamType} onChange={(e) => setFormExamType(e.target.value)} className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
+                  <option value="intake">Intake</option>
+                  <option value="posttest">Post-Test</option>
+                </select>
+              </div>
+              <div>
+                <label className="text-xs font-medium text-gray-500">Certification Level</label>
+                <select value={formCertLevel} onChange={(e) => setFormCertLevel(e.target.value)} className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
+                  <option value="EMT">EMT</option>
+                  <option value="AEMT">AEMT</option>
+                  <option value="Paramedic">Paramedic</option>
+                </select>
+              </div>
+              <div>
+                <label className="text-xs font-medium text-gray-500">Exam ID (optional)</label>
+                <Input value={formExamId} onChange={(e) => setFormExamId(e.target.value)} placeholder="e.g. posttest-emt-v2" />
+              </div>
+            </div>
+            <div>
+              <label className="text-xs font-medium text-gray-500">Notes (visible to student)</label>
+              <Input value={formNotes} onChange={(e) => setFormNotes(e.target.value)} placeholder="Optional notes..." />
+            </div>
+            <div className="flex gap-2">
+              <Button onClick={handleAssign} disabled={submitting} size="sm">
+                {submitting ? 'Assigning...' : 'Assign'}
+              </Button>
+              <Button variant="outline" size="sm" onClick={() => setShowForm(false)}>Cancel</Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      <div className="rounded-md border bg-white">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Student</TableHead>
+              <TableHead>Exam</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Assigned</TableHead>
+              <TableHead>Score</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {loading ? (
+              <TableRow><TableCell colSpan={6} className="text-center py-8 text-gray-500">Loading...</TableCell></TableRow>
+            ) : assignments.length === 0 ? (
+              <TableRow><TableCell colSpan={6} className="text-center py-8 text-gray-500">No exam assignments yet</TableCell></TableRow>
+            ) : (
+              assignments.map((a) => (
+                <TableRow key={a.id}>
+                  <TableCell className="text-sm">{a.student_email}</TableCell>
+                  <TableCell>
+                    <Badge variant="secondary" className="text-xs">
+                      {a.certification_level} {a.exam_type}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant="outline" className={`text-xs ${
+                      a.status === 'graded' ? 'bg-green-50 text-green-700' :
+                      a.status === 'submitted' ? 'bg-amber-50 text-amber-700' :
+                      a.status === 'available' ? 'bg-blue-50 text-blue-700' :
+                      'bg-gray-50 text-gray-700'
+                    }`}>
+                      {a.status}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-xs text-gray-500">
+                    {new Date(a.assigned_at).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell>
+                    {a.score_percentage != null ? `${Math.round(a.score_percentage)}%` : '—'}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    {a.status === 'submitted' && (
+                      <Button variant="outline" size="sm" onClick={() => updateStatus(a.id, 'graded')}>
+                        Mark Graded
+                      </Button>
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
+      </div>
+    </div>
+  );
+}
 
 function UserManagement({ users, loading }: { users: any[], loading: boolean }) {
   const [searchTerm, setSearchTerm] = useState('');
@@ -220,6 +392,7 @@ export default function AdminDashboardPage() {
 
   const navItems = [
     { id: 'dashboard', label: 'Overview', icon: LayoutDashboard },
+    { id: 'assignments', label: 'Exam Assignments', icon: ClipboardList },
     { id: 'questions', label: 'Questions Bank', icon: FileQuestion },
     { id: 'submissions', label: 'Submissions', icon: FileText },
     { id: 'users', label: 'Students', icon: Users },
@@ -333,8 +506,10 @@ export default function AdminDashboardPage() {
             </div>
           )}
 
+          {activeTab === 'assignments' && <ExamAssignments />}
+
           {activeTab === 'users' && <UserManagement users={users} loading={loading} />}
-          
+
           {activeTab === 'questions' && <AdminQuestionList />}
           
           {activeTab === 'submissions' && <AdminSubmissionList />}

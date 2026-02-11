@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react';
+import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { Toaster } from 'sonner';
@@ -15,15 +15,17 @@ import ContactPage from './pages/ContactPage';
 import EducatorsPage from './pages/EducatorsPage';
 import LoginPage from './pages/LoginPage';
 
-// Protected pages
+// Protected student portal pages
 import DashboardPage from './pages/DashboardPage';
+import ExamsPage from './pages/ExamsPage';
 import PracticePage from './pages/PracticePage';
 import PracticeSessionPage from './pages/PracticeSessionPage';
 import PracticeResultsPage from './pages/PracticeResultsPage';
 import ResultsPage from './pages/ResultsPage';
-import ProfilePage from './pages/ProfilePage';
+import ResourcesPage from './pages/ResourcesPage';
+import SettingsPage from './pages/SettingsPage';
 
-// Coaching pipeline
+// Coaching pipeline (direct access)
 import IntakeExamPage from './pages/IntakeExamPage';
 import PosttestExamPage from './pages/PosttestExamPage';
 
@@ -38,14 +40,6 @@ import InstructorAnalytics from './pages/instructor/InstructorAnalytics';
 import AdminDashboardPage from './pages/AdminDashboardPage';
 import AdminSetupPage from './pages/AdminSetupPage';
 import AdminAssetsPage from './pages/AdminAssetsPage';
-
-function LoadingFallback() {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-[#f5f5f5]">
-      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0D2137]"></div>
-    </div>
-  );
-}
 
 export default function App() {
   return (
@@ -64,13 +58,15 @@ export default function App() {
           <Route path="/educators" element={<EducatorsPage />} />
           <Route path="/login" element={<LoginPage />} />
 
-          {/* Protected Student Pages */}
+          {/* Protected Student Portal */}
           <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+          <Route path="/exams" element={<ProtectedRoute><ExamsPage /></ProtectedRoute>} />
           <Route path="/practice" element={<ProtectedRoute><PracticePage /></ProtectedRoute>} />
           <Route path="/practice/session" element={<ProtectedRoute><PracticeSessionPage /></ProtectedRoute>} />
           <Route path="/practice/results" element={<ProtectedRoute><PracticeResultsPage /></ProtectedRoute>} />
           <Route path="/results" element={<ProtectedRoute><ResultsPage /></ProtectedRoute>} />
-          <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+          <Route path="/resources" element={<ProtectedRoute><ResourcesPage /></ProtectedRoute>} />
+          <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
 
           {/* Coaching Pipeline (accessible via direct link) */}
           <Route path="/exam/intake/:level" element={<IntakeExamPage />} />

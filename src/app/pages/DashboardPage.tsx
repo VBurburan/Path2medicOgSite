@@ -1,181 +1,61 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/utils/supabaseClient';
 import { useAuth } from '../context/AuthContext';
-import Layout from '../components/Layout';
-import { Skeleton } from '../components/ui/skeleton';
-import {
-  TrendingUp,
-  TrendingDown,
-  Target,
-  Flame,
-  BookOpen,
-  BarChart3,
-  Calendar,
-  ChevronRight,
-  Lightbulb,
-  Play,
-  ClipboardList,
-  Users,
-  Rocket,
-} from 'lucide-react';
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  LineChart,
-  Line,
-  CartesianGrid,
-} from 'recharts';
+import DashboardLayout from '../components/portal/DashboardLayout';
+import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
+import { ArrowUp, ArrowRight } from 'lucide-react';
 
-/* ── brand palette ── */
-const NAVY = '#0D2137';
-const RED = '#E03038';
-const TEAL = '#1a5f7a';
-const GOLD = '#d4a843';
-const BG = '#f5f5f5';
-
-interface DomainScore {
-  domain: string;
-  score: number;
-}
-
-function domainBarColor(score: number): string {
-  if (score >= 90) return '#28a745';
-  if (score >= 80) return '#17a2b8';
-  if (score >= 70) return '#ffc107';
+const scoreColor = (s: number) => {
+  if (s >= 90) return '#28a745';
+  if (s >= 80) return '#17a2b8';
+  if (s >= 70) return '#d4a843';
   return '#dc3545';
-}
+};
 
-function formatDate(dateStr: string | null): string {
-  if (!dateStr) return '—';
-  return new Date(dateStr).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  });
-}
-
-/* ── loading skeleton ── */
-function DashboardSkeleton() {
-  return (
-    <Layout>
-      <section className="py-8 min-h-screen" style={{ backgroundColor: BG }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Skeleton className="h-28 w-full rounded-xl mb-8" />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            {[...Array(4)].map((_, i) => (
-              <Skeleton key={i} className="h-32 rounded-xl" />
-            ))}
-          </div>
-          <Skeleton className="h-72 rounded-xl mb-8" />
-          <Skeleton className="h-64 rounded-xl" />
-        </div>
-      </section>
-    </Layout>
-  );
-}
-
-/* ── empty / new-user state ── */
-function EmptyDashboard({ name }: { name: string }) {
-  const navigate = useNavigate();
-  return (
-    <Layout>
-      <section className="py-8 min-h-screen" style={{ backgroundColor: BG }}>
-        <div className="max-w-3xl mx-auto px-4 text-center">
-          <Rocket className="mx-auto h-16 w-16 mb-4" style={{ color: TEAL }} />
-          <h1 className="text-3xl font-bold mb-2" style={{ color: NAVY }}>
-            Welcome, {name}!
-          </h1>
-          <p className="text-gray-600 mb-8 text-lg">
-            You haven&apos;t started any practice sessions yet. Take your first
-            exam to unlock your personalised dashboard.
-          </p>
-          <button
-            onClick={() => navigate('/practice')}
-            className="inline-flex items-center gap-2 px-8 py-3 rounded-lg text-white font-semibold text-lg shadow-lg transition hover:opacity-90"
-            style={{ backgroundColor: RED }}
-          >
-            <Play className="h-5 w-5" /> Get Started
-          </button>
-        </div>
-      </section>
-    </Layout>
-  );
-}
-
-/* ══════════════════════════════════════════════════════════════════
-   MAIN DASHBOARD
-   ══════════════════════════════════════════════════════════════════ */
 export default function DashboardPage() {
   const { user } = useAuth();
   const navigate = useNavigate();
-
   const [loading, setLoading] = useState(true);
   const [student, setStudent] = useState<any>(null);
-  const [intakes, setIntakes] = useState<any[]>([]);
-  const [posttests, setPosttests] = useState<any[]>([]);
-  const [sessions, setSessions] = useState<any[]>([]);
-  const [streak, setStreak] = useState<any>(null);
+  const [latestIntake, setLatestIntake] = useState<any>(null);
+  const [latestPosttest, setLatestPosttest] = useState<any>(null);
+  const [pendingExams, setPendingExams] = useState(0);
 
-  /* ── fetch all data ── */
   useEffect(() => {
     if (!user) return;
 
     const fetchData = async () => {
       try {
-        // First, get the student profile
-        const { data: studentData } = await supabase
-          .from('students')
-          .select('*')
-          .eq('user_id', user.id)
-          .maybeSingle();
-
-        if (studentData) setStudent(studentData);
-
-        const studentRowId = studentData?.id;
-
-        // Fetch submissions (keyed by email) and session data (keyed by student row ID)
-        const promises: Promise<any>[] = [
+        const [studentRes, intakeRes, posttestRes, assignmentsRes] = await Promise.all([
+          supabase
+            .from('students')
+            .select('*')
+            .eq('user_id', user.id)
+            .maybeSingle(),
           supabase
             .from('intake_submissions')
             .select('*')
             .eq('student_email', user.email)
-            .order('submitted_at', { ascending: false }),
+            .order('submitted_at', { ascending: false })
+            .limit(1),
           supabase
             .from('posttest_submissions')
             .select('*')
             .eq('student_email', user.email)
-            .order('submitted_at', { ascending: false }),
-        ];
+            .order('submitted_at', { ascending: false })
+            .limit(1),
+          supabase
+            .from('exam_assignments')
+            .select('id')
+            .eq('student_email', user.email!)
+            .eq('status', 'available'),
+        ]);
 
-        // exam_sessions and study_streaks use the student table row ID
-        if (studentRowId) {
-          promises.push(
-            supabase
-              .from('exam_sessions')
-              .select('*')
-              .eq('student_id', studentRowId)
-              .order('completed_at', { ascending: false }),
-            supabase
-              .from('study_streaks')
-              .select('*')
-              .eq('student_id', studentRowId)
-              .order('study_date', { ascending: false })
-              .limit(1),
-          );
-        }
-
-        const results = await Promise.all(promises);
-
-        if (results[0]?.data) setIntakes(results[0].data);
-        if (results[1]?.data) setPosttests(results[1].data);
-        if (results[2]?.data) setSessions(results[2].data);
-        if (results[3]?.data && results[3].data.length > 0)
-          setStreak(results[3].data[0]);
+        if (studentRes.data) setStudent(studentRes.data);
+        if (intakeRes.data?.[0]) setLatestIntake(intakeRes.data[0]);
+        if (posttestRes.data?.[0]) setLatestPosttest(posttestRes.data[0]);
+        if (assignmentsRes.data) setPendingExams(assignmentsRes.data.length);
       } catch (err) {
         console.error('Dashboard fetch error', err);
       } finally {
@@ -186,482 +66,204 @@ export default function DashboardPage() {
     fetchData();
   }, [user]);
 
-  /* ── derived data ── */
-  const allSubmissions = [
-    ...intakes.map((i) => ({
-      ...i,
-      type: 'Intake',
-      date: i.submitted_at,
-      score: i.score_percent ?? i.score,
-    })),
-    ...posttests.map((p) => ({
-      ...p,
-      type: 'Post-Test',
-      date: p.submitted_at,
-      score: p.score_percent ?? p.score,
-    })),
-    ...sessions.map((s) => ({
-      ...s,
-      type: 'Practice',
-      date: s.completed_at,
-      score: s.score_percent ?? s.score,
-    })),
-  ].sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
-  );
+  if (loading) {
+    return (
+      <DashboardLayout>
+        <div className="animate-pulse space-y-6">
+          <div className="h-8 bg-gray-200 rounded w-64" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="h-40 bg-gray-200 rounded-xl" />
+            ))}
+          </div>
+        </div>
+      </DashboardLayout>
+    );
+  }
 
-  const latestScore =
-    allSubmissions.length > 0 ? Number(allSubmissions[0].score) : null;
-  const firstScore =
-    allSubmissions.length > 1
-      ? Number(allSubmissions[allSubmissions.length - 1].score)
-      : latestScore;
-  const improvement =
-    latestScore !== null && firstScore !== null
-      ? Math.round(latestScore - firstScore)
-      : 0;
+  const displayName = student?.full_name || user?.user_metadata?.full_name || 'Student';
+  const certLevel = student?.certification_level || 'EMT';
+  const membershipTier = student?.membership_tier || 'free';
 
-  const questionsAnswered = student?.total_questions_answered ?? 0;
-  const currentStreak = streak?.current_streak ?? streak?.streak_count ?? 0;
+  // Latest score logic — prefer posttest, fallback to intake
+  const latestSubmission = latestPosttest || latestIntake;
+  const latestScore = latestSubmission?.score_percentage ?? latestSubmission?.score_percent ?? latestSubmission?.score;
+  const latestType = latestPosttest ? 'Post-Test' : 'Intake Exam';
+  const latestDate = latestSubmission?.submitted_at;
 
-  /* domain performance from latest submission */
-  const latestWithDomains = allSubmissions.find(
-    (s) => s.domain_scores || s.domain_breakdown,
-  );
-  let domainData: DomainScore[] = [];
-  if (latestWithDomains) {
-    const raw =
-      latestWithDomains.domain_scores ?? latestWithDomains.domain_breakdown;
-    if (Array.isArray(raw)) {
-      domainData = raw
-        .map((d: any) => ({
-          domain: d.domain ?? d.name ?? 'Unknown',
-          score: Number(d.score ?? d.percent ?? 0),
-        }))
-        .sort((a: DomainScore, b: DomainScore) => a.score - b.score);
-    } else if (typeof raw === 'object' && raw !== null) {
-      domainData = Object.entries(raw)
-        .map(([domain, score]) => ({
-          domain,
-          score: Number(score),
-        }))
-        .sort((a, b) => a.score - b.score);
+  // Improvement delta
+  const intakeScore = latestIntake?.score_percentage ?? latestIntake?.score_percent ?? latestIntake?.score;
+  const posttestScore = latestPosttest?.score_percentage ?? latestPosttest?.score_percent ?? latestPosttest?.score;
+  const hasBoth = intakeScore != null && posttestScore != null;
+  const delta = hasBoth ? Number(posttestScore) - Number(intakeScore) : null;
+
+  // Quick stats
+  const totalQuestions = student?.total_questions_answered || 0;
+  const overallAccuracy = student?.total_correct && student?.total_questions_answered
+    ? Math.round((student.total_correct / student.total_questions_answered) * 100)
+    : null;
+
+  // Weakest domain from latest submission
+  const domainBreakdown = latestSubmission?.domain_breakdown;
+  let weakestDomain: { name: string; score: number } | null = null;
+  if (domainBreakdown && typeof domainBreakdown === 'object') {
+    let minScore = 101;
+    for (const [name, value] of Object.entries(domainBreakdown)) {
+      const v = value as any;
+      const score = v.pct ?? v.percentage ?? (v.correct / v.total) * 100;
+      if (score < minScore) {
+        minScore = score;
+        weakestDomain = { name, score: Math.round(score) };
+      }
     }
   }
 
-  /* score trend data */
-  const trendData = [...allSubmissions]
-    .reverse()
-    .map((s) => ({
-      label: new Date(s.date).toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric',
-      }),
-      score: Number(s.score),
-    }));
+  // Coaching status
+  const getCoachingStatus = () => {
+    if (!latestIntake && pendingExams > 0) return 'Pretest Pending';
+    if (!latestIntake && pendingExams === 0) return null; // not a coaching student
+    if (latestIntake && !latestIntake.graded_at && !latestIntake.score_percentage) return 'Pretest Submitted';
+    if (latestIntake && !latestPosttest && pendingExams > 0) return 'Post-Test Available';
+    if (latestPosttest) return 'Completed';
+    return 'Session Scheduled';
+  };
+  const coachingStatus = getCoachingStatus();
 
-  /* smart recommendations */
-  const weakDomains = domainData.filter((d) => d.score < 70);
-  const recommendations: string[] = [];
-  if (weakDomains.length > 0) {
-    recommendations.push(
-      `Focus on "${weakDomains[0].domain}" -- your lowest domain at ${weakDomains[0].score}%.`,
-    );
-  }
-  if (weakDomains.length > 1) {
-    recommendations.push(
-      `Schedule a targeted practice session on "${weakDomains[1].domain}" (${weakDomains[1].score}%).`,
-    );
-  }
-  if (allSubmissions.length < 3) {
-    recommendations.push(
-      'Complete more practice exams to build a reliable trend line.',
-    );
-  }
-  if (recommendations.length === 0) {
-    recommendations.push(
-      'Great work! Keep practising consistently to maintain your scores.',
-    );
-    recommendations.push(
-      'Consider booking a coaching session for advanced test-taking strategies.',
-    );
-  }
-  if (recommendations.length < 3) {
-    recommendations.push(
-      'Review rationales for every question you miss to reinforce learning.',
-    );
-  }
-
-  /* recent activity (last 5) */
-  const recentActivity = allSubmissions.slice(0, 5);
-
-  /* ── guards ── */
-  if (loading) return <DashboardSkeleton />;
-
-  const displayName =
-    student?.full_name || user?.user_metadata?.full_name || user?.email || 'Student';
-
-  if (allSubmissions.length === 0) {
-    return <EmptyDashboard name={displayName.split(' ')[0]} />;
-  }
-
-  const certLevel =
-    student?.certification_level || user?.user_metadata?.certification_level;
+  // Action needed logic
+  const getAction = () => {
+    if (pendingExams > 0) {
+      return { text: 'You have an exam ready to take', link: '/exams' };
+    }
+    if (latestIntake && !latestPosttest) {
+      if (latestIntake.score_percentage || latestIntake.score_percent) {
+        return { text: 'Your pretest has been graded. Check your results.', link: '/results' };
+      }
+      return { text: 'Your pretest is being reviewed. You\'ll receive an email when results are ready.', link: null };
+    }
+    if (membershipTier !== 'free') {
+      return { text: 'Start a practice session', link: '/practice' };
+    }
+    return { text: 'Book a coaching session to get started', link: '/tutoring' };
+  };
+  const action = getAction();
 
   return (
-    <Layout>
-      <section className="py-8 min-h-screen" style={{ backgroundColor: BG }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* ───── Welcome Header ───── */}
-          <div
-            className="rounded-xl p-6 md:p-8 mb-8 text-white shadow-lg"
-            style={{
-              background: `linear-gradient(135deg, ${NAVY} 0%, ${TEAL} 100%)`,
-            }}
-          >
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <div>
-                <h1 className="text-2xl md:text-3xl font-bold mb-1">
-                  Welcome back, {displayName}
-                </h1>
-                {certLevel && (
-                  <span
-                    className="inline-block mt-1 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide"
-                    style={{ backgroundColor: GOLD, color: NAVY }}
-                  >
-                    {certLevel}
-                  </span>
-                )}
-              </div>
-              <button
-                onClick={() => navigate('/practice')}
-                className="self-start md:self-center inline-flex items-center gap-2 px-6 py-2.5 rounded-lg font-semibold shadow transition hover:opacity-90"
-                style={{ backgroundColor: RED }}
-              >
-                <Play className="h-4 w-4" /> Start Practice
-              </button>
-            </div>
-          </div>
+    <DashboardLayout>
+      <div className="space-y-6 max-w-6xl">
+        {/* Welcome */}
+        <div>
+          <h1 className="text-2xl font-bold text-[#0D2137]">Welcome back, {displayName.split(' ')[0]}</h1>
+          <p className="text-gray-500 text-sm mt-1">Here's your overview.</p>
+        </div>
 
-          {/* ───── Score Overview Cards ───── */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            {/* Latest Score */}
-            <div className="bg-white rounded-xl shadow p-5">
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-sm font-medium text-gray-500">
-                  Latest Score
-                </span>
-                <Target className="h-5 w-5" style={{ color: TEAL }} />
-              </div>
-              <p className="text-3xl font-bold" style={{ color: NAVY }}>
-                {latestScore !== null ? `${Math.round(latestScore)}%` : '—'}
-              </p>
-              <p className="text-xs text-gray-400 mt-1">
-                {allSubmissions[0]?.type} &mdash;{' '}
-                {formatDate(allSubmissions[0]?.date)}
-              </p>
-            </div>
-
-            {/* Improvement */}
-            <div className="bg-white rounded-xl shadow p-5">
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-sm font-medium text-gray-500">
-                  Improvement
-                </span>
-                {improvement >= 0 ? (
-                  <TrendingUp className="h-5 w-5 text-green-600" />
-                ) : (
-                  <TrendingDown className="h-5 w-5 text-red-500" />
-                )}
-              </div>
-              <p
-                className="text-3xl font-bold"
-                style={{
-                  color: improvement >= 0 ? '#28a745' : '#dc3545',
-                }}
-              >
-                {improvement > 0 ? '+' : ''}
-                {improvement}%
-              </p>
-              <p className="text-xs text-gray-400 mt-1">
-                Since first assessment
-              </p>
-            </div>
-
-            {/* Questions Practiced */}
-            <div className="bg-white rounded-xl shadow p-5">
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-sm font-medium text-gray-500">
-                  Questions Practiced
-                </span>
-                <BookOpen className="h-5 w-5" style={{ color: TEAL }} />
-              </div>
-              <p className="text-3xl font-bold" style={{ color: NAVY }}>
-                {questionsAnswered.toLocaleString()}
-              </p>
-              <p className="text-xs text-gray-400 mt-1">Total answered</p>
-            </div>
-
-            {/* Study Streak */}
-            <div className="bg-white rounded-xl shadow p-5">
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-sm font-medium text-gray-500">
-                  Study Streak
-                </span>
-                <Flame className="h-5 w-5 text-orange-500" />
-              </div>
-              <p className="text-3xl font-bold" style={{ color: GOLD }}>
-                {currentStreak} day{currentStreak !== 1 ? 's' : ''}
-              </p>
-              <p className="text-xs text-gray-400 mt-1">
-                Keep it going!
-              </p>
-            </div>
-          </div>
-
-          {/* ───── Charts Row ───── */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-            {/* Domain Performance */}
-            {domainData.length > 0 && (
-              <div className="bg-white rounded-xl shadow p-6">
-                <div className="flex items-center gap-2 mb-4">
-                  <BarChart3 className="h-5 w-5" style={{ color: NAVY }} />
-                  <h2 className="text-lg font-bold" style={{ color: NAVY }}>
-                    Domain Performance
-                  </h2>
-                </div>
-                <p className="text-xs text-gray-400 mb-4">
-                  Sorted weakest-first (80/20 focus)
+        {/* Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* Card 1: Your Status */}
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-gray-500">Your Status</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="font-semibold text-[#0D2137]">{displayName}</p>
+              <p className="text-sm text-gray-500">{certLevel}</p>
+              {coachingStatus && (
+                <p className="text-xs mt-3 text-[#1a5f7a] font-medium">
+                  Coaching: {coachingStatus}
                 </p>
-                <ResponsiveContainer width="100%" height={280}>
-                  <BarChart
-                    data={domainData}
-                    layout="vertical"
-                    margin={{ left: 0, right: 20, top: 0, bottom: 0 }}
-                  >
-                    <XAxis type="number" domain={[0, 100]} tick={{ fontSize: 12 }} />
-                    <YAxis
-                      dataKey="domain"
-                      type="category"
-                      width={160}
-                      tick={{ fontSize: 12 }}
-                    />
-                    <Tooltip
-                      formatter={(value: number) => [`${value}%`, 'Score']}
-                    />
-                    <Bar
-                      dataKey="score"
-                      radius={[0, 6, 6, 0]}
-                      barSize={22}
-                      isAnimationActive
-                    >
-                      {domainData.map((entry, idx) => (
-                        <rect
-                          key={`cell-${idx}`}
-                          fill={domainBarColor(entry.score)}
-                        />
-                      ))}
-                    </Bar>
-                  </BarChart>
-                </ResponsiveContainer>
-                {/* color legend */}
-                <div className="flex flex-wrap gap-4 mt-3 text-xs text-gray-500">
-                  <span className="flex items-center gap-1">
-                    <span className="w-3 h-3 rounded" style={{ backgroundColor: '#28a745' }} /> 90%+
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <span className="w-3 h-3 rounded" style={{ backgroundColor: '#17a2b8' }} /> 80-89%
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <span className="w-3 h-3 rounded" style={{ backgroundColor: '#ffc107' }} /> 70-79%
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <span className="w-3 h-3 rounded" style={{ backgroundColor: '#dc3545' }} /> &lt;70%
-                  </span>
-                </div>
-              </div>
-            )}
-
-            {/* Score Trend */}
-            {trendData.length > 1 && (
-              <div className="bg-white rounded-xl shadow p-6">
-                <div className="flex items-center gap-2 mb-4">
-                  <TrendingUp className="h-5 w-5" style={{ color: NAVY }} />
-                  <h2 className="text-lg font-bold" style={{ color: NAVY }}>
-                    Score Trend
-                  </h2>
-                </div>
-                <ResponsiveContainer width="100%" height={280}>
-                  <LineChart data={trendData}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
-                    <XAxis dataKey="label" tick={{ fontSize: 12 }} />
-                    <YAxis domain={[0, 100]} tick={{ fontSize: 12 }} />
-                    <Tooltip
-                      formatter={(value: number) => [`${value}%`, 'Score']}
-                    />
-                    <Line
-                      type="monotone"
-                      dataKey="score"
-                      stroke={TEAL}
-                      strokeWidth={2.5}
-                      dot={{ fill: TEAL, r: 4 }}
-                      activeDot={{ r: 6, fill: RED }}
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-            )}
-
-            {/* If only one chart, fill remaining space with recommendations */}
-            {domainData.length === 0 && trendData.length <= 1 && (
-              <div className="lg:col-span-2 bg-white rounded-xl shadow p-6 flex items-center justify-center text-gray-400">
-                <p>Complete more sessions to unlock charts.</p>
-              </div>
-            )}
-          </div>
-
-          {/* ───── Smart Recommendations ───── */}
-          <div className="bg-white rounded-xl shadow p-6 mb-8">
-            <div className="flex items-center gap-2 mb-4">
-              <Lightbulb className="h-5 w-5" style={{ color: GOLD }} />
-              <h2 className="text-lg font-bold" style={{ color: NAVY }}>
-                Smart Recommendations
-              </h2>
-            </div>
-            <ul className="space-y-3">
-              {recommendations.slice(0, 3).map((rec, idx) => (
-                <li key={idx} className="flex items-start gap-3">
-                  <span
-                    className="mt-0.5 flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold"
-                    style={{ backgroundColor: TEAL }}
-                  >
-                    {idx + 1}
-                  </span>
-                  <span className="text-gray-700">{rec}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* ───── Quick Actions ───── */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
-            <button
-              onClick={() => navigate('/practice')}
-              className="group bg-white rounded-xl shadow p-6 text-left hover:shadow-md transition"
-            >
-              <div
-                className="w-10 h-10 rounded-lg flex items-center justify-center mb-3"
-                style={{ backgroundColor: `${TEAL}15` }}
-              >
-                <Play className="h-5 w-5" style={{ color: TEAL }} />
-              </div>
-              <h3 className="font-semibold mb-1" style={{ color: NAVY }}>
-                Start Practice
-              </h3>
-              <p className="text-sm text-gray-500">
-                Jump into a new question set
-              </p>
-              <ChevronRight className="h-4 w-4 mt-2 text-gray-400 group-hover:translate-x-1 transition-transform" />
-            </button>
-
-            <button
-              onClick={() => navigate('/results')}
-              className="group bg-white rounded-xl shadow p-6 text-left hover:shadow-md transition"
-            >
-              <div
-                className="w-10 h-10 rounded-lg flex items-center justify-center mb-3"
-                style={{ backgroundColor: `${GOLD}20` }}
-              >
-                <ClipboardList className="h-5 w-5" style={{ color: GOLD }} />
-              </div>
-              <h3 className="font-semibold mb-1" style={{ color: NAVY }}>
-                View Results
-              </h3>
-              <p className="text-sm text-gray-500">
-                Review past exam performance
-              </p>
-              <ChevronRight className="h-4 w-4 mt-2 text-gray-400 group-hover:translate-x-1 transition-transform" />
-            </button>
-
-            <a
-              href="https://path2medic.thinkific.com/enroll/3570436?price_id=4503585"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group bg-white rounded-xl shadow p-6 text-left hover:shadow-md transition block"
-            >
-              <div
-                className="w-10 h-10 rounded-lg flex items-center justify-center mb-3"
-                style={{ backgroundColor: `${RED}15` }}
-              >
-                <Users className="h-5 w-5" style={{ color: RED }} />
-              </div>
-              <h3 className="font-semibold mb-1" style={{ color: NAVY }}>
-                Book Coaching
-              </h3>
-              <p className="text-sm text-gray-500">
-                1-on-1 session with an instructor
-              </p>
-              <ChevronRight className="h-4 w-4 mt-2 text-gray-400 group-hover:translate-x-1 transition-transform" />
-            </a>
-          </div>
-
-          {/* ───── Recent Activity ───── */}
-          {recentActivity.length > 0 && (
-            <div className="bg-white rounded-xl shadow p-6">
-              <div className="flex items-center gap-2 mb-4">
-                <Calendar className="h-5 w-5" style={{ color: NAVY }} />
-                <h2 className="text-lg font-bold" style={{ color: NAVY }}>
-                  Recent Activity
-                </h2>
-              </div>
-              <div className="divide-y">
-                {recentActivity.map((item, idx) => {
-                  const pct = Number(item.score);
-                  const scoreColor =
-                    pct >= 80
-                      ? '#28a745'
-                      : pct >= 70
-                        ? '#ffc107'
-                        : '#dc3545';
-                  return (
-                    <div
-                      key={idx}
-                      className="flex items-center justify-between py-3"
-                    >
-                      <div>
-                        <p className="font-medium" style={{ color: NAVY }}>
-                          {item.type}
-                        </p>
-                        <p className="text-sm text-gray-400">
-                          {formatDate(item.date)}
-                        </p>
-                      </div>
-                      <span
-                        className="px-3 py-1 rounded-full text-sm font-semibold"
-                        style={{
-                          backgroundColor: `${scoreColor}18`,
-                          color: scoreColor,
-                        }}
-                      >
-                        {Math.round(pct)}%
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-              {allSubmissions.length > 5 && (
-                <Link
-                  to="/results"
-                  className="block text-center mt-4 text-sm font-medium hover:underline"
-                  style={{ color: TEAL }}
-                >
-                  View all results &rarr;
-                </Link>
               )}
-            </div>
+              {membershipTier !== 'free' && (
+                <p className="text-xs mt-1 text-gray-500">
+                  Membership: {membershipTier === 'pro' ? 'Pro' : membershipTier === 'max' ? 'Max' : membershipTier} — Active
+                </p>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Card 2: Latest Score */}
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-gray-500">Latest Score</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {latestScore != null ? (
+                <>
+                  <div
+                    className="text-4xl font-bold"
+                    style={{ color: scoreColor(Number(latestScore)) }}
+                  >
+                    {Math.round(Number(latestScore))}%
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">
+                    {certLevel} {latestType}
+                  </p>
+                  {delta !== null && (
+                    <p className="text-sm mt-2 font-medium" style={{ color: delta >= 0 ? '#28a745' : '#dc3545' }}>
+                      <ArrowUp className={`inline h-4 w-4 mr-0.5 ${delta < 0 ? 'rotate-180' : ''}`} />
+                      {delta > 0 ? '+' : ''}{Math.round(delta)} points since intake
+                    </p>
+                  )}
+                </>
+              ) : (
+                <p className="text-gray-400 text-sm">No assessments yet</p>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Card 3: Action Needed */}
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium text-gray-500">Action Needed</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-gray-700">{action.text}</p>
+              {action.link && (
+                <button
+                  onClick={() => navigate(action.link!)}
+                  className="mt-3 text-sm font-medium text-[#1a5f7a] hover:underline flex items-center gap-1"
+                >
+                  Go <ArrowRight className="h-4 w-4" />
+                </button>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Card 4: Quick Stats */}
+          {totalQuestions > 0 ? (
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium text-gray-500">Quick Stats</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-500">Questions Answered</span>
+                  <span className="font-semibold text-[#0D2137]">{totalQuestions.toLocaleString()}</span>
+                </div>
+                {overallAccuracy !== null && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-500">Overall Accuracy</span>
+                    <span className="font-semibold text-[#0D2137]">{overallAccuracy}%</span>
+                  </div>
+                )}
+                {weakestDomain && (
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-500">Weakest Domain</span>
+                    <span className="font-semibold text-[#dc3545]">{weakestDomain.name} ({weakestDomain.score}%)</span>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          ) : (
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium text-gray-500">Quick Stats</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-400 text-sm">Complete exams to see your stats here.</p>
+              </CardContent>
+            </Card>
           )}
         </div>
-      </section>
-    </Layout>
+      </div>
+    </DashboardLayout>
   );
 }
