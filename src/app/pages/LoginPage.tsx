@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import Layout from '../components/Layout';
-import logo from '@/assets/logo.png';
+import logoLight from '@/assets/logo-light.jpg';
 import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
 
 const NAVY = '#0D2137';
@@ -48,7 +48,7 @@ export default function LoginPage() {
         <div className="max-w-md mx-auto w-full px-4">
           {/* Logo */}
           <div className="flex justify-center mb-8">
-            <img src={logo} alt="Path2Medic" className="h-16 w-auto" />
+            <img src={logoLight} alt="Path2Medic" className="h-16 w-auto" />
           </div>
 
           {/* Card */}

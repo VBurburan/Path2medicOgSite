@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, Facebook, Instagram } from 'lucide-react';
-import logo from '@/assets/logo.png';
+import logoDark from '@/assets/logo-dark.jpg';
 
 export default function Footer() {
   return (
@@ -10,7 +10,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <div className="mb-4">
-              <img src={logo} alt="Path2Medic" className="h-12 w-auto" />
+              <img src={logoDark} alt="Path2Medic" className="h-12 w-auto rounded" />
             </div>
             <p className="text-gray-300 mb-4 text-sm">
               Think Like a Clinician. Pass Like a Pro.

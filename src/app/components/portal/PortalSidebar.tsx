@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 import { Button } from '../ui/button';
 import { cn } from '../../components/ui/utils';
-import logo from '@/assets/logo.png';
+import logoDark from '@/assets/logo-dark.jpg';
 
 interface PortalSidebarProps {
   activeTab: string;
@@ -55,7 +55,7 @@ export function PortalSidebar({
       )}>
         {/* Header */}
         <div className="p-6 flex items-center justify-between border-b border-white/10">
-          <img src={logo} alt="Path2Medic" className="h-8 w-auto rounded" />
+          <img src={logoDark} alt="Path2Medic" className="h-8 w-auto rounded" />
           <Button 
             variant="ghost" 
             size="icon" 
