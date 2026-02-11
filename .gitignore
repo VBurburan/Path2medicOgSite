@@ -5,3 +5,10 @@ dist/
 .env.production
 *.log
 .DS_Store
+
+# Playwright audit artifacts
+audit-homepage.mjs
+visual-audit.mjs
+audit-screenshots/
+screenshots/
+tmp-chrome/
