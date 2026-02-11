@@ -7,7 +7,7 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
-import logo from '../../assets/7e2353c04204bd5b39085f4855f3eadf3139a233.png';
+import logo from 'figma:asset/7e2353c04204bd5b39085f4855f3eadf3139a233.png';
 import { projectId, publicAnonKey } from '../../../utils/supabase/info';
 
 export default function LoginPage() {
@@ -39,7 +39,11 @@ export default function LoginPage() {
 
       if (error) {
         console.error('Login error:', error);
-        setLoginError(error.message);
+        if (error.message === 'Invalid login credentials') {
+          setLoginError('Invalid email or password. Please check your credentials or register for a new account.');
+        } else {
+          setLoginError(error.message);
+        }
       } else if (data?.session) {
         setLoginSuccess('Login successful! Redirecting...');
         console.log('Login successful:', data);
@@ -96,7 +100,9 @@ export default function LoginPage() {
 
       if (!response.ok) {
         console.error('Registration error:', result);
-        setRegisterError(result.error || 'Registration failed');
+        const errorMessage = result.error || 'Registration failed';
+        const debugInfo = result.debugLogs ? `\nDebug: ${result.debugLogs.join('\n')}` : '';
+        setRegisterError(`${errorMessage}${debugInfo}`);
       } else {
         setRegisterSuccess('Account created successfully! You can now login.');
         console.log('Registration successful:', result);

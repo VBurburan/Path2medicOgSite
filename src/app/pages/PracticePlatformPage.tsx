@@ -3,9 +3,12 @@ import Layout from '../components/Layout';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
-import { CheckCircle, CheckSquare, MousePointer, ArrowDownUp, ListOrdered, Grid3x3, Image as ImageIcon } from 'lucide-react';
+import { CheckCircle, CheckSquare, MousePointer, ArrowDownUp, ListOrdered, Grid3x3, Image as ImageIcon, Bell } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export default function PracticePlatformPage() {
+  const navigate = useNavigate();
+
   const studentFeatures = [
     'All 6 Technology-Enhanced Item (TEI) formats used on national certification exams',
     'Questions for EMT, AEMT, and Paramedic levels',
@@ -51,14 +54,30 @@ export default function PracticePlatformPage() {
   return (
     <Layout>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-[#1B4F72] to-[#5DADE2] py-20 text-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+      <section className="bg-gradient-to-br from-[#1B4F72] to-[#5DADE2] py-20 text-white relative overflow-hidden">
+        <div className="absolute top-0 right-0 p-4 opacity-10 transform rotate-12">
+          <Bell className="w-64 h-64" />
+        </div>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+          <div className="inline-flex items-center justify-center p-1 rounded-full bg-white/10 backdrop-blur-sm mb-8 border border-white/20">
+            <Badge className="bg-[#E67E22] text-white hover:bg-[#D35400] px-6 py-2 text-lg font-bold border-none shadow-lg animate-pulse">
+              🚀 COMING SOON
+            </Badge>
+          </div>
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">
             Practice Questions Built for Modern EMS Certification
           </h1>
           <p className="text-xl text-white/90 mb-8">
-            Technology-Enhanced Items aligned with current national exam specifications — for students and educators
+            We're preparing the ultimate TEI-focused practice platform aligned with current national exam specifications.
           </p>
+          <Button 
+            size="lg" 
+            variant="secondary" 
+            className="bg-white text-[#1B4F72] hover:bg-gray-100 font-semibold"
+            onClick={() => navigate('/contact')}
+          >
+            Get Notified When We Launch
+          </Button>
         </div>
       </section>
 
@@ -97,10 +116,13 @@ export default function PracticePlatformPage() {
             <h2 className="text-3xl md:text-4xl font-bold text-[#1B4F72] mb-4">
               Master the Question Formats Before Test Day
             </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
+              We are finalizing our question bank and testing the platform to ensure the best experience.
+            </p>
           </div>
 
           {/* Features */}
-          <div className="max-w-3xl mx-auto mb-12">
+          <div className="max-w-3xl mx-auto mb-16">
             <Card>
               <CardContent className="pt-6">
                 <ul className="space-y-3">
@@ -115,78 +137,34 @@ export default function PracticePlatformPage() {
             </Card>
           </div>
 
-          {/* Pricing */}
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <Card className="border-2">
-              <CardHeader className="text-center">
-                <CardTitle className="text-2xl">Monthly</CardTitle>
-                <CardDescription>
-                  <span className="text-4xl font-bold text-[#1B4F72]">$29</span>
-                  <span className="text-gray-500">/month</span>
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-3 mb-4">
-                  <li className="flex items-start gap-2">
-                    <CheckCircle className="h-5 w-5 text-[#7FA99B] flex-shrink-0 mt-0.5" />
-                    <span>Full access, all levels</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle className="h-5 w-5 text-[#7FA99B] flex-shrink-0 mt-0.5" />
-                    <span>Cancel anytime</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle className="h-5 w-5 text-[#7FA99B] flex-shrink-0 mt-0.5" />
-                    <span>7-day free trial</span>
-                  </li>
-                </ul>
-              </CardContent>
-              <CardFooter>
-                <Button className="w-full" variant="outline">
-                  Start Free Trial
-                </Button>
-              </CardFooter>
-            </Card>
-
-            <Card className="border-4 border-[#E67E22] shadow-xl">
-              <div className="bg-[#E67E22] text-white text-center py-2 font-semibold">
-                Save $149
+          {/* Coming Soon Call to Action */}
+          <Card className="max-w-3xl mx-auto text-center border-2 border-[#E67E22]/20 shadow-lg">
+            <CardHeader>
+              <div className="mx-auto bg-[#FFF3E0] p-4 rounded-full w-fit mb-4">
+                  <Bell className="h-10 w-10 text-[#E67E22]" />
               </div>
-              <CardHeader className="text-center">
-                <CardTitle className="text-2xl">Annual</CardTitle>
-                <CardDescription>
-                  <span className="text-4xl font-bold text-[#1B4F72]">$199</span>
-                  <span className="text-gray-500">/year</span>
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-3 mb-4">
-                  <li className="flex items-start gap-2">
-                    <CheckCircle className="h-5 w-5 text-[#7FA99B] flex-shrink-0 mt-0.5" />
-                    <span>Full access, all levels</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle className="h-5 w-5 text-[#7FA99B] flex-shrink-0 mt-0.5" />
-                    <span className="font-semibold">Includes 1 coaching call ($150 value)</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle className="h-5 w-5 text-[#7FA99B] flex-shrink-0 mt-0.5" />
-                    <span>7-day free trial</span>
-                  </li>
-                </ul>
-              </CardContent>
-              <CardFooter>
-                <Button className="w-full bg-[#E67E22] hover:bg-[#D35400]">
-                  Start Free Trial
-                </Button>
-              </CardFooter>
-            </Card>
-          </div>
+              <CardTitle className="text-2xl text-[#1B4F72]">Launch Notification</CardTitle>
+              <CardDescription className="text-lg">
+                Join our waitlist to be the first to know when the platform goes live.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex justify-center">
+                 <Button 
+                   size="lg" 
+                   className="bg-[#1B4F72] hover:bg-[#154360] text-white px-8" 
+                   onClick={() => navigate('/contact')}
+                 >
+                    Join Waitlist
+                 </Button>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </section>
 
       {/* Trust Section */}
-      <section className="py-16 bg-[#F8F9FA]">
+      <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-4 gap-8 text-center">
             <div>

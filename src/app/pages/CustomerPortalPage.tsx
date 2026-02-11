@@ -1,160 +1,238 @@
-import React from 'react';
-import Layout from '../components/Layout';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { supabase } from '@/utils/supabaseClient';
+import { projectId } from '../../../utils/supabase/info';
+import { PortalSidebar } from '../components/portal/PortalSidebar';
+import { PortalHeader } from '../components/portal/PortalHeader';
+import { DashboardView } from '../components/portal/DashboardView';
+import { PracticeView } from '../components/portal/PracticeView';
+import { ExamView } from '../components/portal/ExamView';
+import { ResultsView } from '../components/portal/ResultsView';
+import { SettingsView } from '../components/portal/SettingsView';
+import { Loader2, Calendar } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/card';
 import { Button } from '../components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
-import { Download, Calendar, Settings, BookOpen } from 'lucide-react';
 
 export default function CustomerPortalPage() {
-  const purchases = [
-    {
-      title: 'The Proof is in the Pudding',
-      date: 'Purchased: Jan 1, 2026',
-      type: 'PDF + EPUB'
-    },
-    {
-      title: 'Clinical Judgment & TEI Workbook',
-      date: 'Purchased: Jan 5, 2026',
-      type: 'PDF'
-    }
-  ];
+  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState('dashboard');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<any>(null);
+  
+  // Data states
+  const [intakeSubmission, setIntakeSubmission] = useState<any>(null);
+  const [posttestSubmission, setPosttestSubmission] = useState<any>(null);
+  const [practiceStats, setPracticeStats] = useState<any>(null);
 
-  const upcomingSessions = [
-    {
-      date: 'Jan 15, 2026',
-      time: '2:00 PM EST',
-      instructor: 'Vincent Burburan, NRP'
+  // Exam Logic
+  const [viewState, setViewState] = useState<'portal' | 'exam' | 'results'>('portal');
+  const [examConfig, setExamConfig] = useState<any>(null);
+  const [examResults, setExamResults] = useState<any>(null);
+
+  useEffect(() => {
+    checkAuthAndLoadData();
+  }, []);
+
+  const checkAuthAndLoadData = async () => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
+        navigate('/login');
+        return;
+      }
+
+      // 1. Basic User Info
+      const currentUser = {
+        ...session.user,
+        profile: {
+          certification_level: 'Paramedic', // Default or fetch from DB
+          membership_tier: 'max', // Default to max/paid tier
+          ...session.user.user_metadata
+        }
+      };
+
+      // 2. Try to fetch from 'students' table
+      const { data: studentData } = await supabase
+        .from('students')
+        .select('*')
+        .eq('user_id', session.user.id)
+        .single();
+
+      if (studentData) {
+        currentUser.profile = { ...currentUser.profile, ...studentData };
+      }
+
+      setUser(currentUser);
+
+      // 3. Fetch Intake Submissions
+      const { data: intakes } = await supabase
+        .from('intake_submissions')
+        .select('*')
+        .eq('student_email', session.user.email)
+        .order('submitted_at', { ascending: false })
+        .limit(1);
+
+      if (intakes && intakes.length > 0) {
+        setIntakeSubmission(intakes[0]);
+      }
+
+      // 4. Fetch Post-test Submissions
+      const { data: posttests } = await supabase
+        .from('posttest_submissions')
+        .select('*')
+        .eq('student_email', session.user.email)
+        .order('submitted_at', { ascending: false })
+        .limit(1);
+
+      if (posttests && posttests.length > 0) {
+        setPosttestSubmission(posttests[0]);
+      }
+
+    } catch (error) {
+      console.error('Error loading portal data:', error);
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate('/login');
+  };
+
+  const startExam = (config: any) => {
+    setExamConfig(config);
+    setViewState('exam');
+  };
+
+  const completeExam = (results: any) => {
+    setExamResults(results);
+    setViewState('results');
+    // Here you would save to 'exam_sessions' DB
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#f5f5f5] flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-[#1a5f7a]" />
+      </div>
+    );
+  }
+
+  // Full Screen Exam View
+  if (viewState === 'exam') {
+    return (
+      <ExamView 
+        user={user} 
+        moduleConfig={examConfig} 
+        onComplete={completeExam} 
+        onExit={() => setViewState('portal')} 
+      />
+    );
+  }
 
   return (
-    <Layout>
-      <section className="py-8 bg-[#F8F9FA] min-h-screen">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold text-[#1B4F72] mb-8">Customer Portal</h1>
+    <div className="flex h-screen bg-[#f5f5f5]">
+      <PortalSidebar 
+        activeTab={activeTab} 
+        setActiveTab={setActiveTab} 
+        isOpen={sidebarOpen}
+        setIsOpen={setSidebarOpen}
+        hasCoaching={!!intakeSubmission}
+        onLogout={handleLogout}
+      />
+      
+      <div className="flex-1 flex flex-col overflow-hidden relative">
+        <PortalHeader 
+          user={user} 
+          toggleSidebar={() => setSidebarOpen(!sidebarOpen)}
+          title={
+            activeTab === 'dashboard' ? 'Student Dashboard' :
+            activeTab === 'practice' ? 'Practice Modules' :
+            activeTab === 'coaching' ? 'My Coaching' :
+            activeTab === 'history' ? 'Exam History' :
+            'Settings'
+          }
+          onLogout={handleLogout}
+        />
+        
+        <main className="flex-1 overflow-y-auto p-4 md:p-8">
+          {viewState === 'results' ? (
+            <ResultsView 
+              results={examResults} 
+              onRetake={() => setViewState('exam')} 
+              onExit={() => setViewState('portal')} 
+            />
+          ) : (
+            <>
+              {activeTab === 'dashboard' && (
+                <DashboardView 
+                  user={user}
+                  intakeSubmission={intakeSubmission}
+                  posttestSubmission={posttestSubmission}
+                  practiceStats={practiceStats}
+                  onNavigate={setActiveTab}
+                />
+              )}
+              
+              {activeTab === 'practice' && (
+                <PracticeView user={user} onStartModule={startExam} />
+              )}
 
-          <Tabs defaultValue="products" className="w-full">
-            <TabsList className="grid w-full max-w-2xl grid-cols-4 mb-8">
-              <TabsTrigger value="products">My Products</TabsTrigger>
-              <TabsTrigger value="coaching">Coaching</TabsTrigger>
-              <TabsTrigger value="progress">Progress</TabsTrigger>
-              <TabsTrigger value="account">Account</TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="products">
-              <div className="grid md:grid-cols-2 gap-6">
-                {purchases.map((product, index) => (
-                  <Card key={index}>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <BookOpen className="h-5 w-5 text-[#E67E22]" />
-                        {product.title}
-                      </CardTitle>
-                      <CardDescription>{product.date}</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm text-gray-600 mb-4">Format: {product.type}</p>
-                      <div className="flex gap-2">
-                        <Button size="sm" className="flex-1 bg-[#E67E22] hover:bg-[#D35400]">
-                          <Download className="h-4 w-4 mr-2" />
-                          Download PDF
-                        </Button>
-                        {product.type.includes('EPUB') && (
-                          <Button size="sm" variant="outline" className="flex-1">
-                            <Download className="h-4 w-4 mr-2" />
-                            Download EPUB
-                          </Button>
+              {activeTab === 'coaching' && (
+                <div className="space-y-6">
+                  <h2 className="text-2xl font-bold text-[#1a5f7a]">My Coaching Journey</h2>
+                   {intakeSubmission ? (
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Upcoming Session</CardTitle>
+                        <CardDescription>
+                          {intakeSubmission.coaching_session_scheduled 
+                            ? `Scheduled for ${new Date(intakeSubmission.coaching_session_date).toLocaleDateString()}`
+                            : "No session scheduled yet."
+                          }
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        {intakeSubmission.coaching_session_scheduled && (
+                          <div className="flex items-center justify-between bg-blue-50 p-4 rounded-lg">
+                            <div className="flex items-center">
+                              <Calendar className="h-6 w-6 text-[#1a5f7a] mr-4" />
+                              <div>
+                                <p className="font-semibold text-[#1a5f7a]">1-on-1 Strategy Session</p>
+                                <p className="text-sm text-gray-600">with Vincent Burburan</p>
+                              </div>
+                            </div>
+                            <Button>Join Zoom</Button>
+                          </div>
                         )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </TabsContent>
-
-            <TabsContent value="coaching">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Upcoming Coaching Sessions</CardTitle>
-                  <CardDescription>Your scheduled 1-on-1 sessions with Vincent</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {upcomingSessions.map((session, index) => (
-                    <div key={index} className="border-l-4 border-[#E67E22] pl-4 py-3">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <div className="font-semibold text-[#1B4F72]">{session.date} at {session.time}</div>
-                          <div className="text-sm text-gray-600">with {session.instructor}</div>
-                        </div>
-                        <div className="flex gap-2">
-                          <Button size="sm" variant="outline">Reschedule</Button>
-                          <Button size="sm" className="bg-[#5DADE2] hover:bg-[#3498DB]">
-                            <Calendar className="h-4 w-4 mr-2" />
-                            Join
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="progress">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Practice Progress</CardTitle>
-                  <CardDescription>Track your performance across all domains</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {['Airway Management', 'Cardiology', 'Trauma', 'Medical', 'Operations'].map((domain, index) => (
-                      <div key={index}>
-                        <div className="flex justify-between mb-2">
-                          <span className="font-semibold">{domain}</span>
-                          <span className="text-[#1B4F72]">{Math.floor(Math.random() * 30 + 70)}%</span>
-                        </div>
-                        <div className="w-full bg-gray-200 rounded-full h-2">
-                          <div 
-                            className="bg-[#7FA99B] h-2 rounded-full" 
-                            style={{ width: `${Math.floor(Math.random() * 30 + 70)}%` }}
-                          />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="account">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Account Settings</CardTitle>
-                  <CardDescription>Manage your profile and preferences</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div>
-                    <h3 className="font-semibold mb-2">Profile Information</h3>
-                    <div className="space-y-2 text-sm text-gray-600">
-                      <p><strong>Email:</strong> student@example.com</p>
-                      <p><strong>Member since:</strong> January 2026</p>
-                      <p><strong>Subscription:</strong> Monthly Plan</p>
-                    </div>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button variant="outline">
-                      <Settings className="h-4 w-4 mr-2" />
-                      Edit Profile
-                    </Button>
-                    <Button variant="outline">Change Password</Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
-        </div>
-      </section>
-    </Layout>
+                        {!intakeSubmission.coaching_session_scheduled && (
+                          <Button>Book Your Session</Button>
+                        )}
+                      </CardContent>
+                    </Card>
+                   ) : (
+                     <div className="text-center py-12 text-gray-500">
+                       No coaching data found. Please contact support if you believe this is an error.
+                     </div>
+                   )}
+                </div>
+              )}
+              
+              {/* Placeholders for History and Settings */}
+              {activeTab === 'history' && (
+                <div className="text-center py-12 text-gray-500">Exam History coming soon.</div>
+              )}
+              
+              {activeTab === 'settings' && (
+                <SettingsView user={user} onLogout={handleLogout} />
+              )}
+            </>
+          )}
+        </main>
+      </div>
+    </div>
   );
 }

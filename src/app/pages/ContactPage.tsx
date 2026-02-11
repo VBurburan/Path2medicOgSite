@@ -5,7 +5,9 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Textarea } from '../components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
-import { Mail, MapPin, Phone } from 'lucide-react';
+import { Mail, MapPin } from 'lucide-react';
+
+import { projectId, publicAnonKey } from '/utils/supabase/info';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -14,11 +16,48 @@ export default function ContactPage() {
     subject: '',
     message: ''
   });
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
-    console.log('Form submitted:', formData);
+    console.log('Submitting contact form...', formData);
+    
+    // Manual validation fallback
+    if (!formData.name || !formData.email || !formData.subject || !formData.message) {
+      setErrorMessage('Please fill in all required fields.');
+      setStatus('error');
+      return;
+    }
+
+    setStatus('submitting');
+    setErrorMessage('');
+
+    try {
+      console.log('Sending request to server...');
+      const response = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-8ae44dd2/contact`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${publicAnonKey}`
+        },
+        body: JSON.stringify(formData)
+      });
+
+      console.log('Response status:', response.status);
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to send message');
+      }
+
+      setStatus('success');
+      setFormData({ name: '', email: '', subject: '', message: '' });
+    } catch (error) {
+      console.error('Contact form error:', error);
+      setStatus('error');
+      setErrorMessage(error instanceof Error ? error.message : 'Something went wrong. Please try again.');
+    }
   };
 
   return (
@@ -49,17 +88,6 @@ export default function ContactPage() {
                     vincent@path2medic.com
                   </a>
                   <p className="text-sm text-gray-600 mt-2">We'll respond within 24 hours</p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <Phone className="h-10 w-10 text-[#E67E22] mb-2" />
-                  <CardTitle>Support Hours</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-700">Monday - Friday</p>
-                  <p className="text-gray-700">9:00 AM - 5:00 PM EST</p>
                 </CardContent>
               </Card>
 
@@ -128,11 +156,28 @@ export default function ContactPage() {
                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                         placeholder="Tell us more about your question or concern..."
                         rows={6}
+                        disabled={status === 'submitting'}
                       />
                     </div>
 
-                    <Button type="submit" className="w-full bg-[#E67E22] hover:bg-[#D35400]">
-                      Send Message
+                    {status === 'success' && (
+                      <div className="p-4 bg-green-50 text-green-700 rounded-md border border-green-200">
+                        Message sent successfully! We'll get back to you soon.
+                      </div>
+                    )}
+
+                    {status === 'error' && (
+                      <div className="p-4 bg-red-50 text-red-700 rounded-md border border-red-200">
+                        {errorMessage || 'Failed to send message. Please try again.'}
+                      </div>
+                    )}
+
+                    <Button 
+                      type="submit" 
+                      className="w-full bg-[#E67E22] hover:bg-[#D35400]"
+                      disabled={status === 'submitting'}
+                    >
+                      {status === 'submitting' ? 'Sending...' : 'Send Message'}
                     </Button>
                   </form>
                 </CardContent>

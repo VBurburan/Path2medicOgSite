@@ -3,9 +3,13 @@ import Layout from '../components/Layout';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
-import { CheckCircle, BookOpen, Users, BarChart3, Download, GraduationCap, Building2 } from 'lucide-react';
+import { CheckCircle, BookOpen, Users, BarChart3, Download, GraduationCap, Building2, Bell } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { UnderTheHoodHero, UnderTheHoodDetailed } from '../components/products/UnderTheHoodPromo';
 
 export default function EducatorsPage() {
+  const navigate = useNavigate();
+
   const features = [
     {
       icon: BookOpen,
@@ -74,23 +78,48 @@ export default function EducatorsPage() {
   return (
     <Layout>
       {/* Hero */}
-      <section className="bg-gradient-to-br from-[#1B4F72] to-[#5DADE2] py-20 text-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <Badge className="bg-white text-[#1B4F72] mb-4">FOR INSTRUCTORS & PROGRAMS</Badge>
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+      <section className="bg-gradient-to-br from-[#1B4F72] to-[#5DADE2] py-20 text-white relative overflow-hidden">
+        <div className="absolute top-0 left-0 p-4 opacity-10 transform -rotate-12">
+          <GraduationCap className="w-64 h-64" />
+        </div>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+          <Badge className="bg-white text-[#1B4F72] mb-6 mr-2 py-1.5 px-3">FOR INSTRUCTORS & PROGRAMS</Badge>
+          <div className="block mt-2 mb-8">
+            <Badge className="bg-[#E67E22] text-white px-6 py-2 text-lg font-bold border-none shadow-lg animate-pulse">
+              🚧 PLATFORM COMING SOON
+            </Badge>
+          </div>
+          <h1 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">
             Generate Practice Questions Aligned with Your Curriculum
           </h1>
           <p className="text-xl text-white/90 mb-8">
-            Stop spending hours writing questions. Our platform creates TEI-formatted practice items that match your course content and national exam specifications.
+            Stop spending hours writing questions. Our platform is coming soon to help you create TEI-formatted practice items that match your course content.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" variant="secondary" className="bg-white text-[#1B4F72] hover:bg-gray-100">
-              Request Educator Access
+            <Button 
+              size="lg" 
+              variant="secondary" 
+              className="bg-white text-[#1B4F72] hover:bg-gray-100"
+              onClick={() => navigate('/contact')}
+            >
+              Get Notified on Launch
             </Button>
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
-              Schedule a Demo
+            <Button 
+              size="lg" 
+              variant="outline" 
+              className="border-white text-white hover:bg-white/10"
+              onClick={() => navigate('/contact')}
+            >
+              Contact Us
             </Button>
           </div>
+        </div>
+      </section>
+
+      {/* Featured Book: Under the Hood */}
+      <section className="py-12 bg-white relative z-20 -mt-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <UnderTheHoodHero />
         </div>
       </section>
 
@@ -170,48 +199,35 @@ export default function EducatorsPage() {
         </div>
       </section>
 
-      {/* Pricing & Access */}
-      <section className="py-16 bg-[#F8F9FA]">
+      {/* Deep Dive: Under The Hood Book */}
+      <UnderTheHoodDetailed />
+
+      {/* Coming Soon Call to Action */}
+      <section className="py-16 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-[#1B4F72] mb-4">
-            Institutional Pricing Available
+            Institutional Pricing Coming Soon
           </h2>
           <p className="text-xl text-gray-600 mb-8">
-            Custom pricing for EMS programs, departments, and training centers
+            We are working on custom solutions for EMS programs, departments, and training centers.
           </p>
-          <Card className="max-w-2xl mx-auto">
+          <Card className="max-w-2xl mx-auto border-2 border-[#E67E22]/20">
             <CardHeader>
-              <CardTitle className="text-2xl">Get Started Today</CardTitle>
+              <div className="mx-auto bg-[#FFF3E0] p-4 rounded-full w-fit mb-4">
+                <Bell className="h-10 w-10 text-[#E67E22]" />
+              </div>
+              <CardTitle className="text-2xl">Partner With Us</CardTitle>
               <CardDescription>
-                Contact us to discuss your program's needs and get a custom quote
+                Contact us to discuss your program's needs and be the first to access the platform.
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="bg-[#F8F9FA] p-6 rounded-lg">
-                <h3 className="font-semibold text-[#1B4F72] mb-4">What to expect:</h3>
-                <ul className="text-left space-y-2">
-                  <li className="flex items-start gap-2">
-                    <CheckCircle className="h-5 w-5 text-[#7FA99B] flex-shrink-0 mt-0.5" />
-                    <span>15-minute consultation to understand your needs</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle className="h-5 w-5 text-[#7FA99B] flex-shrink-0 mt-0.5" />
-                    <span>Personalized platform demo</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle className="h-5 w-5 text-[#7FA99B] flex-shrink-0 mt-0.5" />
-                    <span>Custom pricing based on program size</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle className="h-5 w-5 text-[#7FA99B] flex-shrink-0 mt-0.5" />
-                    <span>Onboarding and training included</span>
-                  </li>
-                </ul>
-              </div>
-            </CardContent>
             <CardFooter className="flex flex-col gap-3">
-              <Button className="w-full bg-[#5DADE2] hover:bg-[#3498DB]" size="lg">
-                Request Educator Access
+              <Button 
+                className="w-full bg-[#5DADE2] hover:bg-[#3498DB]" 
+                size="lg"
+                onClick={() => navigate('/contact')}
+              >
+                Contact for Early Access
               </Button>
               <p className="text-sm text-gray-500">
                 Questions? Email <a href="mailto:vincent@path2medic.com" className="text-[#5DADE2] hover:underline">vincent@path2medic.com</a>
@@ -222,7 +238,7 @@ export default function EducatorsPage() {
       </section>
 
       {/* Who This Is For */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-[#F8F9FA]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl md:text-4xl font-bold text-center text-[#1B4F72] mb-12">
             Perfect For

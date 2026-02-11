@@ -1,32 +1,214 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/utils/supabaseClient';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../components/ui/card';
+import { projectId } from '../../../utils/supabase/info';
 import { Button } from '../components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
+import { 
+  Users, 
+  Settings, 
+  LogOut, 
+  Loader2, 
+  Search,
+  LayoutDashboard,
+  FileQuestion,
+  FileText,
+  Database,
+  ImageIcon,
+  ExternalLink
+} from 'lucide-react';
+import { AdminQuestionList } from '../components/admin/AdminQuestionList';
+import { AdminSubmissionList } from '../components/admin/AdminSubmissionList';
+import { AdminDatabaseTools } from '../components/admin/AdminDatabaseTools';
+import logo from 'figma:asset/7e2353c04204bd5b39085f4855f3eadf3139a233.png';
+
+// User List Component
+import { 
+  Table, 
+  TableBody, 
+  TableCell, 
+  TableHead, 
+  TableHeader, 
+  TableRow 
+} from '../components/ui/table';
 import { Badge } from '../components/ui/badge';
 import { Input } from '../components/ui/input';
-import { Users, Calendar, DollarSign, FileText, CheckCircle, TrendingUp, Eye, Send, Edit } from 'lucide-react';
-import logo from '../../assets/7e2353c04204bd5b39085f4855f3eadf3139a233.png';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../components/ui/dropdown-menu";
+import { MoreVertical, Shield, Mail, UserPlus, FileEdit } from 'lucide-react';
+
+function UserManagement({ users, loading }: { users: any[], loading: boolean }) {
+  const [searchTerm, setSearchTerm] = useState('');
+  
+  const filteredUsers = users.filter(u => 
+    u.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    u.user_metadata?.name?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  return (
+    <div className="space-y-4">
+      <div className="flex justify-between items-center mb-4">
+        <div className="relative w-64">
+          <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-500" />
+          <Input 
+            placeholder="Search students..." 
+            className="pl-8"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+        <div className="text-sm text-gray-500">
+          Showing {filteredUsers.length} students
+        </div>
+      </div>
+
+      <div className="rounded-md border bg-white">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Student</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Joined / Active</TableHead>
+              <TableHead>Source</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {filteredUsers.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={5} className="text-center py-8 text-gray-500">No students found</TableCell>
+              </TableRow>
+            ) : (
+              filteredUsers.map((user) => (
+                <TableRow key={user.id}>
+                  <TableCell>
+                    <div className="flex flex-col">
+                      <span className="font-medium">{user.user_metadata?.name || user.name || 'Unknown Name'}</span>
+                      <span className="text-xs text-gray-500 flex items-center gap-1">
+                        <Mail className="h-3 w-3" /> {user.email}
+                      </span>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    {user.user_metadata?.role === 'admin' ? (
+                      <Badge className="bg-purple-600">Admin</Badge>
+                    ) : user.source === 'submission' ? (
+                      <Badge variant="outline" className="border-orange-200 text-orange-700 bg-orange-50">Exam Student</Badge>
+                    ) : (
+                      <Badge variant="secondary" className="bg-green-100 text-green-700">Registered</Badge>
+                    )}
+                  </TableCell>
+                  <TableCell className="text-gray-600">
+                    {new Date(user.created_at || user.last_active).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell>
+                    {user.source === 'auth' ? (
+                      <span className="text-xs text-gray-500">Account</span>
+                    ) : (
+                      <span className="text-xs text-orange-600">Submission</span>
+                    )}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <Button variant="ghost" size="sm">View History</Button>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
+      </div>
+    </div>
+  );
+}
 
 export default function AdminDashboardPage() {
   const navigate = useNavigate();
-  const [user, setUser] = useState<any>(null);
+  const [currentUser, setCurrentUser] = useState<any>(null);
+  const [users, setUsers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [activeTab, setActiveTab] = useState('questions'); 
 
   useEffect(() => {
-    checkAuth();
+    checkAuthAndFetchData();
   }, []);
 
-  const checkAuth = async () => {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) {
-      navigate('/login');
-    } else if (session.user?.user_metadata?.role !== 'admin') {
-      // Not an admin, redirect to regular dashboard
-      navigate('/dashboard');
-    } else {
-      setUser(session.user);
+  const checkAuthAndFetchData = async () => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
+        navigate('/login');
+        return;
+      }
+      
+      if (session.user?.user_metadata?.role !== 'admin') {
+        navigate('/dashboard');
+        return;
+      }
+
+      setCurrentUser(session.user);
+      
+      // 1. Fetch Registered Users
+      let registeredUsers: any[] = [];
+      try {
+        const response = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-8ae44dd2/list-users`, {
+          headers: { 'Authorization': `Bearer ${session.access_token}` }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          registeredUsers = (data.users || []).map((u: any) => ({ ...u, source: 'auth' }));
+        }
+      } catch (e) {
+        console.error("Failed to fetch registered users", e);
+      }
+
+      // 2. Fetch Students from Submissions (Intake)
+      let submissionStudents: any[] = [];
+      try {
+        const { data: intakes } = await supabase
+          .from('intake_submissions')
+          .select('student_email, student_name, submitted_at')
+          .order('submitted_at', { ascending: false });
+        
+        if (intakes) {
+          // Deduplicate by email
+          const uniqueIntakes = new Map();
+          intakes.forEach(sub => {
+            if (!uniqueIntakes.has(sub.student_email)) {
+              uniqueIntakes.set(sub.student_email, {
+                id: `sub_${sub.student_email}`, // Synthetic ID
+                email: sub.student_email,
+                name: sub.student_name,
+                created_at: sub.submitted_at,
+                last_active: sub.submitted_at,
+                user_metadata: { name: sub.student_name },
+                source: 'submission'
+              });
+            }
+          });
+          submissionStudents = Array.from(uniqueIntakes.values());
+        }
+      } catch (e) {
+        console.error("Failed to fetch submissions", e);
+      }
+
+      // 3. Merge: Prioritize Registered Users, but include Submission-only students
+      const registeredEmails = new Set(registeredUsers.map(u => u.email?.toLowerCase()));
+      const newStudents = submissionStudents.filter(s => !registeredEmails.has(s.email?.toLowerCase()));
+      
+      const allStudents = [...registeredUsers, ...newStudents];
+
+      setUsers(allStudents);
+
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
       setLoading(false);
     }
   };
@@ -36,328 +218,130 @@ export default function AdminDashboardPage() {
     navigate('/login');
   };
 
-  // Mock data for demonstration
-  const stats = {
-    activeClients: 24,
-    newThisWeek: 3,
-    upcomingSessions: 5,
-    revenue: 2100,
-    revenueTrend: 15,
-    pendingReviews: 3,
-    passRate: 87,
-  };
-
-  const todaySchedule = [
-    { 
-      id: 1, 
-      time: '10:00 AM', 
-      client: 'Tamala R.', 
-      level: 'Paramedic', 
-      type: 'Follow-up',
-      weakDomains: ['Primary Assessment', 'Patient Treatment'],
-      zoomLink: 'https://zoom.us/j/123456789'
-    },
-    { 
-      id: 2, 
-      time: '2:00 PM', 
-      client: 'Marcus J.', 
-      level: 'EMT', 
-      type: 'Intake',
-      weakDomains: [],
-      zoomLink: 'https://zoom.us/j/987654321'
-    },
+  const navItems = [
+    { id: 'dashboard', label: 'Overview', icon: LayoutDashboard },
+    { id: 'questions', label: 'Questions Bank', icon: FileQuestion },
+    { id: 'submissions', label: 'Submissions', icon: FileText },
+    { id: 'users', label: 'Students', icon: Users },
+    { id: 'assets', label: 'Media Assets', icon: ImageIcon },
+    { id: 'tools', label: 'Database Tools', icon: Database },
   ];
-
-  const clients = [
-    { id: 1, name: 'Tamala R.', email: 'tamala@example.com', level: 'Paramedic', status: 'Active', lastScore: 72, lastAssessment: 'Jan 8', sessions: 2 },
-    { id: 2, name: 'Marcus J.', email: 'marcus@example.com', level: 'EMT', status: 'Active', lastScore: 65, lastAssessment: 'Jan 10', sessions: 1 },
-    { id: 3, name: 'Sarah K.', email: 'sarah@example.com', level: 'AEMT', status: 'Passed', lastScore: 84, lastAssessment: 'Dec 15', sessions: 4 },
-    { id: 4, name: 'David L.', email: 'david@example.com', level: 'EMT', status: 'Active', lastScore: 70, lastAssessment: 'Jan 5', sessions: 3 },
-  ];
-
-  const pendingAssessments = [
-    { id: 1, client: 'Tamala R.', type: 'Intake Exam', date: 'Jan 8', score: 72, status: 'new', userId: 'user-123' },
-    { id: 2, client: 'Marcus J.', type: 'Practice #3', date: 'Jan 10', score: 68, status: 'in-progress', userId: 'user-456' },
-    { id: 3, client: 'Sarah K.', type: 'Final Test', date: 'Dec 15', score: 84, status: 'ready', userId: 'user-789' },
-  ];
-
-  const filteredClients = clients.filter(client => 
-    client.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    client.email.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#F8F9FA] flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#1B4F72] mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading...</p>
-        </div>
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA]">
-      {/* Header/Navigation */}
-      <header className="bg-white shadow-sm sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-4">
-              <img src={logo} alt="Path2Medic" className="h-10 w-auto" />
-              <Badge className="bg-[#E67E22] text-white">ADMIN</Badge>
+    <div className="min-h-screen bg-gray-50 flex font-sans">
+      {/* Sidebar */}
+      <aside className="w-64 bg-[#1a5f7a] text-white hidden md:flex flex-col shadow-lg">
+        <div className="p-6 border-b border-white/10 flex items-center justify-center">
+          <img src={logo} alt="Path2Medic" className="h-8 w-auto brightness-0 invert" />
+        </div>
+        
+        <nav className="flex-1 p-4 space-y-2">
+          {navItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => item.id === 'assets' ? navigate('/admin/assets') : setActiveTab(item.id)}
+              className={`w-full flex items-center px-4 py-3 rounded-lg transition-colors text-sm font-medium ${
+                activeTab === item.id 
+                  ? "bg-white/10 text-white border-l-4 border-[#d4a843]" 
+                  : "text-gray-300 hover:bg-white/5 hover:text-white"
+              }`}
+            >
+              <item.icon className={`h-5 w-5 mr-3 ${activeTab === item.id ? "text-[#d4a843]" : ""}`} />
+              {item.label}
+            </button>
+          ))}
+        </nav>
+
+        <div className="p-4 border-t border-white/10">
+          <Button 
+            className="w-full mb-4 bg-white/10 hover:bg-white/20 text-white border border-white/20 justify-start"
+            onClick={() => navigate('/portal')}
+          >
+            <ExternalLink className="mr-2 h-4 w-4" />
+            Student Portal View
+          </Button>
+
+          <div className="flex items-center gap-3 mb-4 px-2">
+            <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold text-xs border border-white/20">
+              {currentUser.email?.[0].toUpperCase()}
             </div>
-            <nav className="hidden md:flex space-x-6">
-              <a href="/admin" className="text-[#1B4F72] font-semibold border-b-2 border-[#E67E22] py-4">Overview</a>
-              <a href="#clients" className="text-gray-600 hover:text-[#1B4F72] py-4">Clients</a>
-              <a href="#sessions" className="text-gray-600 hover:text-[#1B4F72] py-4">Sessions</a>
-              <a href="#analytics" className="text-gray-600 hover:text-[#1B4F72] py-4">Analytics</a>
-            </nav>
-            <div className="flex items-center space-x-4">
-              <Button variant="outline" size="sm">New Client</Button>
-              <Button variant="ghost" size="sm" onClick={handleLogout}>
-                Logout
-              </Button>
+            <div className="overflow-hidden">
+              <p className="text-sm font-medium truncate text-gray-200">{currentUser.user_metadata?.name || 'Admin'}</p>
+              <p className="text-xs text-gray-400 truncate">{currentUser.email}</p>
             </div>
           </div>
+          <Button variant="ghost" className="w-full text-gray-300 hover:text-white hover:bg-white/10 justify-start" onClick={handleLogout}>
+            <LogOut className="mr-2 h-4 w-4" />
+            Logout
+          </Button>
         </div>
-      </header>
+      </aside>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Overview Stats Row */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
-          <Card>
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-sm font-medium text-gray-600">Active Clients</CardTitle>
-                <Users className="h-4 w-4 text-gray-400" />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-[#1B4F72]">{stats.activeClients}</div>
-              <p className="text-xs text-green-600 mt-1">+{stats.newThisWeek} new this week</p>
-            </CardContent>
-          </Card>
+      <main className="flex-1 overflow-y-auto bg-[#f5f5f5]">
+        <div className="p-8 max-w-7xl mx-auto">
+          <div className="flex justify-between items-center mb-8">
+            <div>
+              <h1 className="text-3xl font-bold text-[#1a5f7a]">
+                {navItems.find(i => i.id === activeTab)?.label || 'Dashboard'}
+              </h1>
+              <p className="text-gray-500">Manage your NREMT preparation platform.</p>
+            </div>
+          </div>
 
-          <Card>
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-sm font-medium text-gray-600">Sessions This Week</CardTitle>
-                <Calendar className="h-4 w-4 text-gray-400" />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-[#1B4F72]">{stats.upcomingSessions}</div>
-              <p className="text-xs text-gray-500 mt-1">Upcoming</p>
-            </CardContent>
-          </Card>
+          {activeTab === 'dashboard' && (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-medium text-gray-500">Total Students</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="text-3xl font-bold text-[#1a5f7a]">{users.length}</div>
+                  <p className="text-xs text-gray-500 mt-1">Registered + Exam Submissions</p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-medium text-gray-500">Questions</CardTitle>
+                </CardHeader>
+                <CardContent>
+                   <div className="text-3xl font-bold text-[#d4a843]">
+                     <span className="text-xs font-normal text-gray-400 block mb-1">Check Questions Tab</span>
+                     Active
+                   </div>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm font-medium text-gray-500">Platform Status</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center text-green-600 font-bold">
+                    <span className="h-3 w-3 rounded-full bg-green-500 mr-2"></span>
+                    Operational
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          )}
 
-          <Card>
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-sm font-medium text-gray-600">Revenue (MTD)</CardTitle>
-                <DollarSign className="h-4 w-4 text-gray-400" />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-[#1B4F72]">${stats.revenue.toLocaleString()}</div>
-              <p className="text-xs text-green-600 mt-1 flex items-center">
-                <TrendingUp className="h-3 w-3 mr-1" />
-                +{stats.revenueTrend}%
-              </p>
-            </CardContent>
-          </Card>
+          {activeTab === 'users' && <UserManagement users={users} loading={loading} />}
+          
+          {activeTab === 'questions' && <AdminQuestionList />}
+          
+          {activeTab === 'submissions' && <AdminSubmissionList />}
+          
+          {activeTab === 'tools' && <AdminDatabaseTools />}
 
-          <Card>
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-sm font-medium text-gray-600">Pending Reviews</CardTitle>
-                <FileText className="h-4 w-4 text-gray-400" />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-[#E67E22]">{stats.pendingReviews}</div>
-              <p className="text-xs text-gray-500 mt-1">Awaiting action</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-sm font-medium text-gray-600">Pass Rate</CardTitle>
-                <CheckCircle className="h-4 w-4 text-gray-400" />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold text-[#7FA99B]">{stats.passRate}%</div>
-              <p className="text-xs text-gray-500 mt-1">Student success</p>
-            </CardContent>
-          </Card>
         </div>
-
-        {/* Today's Schedule */}
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <Calendar className="h-5 w-5" />
-              <span>Today's Schedule</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {todaySchedule.map((session) => (
-              <div key={session.id} className="border rounded-lg p-4 hover:bg-gray-50">
-                <div className="flex justify-between items-start">
-                  <div className="flex-1">
-                    <div className="flex items-center space-x-3 mb-2">
-                      <span className="font-semibold text-[#1B4F72]">{session.time}</span>
-                      <span className="text-gray-600">{session.client}</span>
-                      <Badge variant="outline">{session.level}</Badge>
-                      <Badge className="bg-[#7FA99B] text-white">{session.type}</Badge>
-                    </div>
-                    {session.weakDomains.length > 0 && (
-                      <p className="text-sm text-gray-600">
-                        Weak areas: {session.weakDomains.join(', ')}
-                      </p>
-                    )}
-                  </div>
-                  <div className="flex space-x-2">
-                    <Button size="sm" className="bg-[#5DADE2] hover:bg-[#3498DB]">
-                      Join Zoom
-                    </Button>
-                    <Button size="sm" variant="outline">
-                      View Profile
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
-
-        {/* Client Management Table */}
-        <Card className="mb-8" id="clients">
-          <CardHeader>
-            <div className="flex justify-between items-center">
-              <CardTitle>Client List</CardTitle>
-              <div className="flex space-x-2">
-                <Input
-                  placeholder="Search clients..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-64"
-                />
-                <Button variant="outline">Filter</Button>
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b">
-                    <th className="text-left py-3 px-4 font-semibold text-gray-600">Name</th>
-                    <th className="text-left py-3 px-4 font-semibold text-gray-600">Level</th>
-                    <th className="text-left py-3 px-4 font-semibold text-gray-600">Status</th>
-                    <th className="text-left py-3 px-4 font-semibold text-gray-600">Last Score</th>
-                    <th className="text-left py-3 px-4 font-semibold text-gray-600">Last Assessment</th>
-                    <th className="text-left py-3 px-4 font-semibold text-gray-600">Sessions</th>
-                    <th className="text-left py-3 px-4 font-semibold text-gray-600">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredClients.map((client) => (
-                    <tr key={client.id} className="border-b hover:bg-gray-50">
-                      <td className="py-3 px-4">
-                        <div>
-                          <div className="font-medium text-[#1B4F72]">{client.name}</div>
-                          <div className="text-sm text-gray-500">{client.email}</div>
-                        </div>
-                      </td>
-                      <td className="py-3 px-4">
-                        <Badge variant="outline">{client.level}</Badge>
-                      </td>
-                      <td className="py-3 px-4">
-                        <Badge 
-                          className={
-                            client.status === 'Passed' ? 'bg-green-100 text-green-800' :
-                            'bg-blue-100 text-blue-800'
-                          }
-                        >
-                          {client.status}
-                        </Badge>
-                      </td>
-                      <td className="py-3 px-4 font-semibold">{client.lastScore}%</td>
-                      <td className="py-3 px-4 text-gray-600">{client.lastAssessment}</td>
-                      <td className="py-3 px-4 text-gray-600">{client.sessions}</td>
-                      <td className="py-3 px-4">
-                        <div className="flex space-x-2">
-                          <Button size="sm" variant="outline">
-                            <Eye className="h-4 w-4" />
-                          </Button>
-                          <Button size="sm" variant="outline">
-                            <Edit className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Assessment Review Queue */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Pending Assessment Reviews</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {pendingAssessments.map((assessment) => (
-                <div 
-                  key={assessment.id} 
-                  className={`border rounded-lg p-4 ${
-                    assessment.status === 'new' ? 'border-red-300 bg-red-50' :
-                    assessment.status === 'in-progress' ? 'border-yellow-300 bg-yellow-50' :
-                    'border-green-300 bg-green-50'
-                  }`}
-                >
-                  <div className="flex items-start justify-between mb-2">
-                    <div className="flex-1">
-                      <h4 className="font-semibold text-[#1B4F72]">{assessment.client}</h4>
-                      <p className="text-sm text-gray-600">{assessment.type}</p>
-                    </div>
-                    <div className={`h-3 w-3 rounded-full ${
-                      assessment.status === 'new' ? 'bg-red-500' :
-                      assessment.status === 'in-progress' ? 'bg-yellow-500' :
-                      'bg-green-500'
-                    }`} />
-                  </div>
-                  <p className="text-sm text-gray-500 mb-3">{assessment.date} · {assessment.score}%</p>
-                  <Button 
-                    size="sm" 
-                    className={`w-full ${
-                      assessment.status === 'ready' 
-                        ? 'bg-[#7FA99B] hover:bg-[#6B9989]' 
-                        : 'bg-[#1B4F72] hover:bg-[#163D5A]'
-                    }`}
-                  >
-                    {assessment.status === 'new' && 'Review Now'}
-                    {assessment.status === 'in-progress' && 'Continue'}
-                    {assessment.status === 'ready' && (
-                      <span className="flex items-center">
-                        <Send className="h-4 w-4 mr-1" />
-                        Send Report
-                      </span>
-                    )}
-                  </Button>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
       </main>
     </div>
   );

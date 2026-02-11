@@ -95,7 +95,7 @@ export default function AdminSetupPage() {
                   onChange={(e) => setSecretCode(e.target.value)}
                 />
                 <p className="text-xs text-gray-500">
-                  Secret code: path2medic-admin-2024
+                  Enter the secret code provided by the system administrator
                 </p>
               </div>
             </CardContent>

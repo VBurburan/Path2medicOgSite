@@ -129,7 +129,7 @@ export default function TutoringPage() {
               className="bg-white text-[#1B4F72] hover:bg-gray-100"
               onClick={() => window.open('https://path2medic.thinkific.com/enroll/3570436?price_id=4503585', '_blank')}
             >
-              Book Your Session - $150
+              Book Your Session - $189
             </Button>
           </div>
         </div>
@@ -253,7 +253,7 @@ export default function TutoringPage() {
             </CardHeader>
             <CardContent className="text-center">
               <div className="text-5xl font-bold text-[#1B4F72] mb-8">
-                $150
+                $189
               </div>
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
                 <Button 
@@ -308,9 +308,9 @@ export default function TutoringPage() {
             size="lg" 
             variant="secondary" 
             className="bg-white text-[#E67E22] hover:bg-gray-100"
-            onClick={() => window.open('https://path2medic.thinkific.com/products/live_events/nremt-coaching-call', '_blank')}
+            onClick={() => window.open('https://path2medic.thinkific.com/enroll/3570436?price_id=4503585', '_blank')}
           >
-            Book Your Session - $150
+            Book Your Session - $189
           </Button>
         </div>
       </section>

@@ -4,22 +4,33 @@ import ProductCard from '../components/ProductCard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 
 // Import book covers
-import proofCover from '../../assets/5c9cc05b9263baa3a352ea86e5d9e616da333add.png';
-import spotItCover from '../../assets/c96381ee722dcf250fe4e2642e201c8802dc3930.png';
-import catCover from '../../assets/82e98b0c076d1ccc611ae137148c3b03243ef9d8.png';
-import workbookCover from '../../assets/fdfb19885d9e08b5312f32a21629fca03db0d3ad.png';
+import proofCover from 'figma:asset/5c9cc05b9263baa3a352ea86e5d9e616da333add.png';
+import spotItCover from 'figma:asset/c96381ee722dcf250fe4e2642e201c8802dc3930.png';
+import catCover from 'figma:asset/82e98b0c076d1ccc611ae137148c3b03243ef9d8.png';
+import workbookCover from 'figma:asset/fdfb19885d9e08b5312f32a21629fca03db0d3ad.png';
+import underTheHoodCover from 'figma:asset/f6622333bd9fe8e9767231b0875a1ba83a528937.png';
 
 export default function ProductsPage() {
   const [activeTab, setActiveTab] = useState('all');
 
   const products = [
     {
+      title: 'Under the Hood',
+      subtitle: 'Writing Better NREMT-Aligned EMS Questions',
+      description: 'A practical guide to Clinical Judgment item writing, TEIs, and diagnostic error analysis for EMS educators. Learn how to build scenario-based items and use TEI formats effectively.',
+      price: 22.99,
+      level: 'All' as const,
+      category: ['educators', 'all'],
+      coverImage: underTheHoodCover,
+      purchaseLink: 'https://path2medic.thinkific.com/enroll/3674017?price_id=4619456'
+    },
+    {
       title: 'The Proof is in the Pudding',
       subtitle: 'Break Down the Question, Find the Answer',
       description: 'NREMT Prep in 53 pages, straightforward and effective. Unlike endless practice tests and 500-page books, this focused guide teaches you systematic test-taking strategies to break down questions and find the right answers consistently.',
       price: 13.99,
       level: 'EMT' as const,
-      category: 'emt',
+      category: ['emt', 'educators'],
       coverImage: proofCover,
       purchaseLink: 'https://path2medic.thinkific.com/enroll/3569566?price_id=4502528'
     },
@@ -29,7 +40,7 @@ export default function ProductsPage() {
       description: 'Master NREMT Clinical Judgment with this 39-page research-backed guide. Designed for EMS students and educators, it uses proven frameworks to help you recognize patterns, prioritize interventions, and ace the new clinical judgment items on your exam.',
       price: 15.99,
       level: 'Paramedic' as const,
-      category: ['aemt', 'paramedic'],
+      category: ['aemt', 'paramedic', 'educators'],
       coverImage: spotItCover,
       purchaseLink: 'https://path2medic.thinkific.com/enroll/3585671?price_id=4520694'
     },
@@ -39,7 +50,7 @@ export default function ProductsPage() {
       description: 'Stop guessing and start thinking like an expert! This 70-page workbook enhances your clinical judgment skills with high-quality practice scenarios. Designed specifically for paramedic-level NREMT preparation.',
       price: 11.99,
       level: 'Paramedic' as const,
-      category: 'paramedic',
+      category: ['paramedic', 'educators'],
       coverImage: workbookCover,
       purchaseLink: 'https://path2medic.thinkific.com/enroll/3605333?price_id=4541954'
     },
@@ -49,7 +60,7 @@ export default function ProductsPage() {
       description: 'Struggling with the NREMT CAT test format? This detailed guide offers proven strategies to conquer CAT confusion and approach your exam with confidence. Learn how the algorithm works and how to leverage it to your advantage.',
       price: 11.99,
       level: 'All' as const,
-      category: ['emt', 'aemt', 'paramedic', 'all'],
+      category: ['emt', 'aemt', 'paramedic', 'educators', 'all'],
       coverImage: catCover,
       purchaseLink: 'https://path2medic.thinkific.com/enroll/3636485?price_id=4577181'
     }
@@ -73,7 +84,8 @@ export default function ProductsPage() {
       price: 22.99,
       level: 'Paramedic' as const,
       category: 'bundles',
-      coverImages: [spotItCover, workbookCover]
+      coverImages: [spotItCover, workbookCover],
+      purchaseLink: 'https://path2medic.thinkific.com/enroll/3605346?price_id=4541970'
     }
   ];
 
@@ -104,11 +116,12 @@ export default function ProductsPage() {
       <section className="py-16 bg-[#F8F9FA]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-5 mb-12">
+            <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-6 mb-12">
               <TabsTrigger value="all">All</TabsTrigger>
               <TabsTrigger value="emt">EMT</TabsTrigger>
               <TabsTrigger value="aemt">AEMT</TabsTrigger>
               <TabsTrigger value="paramedic">Paramedic</TabsTrigger>
+              <TabsTrigger value="educators">Educators</TabsTrigger>
               <TabsTrigger value="bundles">Bundles</TabsTrigger>
             </TabsList>
 

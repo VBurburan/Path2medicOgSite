@@ -8,11 +8,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../co
 import { CheckCircle, Award, Brain, TrendingUp, BookOpen, Users, Star } from 'lucide-react';
 
 // Import book covers
-import proofCover from '../../assets/5c9cc05b9263baa3a352ea86e5d9e616da333add.png';
-import spotItCover from '../../assets/c96381ee722dcf250fe4e2642e201c8802dc3930.png';
-import catCover from '../../assets/82e98b0c076d1ccc611ae137148c3b03243ef9d8.png';
-import workbookCover from '../../assets/fdfb19885d9e08b5312f32a21629fca03db0d3ad.png';
-import vincentHeadshot from '../../assets/42669bdc65e993029f5d4739d20ffe09c5cc9f74.png';
+import proofCover from 'figma:asset/5c9cc05b9263baa3a352ea86e5d9e616da333add.png';
+import spotItCover from 'figma:asset/c96381ee722dcf250fe4e2642e201c8802dc3930.png';
+import catCover from 'figma:asset/82e98b0c076d1ccc611ae137148c3b03243ef9d8.png';
+import workbookCover from 'figma:asset/fdfb19885d9e08b5312f32a21629fca03db0d3ad.png';
+import vincentHeadshot from 'figma:asset/42669bdc65e993029f5d4739d20ffe09c5cc9f74.png';
+import underTheHoodCover from 'figma:asset/f6622333bd9fe8e9767231b0875a1ba83a528937.png';
 
 export default function HomePage() {
   const trustBadges = [
@@ -40,6 +41,16 @@ export default function HomePage() {
   ];
 
   const products = [
+    {
+      title: 'Under the Hood',
+      subtitle: 'Writing Better NREMT-Aligned EMS Questions',
+      description: 'A practical guide to Clinical Judgment item writing, TEIs, and diagnostic error analysis for EMS educators.',
+      price: 22.99,
+      level: 'All' as const,
+      category: ['educators', 'all'],
+      coverImage: underTheHoodCover,
+      purchaseLink: 'https://path2medic.thinkific.com/enroll/3674017?price_id=4619456'
+    },
     {
       title: 'The Proof is in the Pudding',
       subtitle: 'Break Down the Question, Find the Answer',
@@ -69,8 +80,8 @@ export default function HomePage() {
     },
     {
       title: 'CAT Got Your Tongue?',
-      subtitle: 'Guide to Computer Adaptive Testing',
-      description: 'Struggling with the NREMT CAT test format? This detailed guide offers proven strategies to conquer CAT confusion and approach your exam with confidence.',
+      subtitle: 'Guide to Computer Adaptive Testing (CAT)',
+      description: 'Struggling with the NREMT CAT test format? This detailed guide offers proven strategies to conquer CAT confusion and approach your exam with confidence. Learn how the algorithm works and how to leverage it to your advantage.',
       price: 11.99,
       level: 'All' as const,
       coverImage: catCover,
@@ -113,7 +124,7 @@ export default function HomePage() {
             </Link>
             <Link to="/products">
               <Button size="lg" className="bg-[#E67E22] hover:bg-[#D35400] text-lg px-8 py-6">
-                Browse Study Materials
+                Purchase Study Materials
               </Button>
             </Link>
           </div>
@@ -123,6 +134,30 @@ export default function HomePage() {
                 {badge}
               </Badge>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Products Showcase */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#1B4F72] mb-4">
+            Study Resources Built for the New NREMT
+          </h2>
+          <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
+            Evidence-based guides designed for the recent NREMT exam changes
+          </p>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {products.map((product, index) => (
+              <ProductCard key={index} {...product} />
+            ))}
+          </div>
+          <div className="text-center mt-8">
+            <Link to="/products">
+              <Button size="lg" variant="outline" className="border-[#1B4F72] text-[#1B4F72]">
+                View All Products
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
@@ -148,30 +183,6 @@ export default function HomePage() {
                 </Card>
               );
             })}
-          </div>
-        </div>
-      </section>
-
-      {/* Products Showcase */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#1B4F72] mb-4">
-            Study Resources Built for the New NREMT
-          </h2>
-          <p className="text-center text-gray-600 mb-12 max-w-2xl mx-auto">
-            Evidence-based guides designed for the July 2024 NREMT exam changes
-          </p>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {products.map((product, index) => (
-              <ProductCard key={index} {...product} />
-            ))}
-          </div>
-          <div className="text-center mt-8">
-            <Link to="/products">
-              <Button size="lg" variant="outline" className="border-[#1B4F72] text-[#1B4F72]">
-                View All Products
-              </Button>
-            </Link>
           </div>
         </div>
       </section>
@@ -231,13 +242,11 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="relative">
-              <div className="aspect-square rounded-lg overflow-hidden">
-                <img
-                  src={vincentHeadshot}
-                  alt="Vincent Burburan, NRP"
-                  className="w-full h-full object-cover"
-                />
-              </div>
+              <img
+                src={vincentHeadshot}
+                alt="Vincent Burburan, NRP"
+                className="w-full rounded-lg shadow-xl"
+              />
             </div>
             <div>
               <h2 className="text-3xl font-bold text-[#1B4F72] mb-4">
@@ -268,36 +277,6 @@ export default function HomePage() {
                 </Button>
               </Link>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section className="py-16 bg-[#F8F9FA]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl md:text-4xl font-bold text-center text-[#1B4F72] mb-12">
-            What Students Are Saying
-          </h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {[1, 2, 3].map((i) => (
-              <Card key={i} className="border-2">
-                <CardHeader>
-                  <div className="flex items-center gap-1 mb-2">
-                    {[...Array(5)].map((_, j) => (
-                      <Star key={j} className="h-5 w-5 fill-[#E67E22] text-[#E67E22]" />
-                    ))}
-                  </div>
-                  <CardTitle className="text-lg">Passed on First Try!</CardTitle>
-                  <CardDescription>EMT Certification</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600">
-                    "Path2Medic's approach to clinical judgment made all the difference. 
-                    I finally understood HOW to think through complex scenarios."
-                  </p>
-                </CardContent>
-              </Card>
-            ))}
           </div>
         </div>
       </section>

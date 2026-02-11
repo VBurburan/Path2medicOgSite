@@ -2,6 +2,16 @@ import React from 'react';
 import { Badge } from './ui/badge';
 import { Button } from './ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/card';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogFooter,
+} from "./ui/dialog";
+import { CheckCircle2, BookOpen, Download } from 'lucide-react';
 
 interface ProductCardProps {
   title: string;
@@ -84,7 +94,92 @@ export default function ProductCard({ title, subtitle, description, price, level
         >
           {purchaseLink ? 'Buy Now' : 'Coming Soon'}
         </Button>
-        <Button variant="outline" className="flex-1">Preview</Button>
+        
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="outline" className="flex-1">Preview</Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <div className="flex items-center gap-2 mb-2">
+                <Badge className={levelColors[level]}>{level}</Badge>
+                <span className="text-xl font-bold text-[#1B4F72]">${price}</span>
+              </div>
+              <DialogTitle className="text-2xl">{title}</DialogTitle>
+              <DialogDescription className="text-base">{subtitle}</DialogDescription>
+            </DialogHeader>
+            
+            <div className="grid md:grid-cols-2 gap-6 py-4">
+              <div className="flex items-center justify-center bg-gray-50 rounded-lg p-4">
+                {hasMultipleImages ? (
+                  <div className="flex gap-2 items-center justify-center">
+                    {displayImages.map((image, index) => (
+                      <img 
+                        key={index}
+                        src={image} 
+                        alt={`${title} - View ${index + 1}`}
+                        className="max-h-[250px] object-contain shadow-md"
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <img 
+                    src={displayImages[0]} 
+                    alt={title}
+                    className="max-h-[300px] w-full object-contain shadow-md"
+                  />
+                )}
+              </div>
+              
+              <div className="space-y-4">
+                <div>
+                  <h4 className="font-semibold text-[#1B4F72] mb-2 flex items-center gap-2">
+                    <BookOpen className="h-4 w-4" />
+                    Description
+                  </h4>
+                  <p className="text-gray-600 text-sm leading-relaxed">{description}</p>
+                </div>
+                
+                <div>
+                  <h4 className="font-semibold text-[#1B4F72] mb-2">Key Features</h4>
+                  <ul className="space-y-2">
+                    <li className="flex items-center gap-2 text-sm text-gray-600">
+                      <CheckCircle2 className="h-4 w-4 text-green-500" />
+                      <span>Instant Digital Delivery</span>
+                    </li>
+                    <li className="flex items-center gap-2 text-sm text-gray-600">
+                      <CheckCircle2 className="h-4 w-4 text-green-500" />
+                      <span>Mobile & Tablet Friendly</span>
+                    </li>
+                    <li className="flex items-center gap-2 text-sm text-gray-600">
+                      <CheckCircle2 className="h-4 w-4 text-green-500" />
+                      <span>High-Quality PDF Format</span>
+                    </li>
+                    {purchaseLink && (
+                      <li className="flex items-center gap-2 text-sm text-gray-600">
+                        <Download className="h-4 w-4 text-[#5DADE2]" />
+                        <span>Secure Download via Thinkific</span>
+                      </li>
+                    )}
+                  </ul>
+                </div>
+              </div>
+            </div>
+            
+            <DialogFooter className="sm:justify-between gap-4 items-center border-t pt-4">
+              <div className="text-sm text-gray-500 italic hidden sm:block">
+                *Secure payment processing
+              </div>
+              <Button 
+                className="w-full sm:w-auto bg-[#E67E22] hover:bg-[#D35400] text-lg px-8" 
+                onClick={handlePurchase}
+                disabled={!purchaseLink}
+              >
+                {purchaseLink ? 'Buy Now' : 'Coming Soon'}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </CardFooter>
     </Card>
   );

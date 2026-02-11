@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Mail, Facebook, Twitter, Linkedin } from 'lucide-react';
-import logo from '../../assets/7e2353c04204bd5b39085f4855f3eadf3139a233.png';
+import logo from 'figma:asset/7e2353c04204bd5b39085f4855f3eadf3139a233.png';
 
 export default function Footer() {
   return (
@@ -77,13 +77,13 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link to="/portal" className="text-gray-300 hover:text-[#E67E22] transition-colors">
-                  Customer Portal
-                </Link>
-              </li>
-              <li>
                 <Link to="/login" className="text-gray-300 hover:text-[#E67E22] transition-colors">
                   Login
+                </Link>
+              </li>
+              <li className="pt-2">
+                <Link to="/customer-portal" className="inline-block px-3 py-1 bg-[#1a5f7a] text-white text-xs rounded hover:bg-[#134b61] transition-colors">
+                  Portal
                 </Link>
               </li>
             </ul>

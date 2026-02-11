@@ -6,7 +6,7 @@ import { Button } from '../components/ui/button';
 import { Progress } from '../components/ui/progress';
 import { Badge } from '../components/ui/badge';
 import { CheckCircle2, AlertTriangle, XCircle, TrendingUp, TrendingDown, BookOpen, Calendar, Target } from 'lucide-react';
-import logo from '../../assets/7e2353c04204bd5b39085f4855f3eadf3139a233.png';
+import logo from 'figma:asset/7e2353c04204bd5b39085f4855f3eadf3139a233.png';
 
 export default function DashboardPage() {
   const navigate = useNavigate();
