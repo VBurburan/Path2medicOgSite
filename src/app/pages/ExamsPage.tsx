@@ -41,8 +41,8 @@ const statusConfig: Record<string, { icon: React.ReactNode; label: string; color
   submitted: {
     icon: <AlertCircle className="h-4 w-4" />,
     label: 'Submitted — Awaiting Review',
-    color: 'text-amber-600',
-    bgColor: 'bg-amber-50',
+    color: 'text-gray-600',
+    bgColor: 'bg-gray-100',
   },
   graded: {
     icon: <CheckCircle className="h-4 w-4" />,

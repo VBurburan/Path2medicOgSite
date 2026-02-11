@@ -14,6 +14,8 @@ import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import EducatorsPage from './pages/EducatorsPage';
 import LoginPage from './pages/LoginPage';
+import SignupPage from './pages/SignupPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
 
 // Protected student portal pages
 import DashboardPage from './pages/DashboardPage';
@@ -22,7 +24,6 @@ import PracticePage from './pages/PracticePage';
 import PracticeSessionPage from './pages/PracticeSessionPage';
 import PracticeResultsPage from './pages/PracticeResultsPage';
 import ResultsPage from './pages/ResultsPage';
-import ResourcesPage from './pages/ResourcesPage';
 import SettingsPage from './pages/SettingsPage';
 
 // Coaching pipeline (direct access)
@@ -56,7 +57,11 @@ export default function App() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/educators" element={<EducatorsPage />} />
+
+          {/* Auth */}
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
           {/* Protected Student Portal */}
           <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
@@ -65,7 +70,6 @@ export default function App() {
           <Route path="/practice/session" element={<ProtectedRoute><PracticeSessionPage /></ProtectedRoute>} />
           <Route path="/practice/results" element={<ProtectedRoute><PracticeResultsPage /></ProtectedRoute>} />
           <Route path="/results" element={<ProtectedRoute><ResultsPage /></ProtectedRoute>} />
-          <Route path="/resources" element={<ProtectedRoute><ResourcesPage /></ProtectedRoute>} />
           <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
 
           {/* Coaching Pipeline (accessible via direct link) */}
