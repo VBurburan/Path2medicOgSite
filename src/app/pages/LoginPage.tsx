@@ -7,21 +7,6 @@ import { Eye, EyeOff, Mail, Lock, ArrowRight } from 'lucide-react';
 const NAVY = '#0D2137';
 const ACCENT = '#E03038';
 
-/* keyframes injected once */
-const fadeStyle = document.getElementById('auth-fade-style') || (() => {
-  const s = document.createElement('style');
-  s.id = 'auth-fade-style';
-  s.textContent = `
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(18px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-  `;
-  document.head.appendChild(s);
-  return s;
-})();
-void fadeStyle; // suppress unused warning
-
 export default function LoginPage() {
   const navigate = useNavigate();
   const { signIn } = useAuth();
@@ -57,18 +42,15 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex">
-      {/* ── Left: Branded panel ── */}
+      {/* Left: Branded panel */}
       <div
         className="hidden lg:flex lg:w-[480px] flex-col justify-between relative overflow-hidden"
         style={{ backgroundColor: NAVY }}
       >
-        {/* Red accent line at top */}
         <div
           className="absolute top-0 left-0 right-0 h-[3px]"
           style={{ background: `linear-gradient(90deg, ${ACCENT}, ${ACCENT}dd, transparent)` }}
         />
-
-        {/* Dot pattern overlay */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
@@ -95,7 +77,7 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* ── Right: Login form ── */}
+      {/* Right: Login form */}
       <div className="flex-1 flex items-center justify-center bg-[#f5f6f8] px-4 py-12">
         <div
           className="w-full max-w-[420px]"
@@ -110,7 +92,7 @@ export default function LoginPage() {
             className="bg-white rounded-2xl border border-gray-200/60 overflow-hidden"
             style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.04)' }}
           >
-            <form onSubmit={handleLogin} className="p-8 space-y-6">
+            <form onSubmit={handleLogin} className="p-8 space-y-6" noValidate>
               {/* Header */}
               <div
                 className="mb-2"
@@ -124,14 +106,16 @@ export default function LoginPage() {
 
               {/* Email */}
               <div style={{ animation: 'fadeInUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.15s both' }}>
-                <label className="block text-xs uppercase tracking-wider font-semibold text-gray-500 mb-2">
+                <label htmlFor="login-email" className="block text-xs uppercase tracking-wider font-semibold text-gray-500 mb-2">
                   Email
                 </label>
                 <div className="relative">
-                  <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-[15px] w-[15px] text-gray-400" />
+                  <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-[15px] w-[15px] text-gray-400" aria-hidden="true" />
                   <input
+                    id="login-email"
                     type="email"
                     required
+                    autoComplete="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="your.email@example.com"
@@ -142,14 +126,16 @@ export default function LoginPage() {
 
               {/* Password */}
               <div style={{ animation: 'fadeInUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.2s both' }}>
-                <label className="block text-xs uppercase tracking-wider font-semibold text-gray-500 mb-2">
+                <label htmlFor="login-password" className="block text-xs uppercase tracking-wider font-semibold text-gray-500 mb-2">
                   Password
                 </label>
                 <div className="relative">
-                  <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-[15px] w-[15px] text-gray-400" />
+                  <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 h-[15px] w-[15px] text-gray-400" aria-hidden="true" />
                   <input
+                    id="login-password"
                     type={showPw ? 'text' : 'password'}
                     required
+                    autoComplete="current-password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter your password"
@@ -158,7 +144,8 @@ export default function LoginPage() {
                   <button
                     type="button"
                     onClick={() => setShowPw(!showPw)}
-                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-300 hover:text-gray-500 transition-all duration-300"
+                    aria-label={showPw ? 'Hide password' : 'Show password'}
+                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-300 hover:text-gray-500 transition-all duration-300 focus:outline-none focus:text-gray-600"
                   >
                     {showPw ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
@@ -172,7 +159,7 @@ export default function LoginPage() {
               >
                 <Link
                   to="/forgot-password"
-                  className="text-xs font-semibold hover:underline transition-all duration-300"
+                  className="text-xs font-semibold hover:underline transition-all duration-300 focus:outline-none focus:underline"
                   style={{ color: ACCENT }}
                 >
                   Forgot password?
@@ -181,7 +168,11 @@ export default function LoginPage() {
 
               {/* Error */}
               {error && (
-                <div className="rounded-lg bg-red-50 border border-red-200/80 p-3.5 text-sm text-red-600 flex items-start gap-2.5">
+                <div
+                  role="alert"
+                  aria-live="polite"
+                  className="rounded-lg bg-red-50 border border-red-200/80 p-3.5 text-sm text-red-600 flex items-start gap-2.5"
+                >
                   <div className="w-1 h-1 rounded-full bg-red-400 mt-1.5 shrink-0" />
                   {error}
                 </div>
@@ -192,7 +183,8 @@ export default function LoginPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full py-3 rounded-lg text-white font-semibold text-sm transition-all duration-300 hover:translate-y-[-1px] hover:shadow-lg active:translate-y-0 disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:shadow-none flex items-center justify-center gap-2"
+                  aria-busy={loading}
+                  className="w-full py-3 rounded-lg text-white font-semibold text-sm transition-all duration-300 hover:translate-y-[-1px] hover:shadow-lg active:translate-y-0 disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:shadow-none flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-[#0D2137] focus:ring-offset-2"
                   style={{ backgroundColor: NAVY }}
                 >
                   {loading ? (
@@ -203,7 +195,7 @@ export default function LoginPage() {
                   ) : (
                     <>
                       Sign In
-                      <ArrowRight className="h-4 w-4" />
+                      <ArrowRight className="h-4 w-4" aria-hidden="true" />
                     </>
                   )}
                 </button>
@@ -219,7 +211,7 @@ export default function LoginPage() {
             Don't have an account?{' '}
             <Link
               to="/signup"
-              className="font-semibold hover:underline transition-all duration-300"
+              className="font-semibold hover:underline transition-all duration-300 focus:outline-none focus:underline"
               style={{ color: NAVY }}
             >
               Create one

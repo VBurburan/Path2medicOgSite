@@ -229,8 +229,17 @@ export default function SettingsPage() {
                 <p className="text-xs text-gray-500 mt-0.5">See correct answers after each question vs. after exam</p>
               </div>
               <button
+                role="switch"
+                aria-checked={showRationales}
+                aria-label="Show rationales immediately"
                 onClick={() => setShowRationales(!showRationales)}
-                className={`relative inline-flex h-7 w-12 items-center rounded-full transition-all duration-300 ${
+                onKeyDown={(e) => {
+                  if (e.key === ' ' || e.key === 'Enter') {
+                    e.preventDefault();
+                    setShowRationales(!showRationales);
+                  }
+                }}
+                className={`relative inline-flex h-7 w-12 items-center rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#0D2137] focus:ring-offset-2 ${
                   showRationales
                     ? 'bg-[#0D2137] shadow-sm shadow-[#0D2137]/20'
                     : 'bg-gray-300 hover:bg-gray-400'

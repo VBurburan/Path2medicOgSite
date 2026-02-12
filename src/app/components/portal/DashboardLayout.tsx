@@ -83,10 +83,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         <div
           className="fixed inset-0 bg-black/40 z-40 md:hidden backdrop-blur-sm transition-opacity duration-300"
           onClick={() => setSidebarOpen(false)}
+          aria-hidden="true"
         />
       )}
 
-      {/* Sidebar — premium gradient */}
+      {/* Sidebar */}
       <aside
         className={cn(
           'fixed inset-y-0 left-0 z-50 w-[260px] flex-col transition-transform duration-300 ease-in-out md:translate-x-0 md:static md:z-auto hidden md:flex',
@@ -95,30 +96,33 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         style={{
           background: 'linear-gradient(180deg, #0F2640 0%, #0D2137 40%, #091A2D 100%)',
         }}
+        role="navigation"
+        aria-label="Main navigation"
       >
         {/* Logo area */}
         <div className="h-16 px-5 flex items-center justify-between border-b border-white/[0.06]">
           <img src={logoDark} alt="Path2Medic" className="h-10 w-auto rounded" />
           <button
-            className="md:hidden text-white/60 hover:text-white transition-all duration-300"
+            className="md:hidden text-white/60 hover:text-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white/30 rounded-lg p-1"
             onClick={() => setSidebarOpen(false)}
+            aria-label="Close navigation menu"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
 
-        {/* User info — premium avatar */}
+        {/* User info */}
         <div className="px-5 py-5 border-b border-white/[0.06]">
           <div className="flex items-center gap-3">
             <div className="relative">
               <div
                 className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-white flex-shrink-0 ring-2 ring-white/10 ring-offset-2 ring-offset-[#0D2137] transition-all duration-300"
                 style={{ backgroundColor: ACCENT }}
+                aria-hidden="true"
               >
                 {initials}
               </div>
-              {/* Online indicator dot */}
-              <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-400 border-2 border-[#0D2137]" />
+              <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-400 border-2 border-[#0D2137]" aria-hidden="true" />
             </div>
             <div className="min-w-0 flex-1">
               <p className="text-white text-sm font-semibold truncate">{displayName}</p>
@@ -133,7 +137,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+        <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto" aria-label="Portal pages">
           {navItems.map((item) => {
             const isActive = activeNav === item.id;
             return (
@@ -143,8 +147,10 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                   navigate(item.path);
                   setSidebarOpen(false);
                 }}
+                aria-current={isActive ? 'page' : undefined}
                 className={cn(
                   'w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-all duration-300 rounded-lg group relative',
+                  'focus:outline-none focus:ring-2 focus:ring-[#E03038] focus:ring-offset-2 focus:ring-offset-[#0D2137]',
                   isActive
                     ? 'bg-white/[0.08] text-white shadow-sm shadow-black/10'
                     : 'text-white/45 hover:bg-white/[0.04] hover:text-white/80'
@@ -162,10 +168,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                       'h-[18px] w-[18px] transition-all duration-300',
                       isActive ? 'text-white' : 'group-hover:text-white/70'
                     )}
+                    aria-hidden="true"
                   />
                 </div>
                 <span className="transition-all duration-300">{item.label}</span>
-                {isActive && <ChevronRight className="h-4 w-4 ml-auto text-white/25" />}
+                {isActive && <ChevronRight className="h-4 w-4 ml-auto text-white/25" aria-hidden="true" />}
               </button>
             );
           })}
@@ -175,9 +182,9 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         <div className="px-3 pb-4 pt-2 border-t border-white/[0.06] mt-auto">
           <button
             onClick={handleLogout}
-            className="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-white/35 hover:bg-white/[0.04] hover:text-white/60 transition-all duration-300 group"
+            className="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium text-white/35 hover:bg-white/[0.04] hover:text-white/60 transition-all duration-300 group focus:outline-none focus:ring-2 focus:ring-[#E03038] focus:ring-offset-2 focus:ring-offset-[#0D2137]"
           >
-            <LogOut className="h-[18px] w-[18px] transition-all duration-300 group-hover:text-[#E03038]/70" />
+            <LogOut className="h-[18px] w-[18px] transition-all duration-300 group-hover:text-[#E03038]/70" aria-hidden="true" />
             Sign Out
           </button>
         </div>
@@ -185,15 +192,15 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
       {/* Main content area */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        {/* Top header — premium with subtle bottom highlight */}
+        {/* Top header */}
         <header className="bg-white/95 backdrop-blur-sm border-b border-gray-200/60 h-16 px-4 md:px-8 flex items-center justify-between flex-shrink-0 relative">
-          {/* Subtle top accent line */}
           <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-gray-200/80 to-transparent" />
 
           <div className="flex items-center gap-4">
             <button
-              className="md:hidden text-gray-400 hover:text-gray-700 transition-all duration-300"
+              className="md:hidden text-gray-400 hover:text-gray-700 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#0D2137] rounded-lg p-1"
               onClick={() => setSidebarOpen(true)}
+              aria-label="Open navigation menu"
             >
               <Menu className="h-6 w-6" />
             </button>
@@ -214,15 +221,16 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         </header>
 
         {/* Scrollable content */}
-        <main className="flex-1 overflow-y-auto p-4 md:p-8 pb-20 md:pb-8">
+        <main className="flex-1 overflow-y-auto p-4 md:p-8 pb-20 md:pb-8" id="main-content">
           {children}
         </main>
       </div>
 
-      {/* Mobile bottom tab bar — premium styling */}
+      {/* Mobile bottom tab bar */}
       <nav
         className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white/95 backdrop-blur-sm border-t border-gray-200/60 flex items-center justify-around px-1"
         style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
+        aria-label="Mobile navigation"
       >
         {navItems.map((item) => {
           const isActive = activeNav === item.id;
@@ -230,8 +238,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             <button
               key={item.id}
               onClick={() => navigate(item.path)}
+              aria-current={isActive ? 'page' : undefined}
+              aria-label={item.label}
               className={cn(
                 'flex flex-col items-center gap-0.5 py-2.5 px-3 text-[10px] font-semibold transition-all duration-300 min-w-0 relative',
+                'focus:outline-none focus:ring-2 focus:ring-[#E03038] focus:ring-offset-1 rounded-lg',
                 isActive ? 'text-[#E03038]' : 'text-gray-400 hover:text-gray-500'
               )}
             >
@@ -239,9 +250,10 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 <div
                   className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 rounded-b"
                   style={{ backgroundColor: ACCENT, boxShadow: '0 1px 4px rgba(224, 48, 56, 0.3)' }}
+                  aria-hidden="true"
                 />
               )}
-              <item.icon className={cn('h-5 w-5 transition-all duration-300', isActive ? 'stroke-[2.5]' : '')} />
+              <item.icon className={cn('h-5 w-5 transition-all duration-300', isActive ? 'stroke-[2.5]' : '')} aria-hidden="true" />
               <span className="truncate">{item.label}</span>
             </button>
           );
