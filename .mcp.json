@@ -1,0 +1,33 @@
+{
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "<your-github-pat>"
+      }
+    },
+    "supabase": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "supabase-mcp-server@latest",
+        "--supabase-url",
+        "https://kbfolxwbrjpajylkphwl.supabase.co",
+        "--supabase-service-role-key",
+        "<your-service-role-key>"
+      ]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest"]
+    },
+    "vercel": {
+      "command": "npx",
+      "args": ["-y", "vercel-mcp-server@latest"],
+      "env": {
+        "VERCEL_API_TOKEN": "<your-vercel-token>"
+      }
+    }
+  }
+}
